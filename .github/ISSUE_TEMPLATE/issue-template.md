@@ -2,9 +2,8 @@
 name: Issue template
 about: Please create an issue to work on
 title: "[태그] 이슈 요약"
-labels: ''
-assignees: ''
-
+labels: ""
+assignees: ""
 ---
 
 ## ✨ 이슈 내용

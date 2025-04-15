@@ -31,7 +31,7 @@ export default function RootLayout({
   return (
     <html lang="ko">
       <body
-        className={`${pretendard.variable} ${carterOne.variable} font-pretendard `}
+        className={`${pretendard.variable} ${carterOne.variable} font-pretendard`}
       >
         {children}
       </body>
