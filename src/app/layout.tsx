@@ -4,7 +4,7 @@ import { Carter_One } from "next/font/google";
 import "./globals.css";
 
 const pretendard = localFont({
-  src: "styles/fonts/PretendardVariable.woff2",
+  src: "_styles/fonts/PretendardVariable.woff2",
   display: "swap",
   weight: "45 920",
   variable: "--font-pretendard",
