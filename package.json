@@ -23,7 +23,22 @@
     "eslint": "^9",
     "eslint-config-next": "15.2.4",
     "husky": "^9.1.7",
+    "lint-staged": "^15.5.1",
     "tailwindcss": "^4",
     "typescript": "^5"
+  },
+  "lint-staged": {
+    "*.js": [
+      "eslint --fix",
+      "prettier --write"
+    ],
+    "*.ts": [
+      "eslint --fix",
+      "prettier --write"
+    ],
+    "*.tsx": [
+      "eslint --fix",
+      "prettier --write"
+    ]
   }
 }
