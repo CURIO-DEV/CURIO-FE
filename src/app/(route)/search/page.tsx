@@ -1,3 +1,3 @@
-export default function Event() {
-  return <div>Event</div>;
+export default function Search() {
+  return <div>Search</div>;
 }
