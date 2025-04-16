@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import localFont from "next/font/local";
 import { Carter_One } from "next/font/google";
 import "./globals.css";
+import Layout from "./_components/layout";
 
 const pretendard = localFont({
   src: "_styles/fonts/PretendardVariable.woff2",
@@ -33,7 +34,7 @@ export default function RootLayout({
       <body
         className={`${pretendard.variable} ${carterOne.variable} font-pretendard`}
       >
-        {children}
+        <Layout>{children}</Layout>
       </body>
     </html>
   );
