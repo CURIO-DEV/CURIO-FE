@@ -17,12 +17,6 @@ const carterOne = Carter_One({
   variable: "--font-carter",
 });
 
-export const metadata: Metadata = {
-  title: "Curio",
-  description:
-    "읽고 싶은 뉴스만 골라, 원하는 방식으로 요약받는 맞춤형 뉴스 플랫폼",
-};
-
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -30,6 +24,11 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="ko">
+      <title>Curio</title>
+      <meta
+        name="description"
+        content="읽고 싶은 뉴스만 골라, 원하는 방식으로 요약받는 맞춤형 뉴스 플랫폼"
+      />
       <body
         className={`${pretendard.variable} ${carterOne.variable} font-pretendard`}
       >
