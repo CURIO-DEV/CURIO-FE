@@ -5,6 +5,7 @@ interface ButtonProps {
   children: ReactNode;
   className?: string;
   variant?: "primary" | "secondary";
+  onClick: () => void;
 }
 
 export default function Button({
