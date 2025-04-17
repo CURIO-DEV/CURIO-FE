@@ -12,7 +12,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
   return (
     <div className="flex justify-center">
       <div className="flex min-w-360 px-20">
-        <main className="w-full">{children}</main>
+        <main>{children}</main>
         {showSidebar && <Sidebar />}
       </div>
     </div>
