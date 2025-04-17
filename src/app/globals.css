@@ -103,3 +103,8 @@ html {
 body {
   height: 100vh;
 }
+
+button {
+  cursor: pointer;
+  outline: none;
+}
