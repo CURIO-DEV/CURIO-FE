@@ -38,6 +38,8 @@
 
   --font-pretendard: var(--font-pretendard);
   --font-carter: var(--font-carter);
+
+  --font-regular: 400;
 }
 
 @layer utilities {
