@@ -2,12 +2,23 @@ import { IMAGES_PATH } from "@/constants/images";
 import Image from "next/image";
 import { useState } from "react";
 import Modal from "../modal";
+import Input from "../input";
+import Button from "../button";
 
 export default function Subscribe() {
   const [isModalOpen, SetIsModalOpen] = useState(false);
 
   const handleClick = () => {
     SetIsModalOpen(true);
+  };
+
+  const handleClose = () => {
+    SetIsModalOpen(false);
+  };
+
+  const handleSubscribe = () => {
+    // TODO: 메일 구독 신청 API 연결
+    SetIsModalOpen(false);
   };
   return (
     <>
@@ -32,6 +43,26 @@ export default function Subscribe() {
           className="absolute -top-4.75 -right-2.5 opacity-3"
         />
       </div>
+      {isModalOpen && (
+        <Modal title="메일 전송하기" onClick={handleClose}>
+          <div className="mt-7.5 flex flex-col gap-5">
+            <p className="body1 font-semibold">
+              닉네임님이 설정하신 <br /> 관심 카테고리별 인기 뉴스를 이메일로
+              전해드려요.
+              <br />
+              바쁜 일상 속, 한눈에 정리된 뉴스를 받아보세요.
+            </p>
+            <label className="caption1 flex flex-col font-medium">
+              이메일
+              {/* // TODO:API 연결 시 value 넣어주기 */}
+              <Input placeholder="sample@naver.com" />
+            </label>
+          </div>
+          <Button onClick={handleSubscribe} className="mt-7">
+            신청하기
+          </Button>
+        </Modal>
+      )}
     </>
   );
 }
