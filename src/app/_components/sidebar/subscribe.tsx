@@ -23,7 +23,7 @@ export default function Subscribe() {
   return (
     <>
       <div
-        className="group relative w-75 overflow-hidden rounded-2xl border border-gray-100 py-6 pl-6"
+        className="group relative mt-4.25 w-75 overflow-hidden rounded-2xl border border-gray-100 py-6 pl-6"
         onClick={handleClick}
       >
         <p className="body1 font-regular">
