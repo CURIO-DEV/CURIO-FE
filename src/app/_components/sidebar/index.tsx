@@ -4,6 +4,9 @@ import { useState } from "react";
 import Button from "../button";
 import { IMAGES_PATH } from "@/constants/images";
 import Subscribe from "./subscribe";
+import SidebarProfile from "./sidebarProfile";
+import TrandRanking from "./trandRanking";
+import SideNews from "./sdieNews";
 
 export default function Sidebar() {
   const [isLogin, setIsLogin] = useState(false);
@@ -15,8 +18,10 @@ export default function Sidebar() {
     <aside className="h-full border-l-1 border-gray-100 pl-10">
       {isLogin ? (
         //TODO: 로그인 후 사이드바
-
         <>
+          <SidebarProfile />
+          <TrandRanking />
+          <SideNews />
           <Subscribe />
         </>
       ) : (
