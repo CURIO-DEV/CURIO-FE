@@ -1,3 +1,5 @@
-export default function Landing() {
-  return <div></div>;
+import Home from "./(route)/home/page";
+
+export default function Page() {
+  return <Home />;
 }

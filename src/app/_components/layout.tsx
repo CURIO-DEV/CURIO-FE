@@ -5,7 +5,7 @@ import Sidebar from "./sidebar";
 
 export default function Layout({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
-  const showSidebar = ["/home", "/detail", "/search"].includes(pathname);
+  const showSidebar = ["/", "/home", "/detail", "/search"].includes(pathname);
 
   return (
     <div className="flex h-screen justify-center">
