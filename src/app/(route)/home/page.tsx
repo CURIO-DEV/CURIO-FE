@@ -48,12 +48,15 @@ export default function Home() {
   return (
     <div className="mt-6 flex flex-col gap-6 pr-10">
       <Banner onClick={handleClick} />
-      <div className="flex border-t border-b border-gray-200 py-4 pr-4.5 pl-18">
-        {categories.map((item, index) => (
-          <button key={index} className="flex w-full justify-between">
-            {item}
-          </button>
-        ))}
+      <div className="flex justify-between border-t border-b border-gray-200 py-4 pr-4.5 pl-18">
+        <div className="grid w-full grid-cols-4">
+          {categories.map((item, index) => (
+            <button key={index} className="text-left hover:underline">
+              {item}
+            </button>
+          ))}
+        </div>
+
         <img src="/assets/edit.svg" alt="edit" onClick={handleEdit} />
       </div>
       {isModalOpen && (
