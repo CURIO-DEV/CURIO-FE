@@ -6,7 +6,7 @@ import { IMAGES_PATH } from "@/constants/images";
 import Subscribe from "./subscribe";
 import SidebarProfile from "./sidebarProfile";
 import TrandRanking from "./trandRanking";
-import SideNews from "./sdieNews";
+import SideNews from "./sideNews";
 
 export default function Sidebar() {
   const [isLogin, setIsLogin] = useState(false);
