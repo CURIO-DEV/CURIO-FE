@@ -12,7 +12,7 @@ export default function Header() {
   return (
     <header className="flex h-20 items-center justify-between border-b border-gray-200 px-20">
       <h1 className="logo-s font-carter text-primary-600">Curio</h1>
-      <div className="bg-primary-50 flex w-124.5 rounded-2xl px-3">
+      <div className="bg-primary-50 flex w-124.5 rounded-2xl pr-3 pl-6">
         <input
           className="w-full py-2.5 outline-none"
           value={query}
