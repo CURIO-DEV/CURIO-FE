@@ -10,7 +10,7 @@ export default function Chip({
   onClick,
 }: ChipProps) {
   const selectedStyle = selected
-    ? "bg-primary-300 border border-primary-400"
+    ? "bg-primary-300 border border-primary-400 text-white"
     : "border border-primary-200";
   return (
     <button
