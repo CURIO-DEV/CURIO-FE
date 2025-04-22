@@ -2,7 +2,7 @@ import { useState } from "react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { ROUTES } from "@/constants/routes";
-import { trands } from "@/mocks/trands";
+import { trends } from "@/mocks/trends";
 
 export default function TrendRanking() {
   const [isOpen, setIsOpen] = useState(false);
@@ -29,7 +29,7 @@ export default function TrendRanking() {
         >
           <span>1</span>
           <span className="cursor-pointer group-hover:underline">
-            {trands[0]}
+            {trends[0]}
           </span>
         </div>
         {/* TODO svgr로 바꾸기*/}
@@ -48,15 +48,15 @@ export default function TrendRanking() {
           isOpen ? "max-h-96" : "max-h-0"
         }`}
       >
-        {trands.slice(1).map((trend, index) => (
+        {trends.slice(1).map((trends, index) => (
           <div
-            key={trend}
+            key={trends}
             className="mb-3 flex items-center justify-between"
             onClick={() => handleClick()}
           >
             <div className="group body1 flex w-58 cursor-pointer items-center gap-3 font-medium text-black">
               <span>{index + 2}</span>
-              <span className="group-hover:underline">{trend}</span>
+              <span className="group-hover:underline">{trends}</span>
             </div>
           </div>
         ))}

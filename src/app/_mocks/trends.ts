@@ -1,4 +1,4 @@
-export const trands = [
+export const trends = [
   "윤석열",
   "윤,'불소추 특권'",
   "경북 경주 주택에 불...재산피해",
