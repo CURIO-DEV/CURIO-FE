@@ -16,8 +16,8 @@ export default function ProfileCard() {
           <Image
             src={IMAGES_PATH.LOGO_HEAD}
             alt="profile"
-            width={37.649}
-            height={31.43}
+            width={38}
+            height={32}
           />
         </div>
         {/* TODO svgr로 바꾸기*/}
