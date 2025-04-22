@@ -33,7 +33,7 @@ export default function TrandingNews() {
             <p className="body1 w-48 truncate font-medium">{news.title}</p>
             <div className="caption1 pointer-events-none mt-0.75 flex items-center gap-0.75 font-medium text-gray-200">
               <Image
-                src="/assets/favorite.svg"
+                src="/assets/favorite-g.svg"
                 alt="heart"
                 width={15}
                 height={15}
@@ -42,10 +42,10 @@ export default function TrandingNews() {
                 {news.likes > 99 ? "99+" : news.likes}
               </span>
               <Image
-                src="/assets/bookmark.svg"
+                src="/assets/bookmark-g.svg"
                 alt="bookmark"
-                width={15}
-                height={15}
+                width={11.5}
+                height={11.5}
               />
               <span className="w-6">
                 {news.clips > 99 ? "99+" : news.clips}
