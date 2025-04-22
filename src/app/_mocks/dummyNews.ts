@@ -1,28 +1,28 @@
 export const dummyNews = [
   {
     id: 1,
-    title: "윤 대통령, 해외 순방 마치고 귀국",
+    title: "오늘 전국 대체로 맑음…일교차 주의",
     thumbnail: "/images/newThums.png",
     likes: 124,
     clips: 33,
   },
   {
     id: 2,
-    title: "여야, 국회 대치 장기화...해법은?",
+    title: "서울지하철 앱 업데이트…실시간 혼잡도 제공",
     thumbnail: "/images/newThums.png",
     likes: 88,
     clips: 56,
   },
   {
     id: 3,
-    title: "서울·수도권 미세먼지 ‘나쁨’ 예보",
+    title: "국내 연구진, 폐플라스틱 재활용 기술 개발",
     thumbnail: "/images/newThums.png",
     likes: 203,
     clips: 94,
   },
   {
     id: 4,
-    title: "기시다, 한일정상회담 언급",
+    title: "도서관 이용자 증가…MZ세대 독서 열풍",
     thumbnail: "/images/newThums.png",
     likes: 95,
     clips: 83,
