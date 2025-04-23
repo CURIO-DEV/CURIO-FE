@@ -11,8 +11,11 @@ interface Props {
 }
 
 export default function ArticleCard({ article }: Props) {
+  const handleClick = () => {
+    /* TODO 상세페이지 연결 */
+  };
   return (
-    <div className="flex h-25 w-225 cursor-pointer gap-3">
+    <div className="flex h-25 w-225 cursor-pointer gap-3" onClick={handleClick}>
       {/* 썸네일 */}
       {article.imageUrl ? (
         <img
