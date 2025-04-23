@@ -24,6 +24,7 @@
       "@/components/*": ["app/_components/*"],
       "@/constants/*": ["app/_constants/*"],
       "@/utils/*": ["app/_utils/*"]
+      "@/mocks/*": ["app/_mocks/*"]
     }
   },
   "include": [
