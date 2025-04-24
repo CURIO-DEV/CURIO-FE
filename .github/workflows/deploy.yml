@@ -2,7 +2,7 @@ name: Deploy
 
 on:
   push:
-    branches: ['main']
+    branches: ["main"]
 
 jobs:
   build:
@@ -23,7 +23,7 @@ jobs:
         env:
           API_TOKEN_GITHUB: ${{ secrets.CURIO_KEY }}
         with:
-          source-directory: 'output'
+          source-directory: "output"
           destination-github-username: Sohyunnnn
           destination-repository-name: CURIO-FE
           user-email: ${{ secrets.EMAIL }}
