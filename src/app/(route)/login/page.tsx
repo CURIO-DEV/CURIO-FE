@@ -1,6 +1,6 @@
 export default function Login() {
   return (
-    <div className="flex h-full items-center justify-center">
+    <div className="flex h-[calc(100vh-80px)] items-center justify-center">
       <div className="flex h-120 w-173 flex-col items-center rounded-[10px] border border-gray-200">
         <h1 className="logo-m text-primary-600 font-carter mt-18">Curio</h1>
         <p className="subtitle2 mt-2 text-center font-medium text-gray-300">
