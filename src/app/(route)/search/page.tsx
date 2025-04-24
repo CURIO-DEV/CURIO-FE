@@ -62,7 +62,7 @@ export default function Search() {
   }
 
   return (
-    <div>
+    <div className="pb-18.5">
       <div className="body1 mt-10 h-10 w-225 border-b border-gray-100 font-bold">
         <p>검색어에 대한 검색결과 {articles.length}건</p>
       </div>
@@ -122,7 +122,6 @@ export default function Search() {
           </PaginationItem>
         </PaginationContent>
       </Pagination>
-      <div className="h-18.5 w-full"></div>
     </div>
   );
 }
