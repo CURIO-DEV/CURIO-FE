@@ -7,15 +7,18 @@ import Subscribe from "./subscribe";
 import ProfileCard from "./profileCard";
 import TrandRanking from "./trandRanking";
 import TrandingNews from "./trandingNews";
+import { useRouter } from "next/navigation";
+import { ROUTES } from "@/constants/routes";
 
 export default function Sidebar() {
+  const router = useRouter();
   const [isLogin, setIsLogin] = useState(false);
 
   const handleClick = () => {
-    setIsLogin(true);
+    router.push(ROUTES.LOGIN);
   };
   return (
-    <aside className="h-full border-l-1 border-gray-100 pl-10">
+    <aside className="min-h-screen border-l-1 border-gray-100 pl-10">
       {isLogin ? (
         <div className="flex flex-col gap-6">
           <ProfileCard />
