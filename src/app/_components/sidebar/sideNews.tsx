@@ -1,3 +1,4 @@
+import { BookmarkIcon, FavoriteIcon } from "assets";
 import Image from "next/image";
 
 /* 더미데이터 */
@@ -60,23 +61,11 @@ export default function SideNews() {
             <p className="body1 w-48 truncate font-medium">{news.title}</p>
             <div className="mt-0.75 flex items-center gap-2">
               <div className="caption1 pointer-events-none flex items-center gap-0.75 font-medium text-gray-200">
-                {/* TODO svgr로 바꾸기*/}
-                <Image
-                  src="/assets/favorite.svg"
-                  alt="heart"
-                  width={15}
-                  height={15}
-                />
+                <FavoriteIcon />
                 <span className="w-6">
                   {news.likes > 99 ? "99+" : news.likes}
                 </span>
-                {/* TODO svgr로 바꾸기*/}
-                <Image
-                  src="/assets/bookMark.svg"
-                  alt="bookmark"
-                  width={15}
-                  height={15}
-                />
+                <BookmarkIcon />
                 <span className="w-6">
                   {news.clips > 99 ? "99+" : news.clips}
                 </span>

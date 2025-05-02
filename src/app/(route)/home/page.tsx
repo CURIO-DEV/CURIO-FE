@@ -7,6 +7,7 @@ import Button from "@/components/button";
 import Chip from "./_components/chip";
 import { CATEGORIES, DEFAULT_CATEGORIES } from "@/constants/categories";
 import ArticleCard from "@/components/article";
+import { EditIcon } from "assets";
 
 export default function Home() {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -65,8 +66,7 @@ export default function Home() {
             </button>
           ))}
         </div>
-
-        <img src="/assets/edit.svg" alt="edit" onClick={handleEdit} />
+        <EditIcon onClick={handleEdit} />
       </div>
       <div className="flex flex-col gap-4">
         {articles.map((article) => (

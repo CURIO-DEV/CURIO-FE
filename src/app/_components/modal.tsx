@@ -1,4 +1,5 @@
 "use client";
+import { CloseIcon } from "assets";
 import { ReactNode } from "react";
 
 interface ModalProps {
@@ -13,10 +14,7 @@ export default function Modal({ title, children, onClick }: ModalProps) {
       <div className="relative flex w-145 flex-col items-center rounded-lg bg-white pt-10 pb-5">
         <h2 className="subtitle2 font-semibold">{title}</h2>
         {children}
-
-        {/* // TODO: svgr로 바꾸기 */}
-        <img
-          src="/assets/close.svg"
+        <CloseIcon
           className="absolute top-5 right-5 cursor-pointer"
           onClick={onClick}
         />

@@ -1,3 +1,4 @@
+import { SearchIcon } from "assets";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 
@@ -19,11 +20,7 @@ export default function Header() {
           onChange={(e) => setQuery(e.target.value)}
         />
         <button type="button" onClick={handleClick}>
-          <img
-            src="/assets/search.svg"
-            alt="search"
-            className="cursor-pointer px-3"
-          />
+          <SearchIcon />
         </button>
       </div>
     </header>

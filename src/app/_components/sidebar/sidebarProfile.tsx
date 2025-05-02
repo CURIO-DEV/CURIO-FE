@@ -1,5 +1,6 @@
 import Image from "next/image";
 import { IMAGES_PATH } from "@/constants/images";
+import { SettingIcon } from "assets";
 
 export default function SidebarProfile() {
   const handleClick = () => {
@@ -17,9 +18,8 @@ export default function SidebarProfile() {
             height={31.43}
           />
         </div>
-        {/* TODO svgr로 바꾸기*/}
         <button className="absolute right-0 bottom-0" onClick={handleClick}>
-          <img src="/assets/settings.svg" />
+          <SettingIcon />
         </button>
       </div>
 
