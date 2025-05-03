@@ -22,7 +22,7 @@ export default function ProfileCard() {
           />
         </div>
         <button className="absolute right-0 bottom-0" onClick={handleClick}>
-          <SettingIcon />
+          <SettingIcon className="h-5 w-5" />
         </button>
       </div>
 
