@@ -7,3 +7,7 @@ export { default as SearchIcon } from "./search.svg";
 export { default as SettingIcon } from "./setting.svg";
 export { default as ShortcutIcon } from "./shortcut.svg";
 export { default as BookmarkIcon } from "./bookmark.svg";
+
+export { default as SimpleIcon } from "./simple.svg";
+export { default as DefaultIcon } from "./default.svg";
+export { default as DetailedIcon } from "./detailed.svg";
