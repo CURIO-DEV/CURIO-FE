@@ -4,9 +4,9 @@ import { useState } from "react";
 import Button from "../button";
 import { IMAGES_PATH } from "@/constants/images";
 import Subscribe from "./subscribe";
-import ProfileCard from "./profileCard";
-import TrandRanking from "./trandRanking";
-import TrandingNews from "./trandingNews";
+import ProfileCard from "./profile-card";
+import TrandRanking from "./trand-ranking";
+import TrandingNews from "./tranding-news";
 import { useRouter } from "next/navigation";
 import { ROUTES } from "@/constants/routes";
 

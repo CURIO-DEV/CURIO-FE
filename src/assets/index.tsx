@@ -6,4 +6,4 @@ export { default as FavoriteIcon } from "./favorite.svg";
 export { default as SearchIcon } from "./search.svg";
 export { default as SettingIcon } from "./setting.svg";
 export { default as ShortcutIcon } from "./shortcut.svg";
-export { default as BookmarkIcon } from "./bookmark.svg";
+export { default as BookmarkIcon } from "./book-mark.svg";
