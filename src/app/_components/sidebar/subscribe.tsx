@@ -4,6 +4,7 @@ import { useState } from "react";
 import Modal from "../modal";
 import Input from "../input";
 import Button from "../button";
+import { ShortcutIcon } from "assets";
 
 export default function Subscribe() {
   const [isModalOpen, SetIsModalOpen] = useState(false);
@@ -29,10 +30,9 @@ export default function Subscribe() {
         <p className="body1 font-regular">
           실시간 트렌드를 메일로 받아봐요!
           <br />
-          <span className="text-primary-600 flex font-semibold group-hover:underline">
+          <span className="text-primary-600 flex items-center font-semibold group-hover:underline">
             지금 바로 메일로 받아보기
-            {/* // TODO: svgr로 바꾸기 */}
-            <img src="/assets/shortcut.svg" className="ml-0.5" />
+            <ShortcutIcon className="ml-0.5" />
           </span>
         </p>
         <Image
