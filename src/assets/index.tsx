@@ -11,3 +11,4 @@ export { default as BookmarkIcon } from "./bookmark.svg";
 export { default as SimpleIcon } from "./simple.svg";
 export { default as DefaultIcon } from "./default.svg";
 export { default as DetailedIcon } from "./detailed.svg";
+export { default as FontSizeIcon } from "./font-size.svg";
