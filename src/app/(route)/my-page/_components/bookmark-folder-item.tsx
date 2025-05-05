@@ -29,7 +29,18 @@ export default function BookmarkFolderItem({ folder }: FolderItemProps) {
 
   return (
     <div className="hover:bg-primary-50 flex h-24 w-66.5 justify-center gap-3 rounded-lg p-3">
-      <FolderIcon className={cn("h-18 w-18", `text-${color}`)} />
+      <FolderIcon
+        className={cn("h-18 w-18", {
+          "text-surface-orange": color === "surface-orange",
+          "text-surface-red": color === "surface-red",
+          "text-surface-yellow": color === "surface-yellow",
+          "text-surface-green": color === "surface-green",
+          "text-surface-blue": color === "surface-blue",
+          "text-surface-indigo": color === "surface-indigo",
+          "text-surface-purple": color === "surface-purple",
+        })}
+      />
+
       <div className="flex w-39.5 flex-col justify-center gap-0.5">
         <div className="flex justify-between">
           <span className="body1 truncate font-semibold">{name}</span>
