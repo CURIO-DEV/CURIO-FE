@@ -2,18 +2,19 @@ import { FolderIcon } from "assets";
 import { KebabIcon } from "assets";
 import { cn } from "@/utils/cn";
 import { useEffect, useRef, useState } from "react";
+import { colorMap } from "@/constants/color";
 
 interface FolderItemProps {
-  folder: {
-    name: string;
-    collaborators: string[];
-    color: string;
-  };
+  name: string;
+  collaborators: string[];
+  color: string;
 }
 
-export default function BookmarkFolderItem({ folder }: FolderItemProps) {
-  const { name, collaborators, color } = folder;
-
+export default function BookmarkFolderItem({
+  name,
+  collaborators,
+  color,
+}: FolderItemProps) {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const menuRef = useRef<HTMLDivElement | null>(null);
 
@@ -27,19 +28,11 @@ export default function BookmarkFolderItem({ folder }: FolderItemProps) {
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
 
+  console.log(colorMap[color]);
+
   return (
     <div className="hover:bg-primary-50 flex h-24 w-66.5 justify-center gap-3 rounded-lg p-3">
-      <FolderIcon
-        className={cn("h-18 w-18", {
-          "text-surface-orange": color === "surface-orange",
-          "text-surface-red": color === "surface-red",
-          "text-surface-yellow": color === "surface-yellow",
-          "text-surface-green": color === "surface-green",
-          "text-surface-blue": color === "surface-blue",
-          "text-surface-indigo": color === "surface-indigo",
-          "text-surface-purple": color === "surface-purple",
-        })}
-      />
+      <FolderIcon className={cn(colorMap[color], "h-18 w-18")} />
 
       <div className="flex w-39.5 flex-col justify-center gap-0.5">
         <div className="flex justify-between">

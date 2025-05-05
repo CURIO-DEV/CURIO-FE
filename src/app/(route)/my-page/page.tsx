@@ -21,7 +21,7 @@ export default function MyPage() {
           ) : (
             <div className="my-4 flex flex-col gap-3">
               {folders.map((folder) => (
-                <BookmarkFolderItem key={folder.id} folder={folder} />
+                <BookmarkFolderItem key={folder.id} {...folder} />
               ))}
             </div>
           )}
