@@ -7,6 +7,7 @@ export { default as SearchIcon } from "./search.svg";
 export { default as SettingIcon } from "./setting.svg";
 export { default as ShortcutIcon } from "./shortcut.svg";
 export { default as BookmarkIcon } from "./bookmark.svg";
+export { default as LogoHeadIcon } from "./logo-head.svg";
 
 export { default as FolderIcon } from "./folder.svg";
 export { default as KebabIcon } from "./kebab.svg";
@@ -18,3 +19,6 @@ export { default as FontSizeIcon } from "./font-size.svg";
 
 export { default as HeartIcon } from "./heart.svg";
 export { default as ShareIcon } from "./share.svg";
+
+export { default as LikeOutlineIcon } from "./like-outline.svg";
+export { default as LikeFilledIcon } from "./like-filled.svg";
