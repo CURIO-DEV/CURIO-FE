@@ -28,14 +28,18 @@ export default function Detail() {
             정상화 등 난제가 산적해 있다. 마은혁 헌법재판관 임명과 ‘김건희
             상설특검’ 후보자 추천을 재촉하는 야당의 압박도 큰 부담이다.
           </p>
-        </div>
-        <div className="mt-4 flex items-center">
-          <p className="caption1 mr-6 font-medium">
-            이 내용이 마음에 드시나요?
+          <div className="my-0.5 flex items-center">
+            <p className="caption1 mr-6 font-medium">
+              이 내용이 마음에 드시나요?
+            </p>
+            <LikeFilledIcon />
+            <div className="bg-primary-200 mx-2 h-5 w-[0.5px]" />
+            <LikeOutlineIcon />
+          </div>
+          <p className="body1 font-medium">
+            SK㈜ 사내이사 재선임⋯올해도 리밸런싱 김건희 상설특검’ 후보자 마은혁
+            헌법재판관 도널드 트럼프 미국 행정부
           </p>
-          <LikeFilledIcon />
-          <div className="bg-primary-200 mx-2 h-5 w-[0.5px]" />
-          <LikeOutlineIcon />
         </div>
       </div>
     </div>
