@@ -1,5 +1,4 @@
 import Image from "next/image";
-
 import React, { useState } from "react";
 import Button from "../button";
 import { IMAGES_PATH } from "@/constants/images";
