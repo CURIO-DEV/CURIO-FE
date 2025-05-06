@@ -5,11 +5,12 @@ import { SettingIcon } from "assets";
 import { useState } from "react";
 import { IMAGES_PATH } from "@/constants/images";
 import { useRouter } from "next/navigation";
+import { ROUTES } from "@/constants/routes";
 
 export default function MyProfileCard() {
   const router = useRouter();
   const handleClick = () => {
-    //TODO (마이페이지-설정) 파일 필요
+    router.push(ROUTES.SETTING);
   };
   /* TODO 닉네임 API연결 */
   const [nickname] = useState("닉네임");
