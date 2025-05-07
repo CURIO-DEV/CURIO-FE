@@ -2,6 +2,7 @@ import Button from "@/components/button";
 import ArticleCard from "@/components/article";
 import { BookmarkIcon } from "assets";
 import { useEffect, useState } from "react";
+import { articles } from "@/mocks/article-array";
 
 interface BookmarkFolderContentProps {
   folder: {
@@ -11,14 +12,6 @@ interface BookmarkFolderContentProps {
     color: string;
   };
 }
-
-const articles = Array.from({ length: 30 }, (_, i) => ({
-  id: `${i + 1}`,
-  title: `뉴스 기사 ${i + 1}`,
-  summary: `이것은 뉴스 기사 ${i + 1}의 요약입니다.이것은 뉴스 기사 ${i + 1}의 요약입니다.이것은 뉴스 기사 ${i + 1}의 요약입니다.이것은 뉴스 기사 ${i + 1}의 요약입니다.이것은 뉴스 기사 ${i + 1}의 요약입니다.이것은 뉴스 기사 ${i + 1}의 요약입니다.이것은 뉴스 기사 ${i + 1}의 요약입니다.이것은 뉴스 기사 ${i + 1}의 요약입니다.이것은 뉴스 기사 ${i + 1}의 요약입니다.이것은 뉴스 기사 ${i + 1}의 요약입니다.이것은 뉴스 기사 ${i + 1}의 요약입니다.이것은 뉴스 기사 ${i + 1}의 요약입니다.이것은 뉴스 기사 ${i + 1}의 요약입니다.이것은 뉴스 기사 ${i + 1}의 요약입니다.`,
-  imageUrl: "/images/newThums.png",
-  publishedAt: "2025-04-20",
-}));
 
 const defaultSummary =
   "오른쪽 요약하기 버튼을 통해 모아놓은 기사 요약을 확인해보세요.";
