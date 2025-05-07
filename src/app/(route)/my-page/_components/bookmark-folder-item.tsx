@@ -32,14 +32,14 @@ export default function BookmarkFolderItem({
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
 
-  console.log(colorMap[color]);
-
   const handleEdit = () => {
-    //TODO 수정하기 모달
+    // TODO: 모달창 구현
+    console.log("Edit folder:", name);
   };
 
   const handleDelete = () => {
-    // TODO 토스트 UI
+    // TODO: 토스트 메시지
+    console.log("Delete folder:", name);
   };
 
   return (

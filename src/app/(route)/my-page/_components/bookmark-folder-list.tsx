@@ -1,5 +1,3 @@
-"use client";
-
 import BookmarkFolderItem from "./bookmark-folder-item";
 import { mockFolders } from "@/mocks/book-mark-folders";
 
@@ -28,11 +26,9 @@ export default function BookmarkFolderList({
           {folders.map((folder) => (
             <BookmarkFolderItem
               key={folder.id}
-              name={folder.name}
-              collaborators={folder.collaborators}
-              color={folder.color}
-              onClick={() => onFolderClick(folder.id)}
+              {...folder}
               isSelected={folder.id === selectedFolderId}
+              onClick={() => onFolderClick(folder.id)}
             />
           ))}
         </div>
