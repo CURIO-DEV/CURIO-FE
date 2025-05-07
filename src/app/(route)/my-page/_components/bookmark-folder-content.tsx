@@ -1,8 +1,11 @@
+"use client";
+
+import { useEffect, useState } from "react";
 import Button from "@/components/button";
 import ArticleCard from "@/components/article";
 import { BookmarkIcon } from "assets";
-import { useEffect, useState } from "react";
 import { articles } from "@/mocks/article-array";
+import { useBookmarkStore } from "../../../_stores/use-bookmark-store";
 
 interface BookmarkFolderContentProps {
   folder: {
@@ -21,15 +24,17 @@ export default function BookmarkFolderContent({
 }: BookmarkFolderContentProps) {
   const [summary, setSummary] = useState(defaultSummary);
   const [isSummarized, setIsSummarized] = useState(false);
-  const [bookmarkedArticles, setBookmarkedArticles] = useState<Set<string>>(
-    new Set(),
-  );
+
+  const { bookmarkedArticles, toggleBookmark, setInitialBookmarks } =
+    useBookmarkStore();
 
   useEffect(() => {
+    // TODO: API 연동 시 해당 폴더의 북마크 기사 ID들을 fetch해서 대체
+    const bookmarkedIdsForFolder = ["1", "3", "5"];
+    setInitialBookmarks(bookmarkedIdsForFolder);
     setSummary(defaultSummary);
     setIsSummarized(false);
-    setBookmarkedArticles(new Set());
-  }, [folder.id]);
+  }, [folder.id, setInitialBookmarks]);
 
   const handleSummarize = () => {
     const result = "요약된 기사 내용이 여기에 표시됩니다...";
@@ -37,33 +42,25 @@ export default function BookmarkFolderContent({
     setIsSummarized(true);
   };
 
-  const toggleBookmark = (id: string) => {
-    setBookmarkedArticles((prev) => {
-      const newSet = new Set(prev);
-      if (newSet.has(id)) {
-        newSet.delete(id);
-      } else {
-        newSet.add(id);
-      }
-      return newSet;
-    });
-  };
-
   return (
     <div className="flex flex-1 flex-col">
       <div className="flex justify-between">
-        <span className="subtitle1 truncate font-semibold">{folder.name}</span>
+        <p className="subtitle1 truncate font-semibold">{folder.name}</p>
         <Button onClick={handleSummarize} className="subtitle2 font-semibold">
           AI 요약
         </Button>
       </div>
+
       <section className="mt-3 h-35.75 overflow-y-auto rounded-lg border border-gray-200 px-6 py-5">
         <p
-          className={`subtitle2 font-semibold ${isSummarized ? "text-black" : "text-gray-300"}`}
+          className={`subtitle2 font-semibold ${
+            isSummarized ? "text-black" : "text-gray-300"
+          }`}
         >
           {summary}
         </p>
       </section>
+
       <div className="mt-10">
         {articles.map((article) => {
           const isBookmarked = bookmarkedArticles.has(article.id);
@@ -79,7 +76,7 @@ export default function BookmarkFolderContent({
                 <BookmarkIcon
                   className="h-6 w-6"
                   style={{
-                    fill: isBookmarked ? "white" : "var(--color-gray-400)",
+                    fill: isBookmarked ? "var(--color-gray-400)" : "white",
                     stroke: "var(--color-gray-400)",
                   }}
                 />
