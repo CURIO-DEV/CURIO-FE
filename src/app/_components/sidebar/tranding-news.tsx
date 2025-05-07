@@ -33,7 +33,11 @@ export default function TrandingNews() {
           <div className="mt-4.25 flex w-full flex-col">
             <p className="body1 w-48 truncate font-medium">{news.title}</p>
             <div className="caption1 pointer-events-none mt-0.75 flex items-center gap-0.75 font-medium text-gray-200">
-              <HeartIcon width={15} height={15} />
+              <HeartIcon
+                width={15}
+                height={15}
+                style={{ stroke: "var(--gray-400)" }}
+              />
               <span className="w-6">
                 {news.likes > 99 ? "99+" : news.likes}
               </span>
