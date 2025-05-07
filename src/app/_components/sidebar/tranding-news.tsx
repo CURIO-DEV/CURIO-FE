@@ -37,7 +37,10 @@ export default function TrandingNews() {
               <span className="w-6">
                 {news.likes > 99 ? "99+" : news.likes}
               </span>
-              <BookmarkIcon width={15} height={15} />
+              <BookmarkIcon
+                className="h-4 w-4"
+                style={{ stroke: "var(--gray-400)" }}
+              />
               <span className="w-6">
                 {news.clips > 99 ? "99+" : news.clips}
               </span>
