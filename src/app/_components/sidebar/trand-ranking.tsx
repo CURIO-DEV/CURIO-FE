@@ -3,6 +3,7 @@ import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { ROUTES } from "@/constants/routes";
 import { trends } from "@/mocks/trends";
+import { ArrowDownIcon, ArrowUpIcon } from "assets";
 
 export default function TrendRanking() {
   const [isOpen, setIsOpen] = useState(false);
@@ -29,14 +30,9 @@ export default function TrendRanking() {
             {trends[0]}
           </span>
         </div>
-        {/* TODO svgr로 바꾸기*/}
-        <Image
+        <ArrowUpIcon
           onClick={toggleDropdown}
-          className="cursor-pointer"
-          src={isOpen ? "/assets/arrow-up.svg" : "/assets/arrow-down.svg"}
-          alt="toggle"
-          width={24}
-          height={24}
+          className={`${isOpen ? "" : "rotate-180"}`}
         />
       </div>
 

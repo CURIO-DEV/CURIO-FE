@@ -24,7 +24,11 @@ export default function Button({
   return (
     <button
       type="button"
-      className={cn("rounded-lg px-10 py-1.5", buttonStyles, className)}
+      className={cn(
+        "hover:bg-primary-500 rounded-lg px-10 py-1.5",
+        buttonStyles,
+        className,
+      )}
       {...props}
     >
       {children}

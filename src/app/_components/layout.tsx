@@ -3,10 +3,15 @@
 import { usePathname } from "next/navigation";
 import Sidebar from "./sidebar";
 import Header from "./header";
+import { ROUTES } from "@/constants/routes";
 
 export default function Layout({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
-  const showSidebar = ["/", "/home", "/detail", "/search"].includes(pathname);
+  const showSidebar =
+    pathname === "/" ||
+    pathname === ROUTES.HOME ||
+    pathname === ROUTES.SEARCH ||
+    pathname.startsWith(ROUTES.DETAIL);
 
   return (
     <div className="flex min-h-screen flex-col justify-center">
