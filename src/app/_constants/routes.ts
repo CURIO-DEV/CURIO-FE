@@ -4,4 +4,5 @@ export const ROUTES = {
   LOGIN: "/login",
   DETAIL: "/detail",
   SEARCH: "/search",
+  DELETE_ACCOUNT: "/delete-account",
 };
