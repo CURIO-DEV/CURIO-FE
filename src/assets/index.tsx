@@ -21,3 +21,6 @@ export { default as ShareIcon } from "./share.svg";
 
 export { default as LikeOutlineIcon } from "./like-outline.svg";
 export { default as LikeFilledIcon } from "./like-filled.svg";
+
+export { default as KakaoIcon } from "./kakao.svg";
+export { default as GoogleIcon } from "./google.svg";
