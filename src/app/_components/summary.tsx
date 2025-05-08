@@ -1,3 +1,5 @@
+"use client";
+
 import { DefaultIcon, DetailedIcon, SimpleIcon } from "assets";
 import OptionSelector from "./option-selector";
 import { useState } from "react";
@@ -19,7 +21,7 @@ export default function Summary({ rootClassName }: SummaryProps) {
       type="SIDEBAR"
       label="옵션"
       className="flex justify-between px-5"
-      rootClassName={(cn("mt-4 mb-8"), rootClassName)}
+      rootClassName={cn("mt-4 mb-8", rootClassName)}
     >
       {iconList.map((Icon, index) => (
         <button
