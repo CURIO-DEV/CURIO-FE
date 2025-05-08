@@ -1,8 +1,13 @@
 import { DefaultIcon, DetailedIcon, SimpleIcon } from "assets";
 import OptionSelector from "./option-selector";
 import { useState } from "react";
+import { cn } from "@/utils/cn";
 
-export default function Summary() {
+interface SummaryProps {
+  rootClassName?: string;
+}
+
+export default function Summary({ rootClassName }: SummaryProps) {
   const iconList = [SimpleIcon, DefaultIcon, DetailedIcon];
   const [selectedIndex, setSelectedIndex] = useState<number | null>(1);
 
@@ -14,7 +19,7 @@ export default function Summary() {
       type="SIDEBAR"
       label="옵션"
       className="flex justify-between px-5"
-      rootClassName="mt-4 mb-8"
+      rootClassName={(cn("mt-4 mb-8"), rootClassName)}
     >
       {iconList.map((Icon, index) => (
         <button

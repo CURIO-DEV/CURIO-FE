@@ -1,8 +1,13 @@
 import { useState } from "react";
 import OptionSelector from "./option-selector";
 import { FontSizeIcon } from "assets";
+import { cn } from "@/utils/cn";
 
-export default function FontSize() {
+interface FontSizeProps {
+  rootClassName?: string;
+}
+
+export default function FontSize({ rootClassName }: FontSizeProps) {
   const fontSizes = [12, 24, 32];
   const [selectedFontIndex, setSelectedFontIndex] = useState<number | null>(1);
 
@@ -13,7 +18,7 @@ export default function FontSize() {
     <OptionSelector
       type="SIDEBAR"
       label="글자크기"
-      rootClassName="mt-13.5"
+      rootClassName={(cn("mt-13.5"), rootClassName)}
       className="relative px-11.5"
     >
       <div className="flex w-full items-center justify-between">
