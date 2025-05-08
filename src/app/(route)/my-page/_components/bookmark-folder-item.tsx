@@ -8,12 +8,16 @@ interface FolderItemProps {
   name: string;
   collaborators: string[];
   color: string;
+  onClick: () => void;
+  isSelected: boolean;
 }
 
 export default function BookmarkFolderItem({
   name,
   collaborators,
   color,
+  onClick,
+  isSelected,
 }: FolderItemProps) {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const menuRef = useRef<HTMLDivElement | null>(null);
@@ -28,13 +32,27 @@ export default function BookmarkFolderItem({
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
 
-  console.log(colorMap[color]);
+  const handleEdit = () => {
+    // TODO: 모달창 구현
+    console.log("Edit folder:", name);
+  };
+
+  const handleDelete = () => {
+    // TODO: 토스트 메시지
+    console.log("Delete folder:", name);
+  };
 
   return (
-    <div className="hover:bg-primary-50 flex h-24 w-66.5 justify-center gap-3 rounded-lg p-3">
+    <div
+      className={cn(
+        "flex h-24 w-66.5 cursor-pointer justify-center gap-3 rounded-lg p-3",
+        isSelected ? "bg-primary-50" : "hover:bg-primary-50",
+      )}
+      onClick={onClick}
+    >
       <FolderIcon className={cn(colorMap[color], "h-18 w-18")} />
 
-      <div className="flex w-39.5 flex-col justify-center gap-0.5">
+      <div className="mt-3.5 flex w-39.5 flex-col justify-start gap-0.5">
         <div className="flex justify-between">
           <span className="body1 truncate font-semibold">{name}</span>
           <div className="relative" ref={menuRef}>
@@ -44,11 +62,17 @@ export default function BookmarkFolderItem({
 
             {isMenuOpen && (
               <div className="caption1 absolute -top-6 left-11 z-10 flex h-17.75 w-25.25 flex-col items-center rounded-lg border-[0.5px] border-gray-400 bg-white font-medium">
-                <button className="h-full w-full rounded-t-lg hover:bg-gray-50">
+                <button
+                  onClick={handleEdit}
+                  className="h-full w-full rounded-t-lg hover:bg-gray-50"
+                >
                   수정하기
                 </button>
                 <hr className="w-17.25 border-gray-400" />
-                <button className="h-full w-full rounded-b-lg hover:bg-gray-50">
+                <button
+                  onClick={handleDelete}
+                  className="h-full w-full rounded-b-lg hover:bg-gray-50"
+                >
                   삭제하기
                 </button>
               </div>

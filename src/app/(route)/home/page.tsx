@@ -8,6 +8,7 @@ import Chip from "./_components/chip";
 import { CATEGORIES, DEFAULT_CATEGORIES } from "@/constants/categories";
 import ArticleCard from "@/components/article";
 import { EditIcon } from "assets";
+import { articles } from "@/mocks/article-array";
 
 export default function Home() {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -46,14 +47,6 @@ export default function Home() {
       }
     });
   };
-
-  const articles = Array.from({ length: 5 }, (_, i) => ({
-    id: `${i + 1}`,
-    title: `뉴스 기사 ${i + 1}`,
-    summary: `이것은 뉴스 기사 ${i + 1}의 요약입니다.이것은 뉴스 기사 ${i + 1}의 요약입니다.이것은 뉴스 기사 ${i + 1}의 요약입니다.이것은 뉴스 기사 ${i + 1}의 요약입니다.이것은 뉴스 기사 ${i + 1}의 요약입니다.이것은 뉴스 기사 ${i + 1}의 요약입니다.이것은 뉴스 기사 ${i + 1}의 요약입니다.이것은 뉴스 기사 ${i + 1}의 요약입니다.이것은 뉴스 기사 ${i + 1}의 요약입니다.이것은 뉴스 기사 ${i + 1}의 요약입니다.이것은 뉴스 기사 ${i + 1}의 요약입니다.이것은 뉴스 기사 ${i + 1}의 요약입니다.이것은 뉴스 기사 ${i + 1}의 요약입니다.이것은 뉴스 기사 ${i + 1}의 요약입니다.`,
-    imageUrl: "/images/newThums.png",
-    publishedAt: "2025-04-20",
-  }));
 
   return (
     <div className="mt-6 flex flex-col gap-6 pr-10">
