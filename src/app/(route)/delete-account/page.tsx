@@ -35,7 +35,6 @@ export default function DeleteAccount() {
 
   return (
     <div className="flex justify-center">
-      {/*탈퇴공간*/}
       <div className="mt-10 rounded-xl border border-gray-300 px-8 pb-8">
         <div className="mt-6 flex h-14.25 border-b border-gray-200">
           <span className="subtitle1 mt-2.25 font-semibold">회원탈퇴</span>
