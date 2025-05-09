@@ -6,9 +6,9 @@ import { FolderIcon } from "assets";
 import { cn } from "@/utils/cn";
 import { colorMap } from "@/constants/color";
 import Modal from "@/components/modal";
-import Button from "../../../_components/button";
+import Button from "@/components/button";
 
-export default function BookmarFolderModal() {
+export default function FolderModal() {
   const { isFolderModalOpen, closeFolderModal } = useBookmarkStore();
   const handleNew = () => {};
   const handleSave = () => {

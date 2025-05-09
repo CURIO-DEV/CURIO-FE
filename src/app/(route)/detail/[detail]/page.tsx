@@ -1,13 +1,13 @@
 import Image from "next/image";
 import ActionBar from "../_components/action-bar";
-import BookmarkFolderModal from "../_components/bookmark-folder-modal";
+import FolderModal from "../_components/folder-modal";
 import { LikeFilledIcon, LikeOutlineIcon, LogoHeadIcon } from "assets";
 
 export default function Detail() {
   return (
     <div className="mt-12 mb-10">
       <ActionBar />
-      <BookmarkFolderModal />
+      <FolderModal />
       <div className="mr-14 ml-35.5">
         <h1 className="heading2 font-semibold">
           “급한 일부터 산불 챙긴 韓… ‘통상 전쟁’도 발등의 불🔥
