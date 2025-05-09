@@ -1,22 +1,17 @@
 "use client";
 
-import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { ROUTES } from "@/constants/routes";
 import Button from "@/components/button";
+import { exitReasons } from "@/constants/exit-reasons";
+import { useEffect, useRef, useState } from "react";
 
 export default function DeleteAccount() {
   const [selectedReason, setSelectedReason] = useState("");
   const [customReason, setCustomReason] = useState("");
 
+  const textareaRef = useRef<HTMLTextAreaElement>(null);
   const router = useRouter();
-
-  const reasons = [
-    { label: "사용하지 않아서", value: "not_used" },
-    { label: "서비스에 만족하지 못해서", value: "not_satisfied" },
-    { label: "개인정보 보호 우려", value: "privacy_concern" },
-    { label: "기타 (직접입력)", value: "other" },
-  ];
 
   const handleCancel = () => {
     router.push(ROUTES.HOME);
@@ -24,14 +19,19 @@ export default function DeleteAccount() {
 
   const handleUnsubscribe = () => {
     if (selectedReason === "other" && !customReason.trim()) {
-      alert("사유를 입력해주세요.");
-      return;
+      //TODO : 토스트로 처리
     }
 
     // TODO : 여기에 탈퇴 처리 로직 추가
     console.log("탈퇴 처리", selectedReason, customReason);
     // TODO : 토스트 - 탈퇴완료메시지 -> 홈으로 이동?
   };
+
+  useEffect(() => {
+    if (selectedReason === "other") {
+      textareaRef.current?.focus();
+    }
+  }, [selectedReason]);
 
   return (
     <div className="flex justify-center">
@@ -53,7 +53,7 @@ export default function DeleteAccount() {
           탈퇴하시는 이유를 알려주세요.
         </p>
         <div>
-          {reasons.map((reason) => {
+          {exitReasons.map((reason) => {
             const isSelected = selectedReason === reason.value;
             return (
               <div
@@ -83,6 +83,7 @@ export default function DeleteAccount() {
         </div>
 
         <textarea
+          ref={textareaRef}
           className="body1 placeholder:body1 h-28.5 w-150 resize-none rounded-md border border-gray-200 px-4 py-2.5 font-semibold placeholder:font-semibold placeholder:text-gray-200"
           placeholder="입력해주세요"
           value={customReason}
