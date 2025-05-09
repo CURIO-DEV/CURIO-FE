@@ -4,6 +4,10 @@ interface BookmarkStore {
   bookmarkedArticles: Set<string>;
   toggleBookmark: (id: string) => void;
   setInitialBookmarks: (ids: string[]) => void;
+
+  isFolderModalOpen: boolean;
+  openFolderModal: () => void;
+  closeFolderModal: () => void;
 }
 
 export const useBookmarkStore = create<BookmarkStore>((set) => ({
@@ -18,4 +22,8 @@ export const useBookmarkStore = create<BookmarkStore>((set) => ({
 
   setInitialBookmarks: (ids: string[]) =>
     set({ bookmarkedArticles: new Set(ids) }),
+
+  isFolderModalOpen: false,
+  openFolderModal: () => set({ isFolderModalOpen: true }),
+  closeFolderModal: () => set({ isFolderModalOpen: false }),
 }));

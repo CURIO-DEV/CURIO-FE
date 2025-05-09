@@ -2,10 +2,12 @@
 
 import { BookmarkIcon, HeartIcon, ShareIcon } from "assets";
 import { useState } from "react";
+import { useBookmarkStore } from "../../../_stores/use-bookmark-store";
 
 export default function ActionBar() {
   const [liked, setLiked] = useState(false);
   const [bookmarked, setBookmarked] = useState(false);
+  const { openFolderModal } = useBookmarkStore();
 
   const handleLiked = () => {
     setLiked(!liked);
@@ -20,7 +22,13 @@ export default function ActionBar() {
         className={`${liked === true ? "text-primary-600" : "text-transparent"}`}
       />
       <BookmarkIcon
-        onClick={handleBookmarked}
+        onClick={() => {
+          handleBookmarked();
+          {
+            //TODO - API 연결 시 - 북마크 취소 토스트
+            bookmarked ? null : openFolderModal();
+          }
+        }}
         className={`${bookmarked === true ? "text-primary-600" : "text-transparent"}`}
       />
       <ShareIcon />
