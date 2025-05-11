@@ -3,7 +3,7 @@
 import { useRouter } from "next/navigation";
 import { ROUTES } from "@/constants/routes";
 import Button from "@/components/button";
-import { exitReasons } from "@/constants/exit-reasons";
+import { Exit_Reasons } from "@/constants/exit-reasons";
 import { useEffect, useRef, useState } from "react";
 
 export default function DeleteAccount() {
@@ -53,7 +53,7 @@ export default function DeleteAccount() {
           탈퇴하시는 이유를 알려주세요.
         </p>
         <div>
-          {exitReasons.map((reason) => {
+          {Exit_Reasons.map((reason) => {
             const isSelected = selectedReason === reason.value;
             return (
               <div
