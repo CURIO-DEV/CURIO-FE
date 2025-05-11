@@ -5,6 +5,7 @@ import MyProfileCard from "./_components/my-profile-card";
 import BookmarkFolderList from "./_components/bookmark-folder-list";
 import BookmarkFolderContent from "./_components/bookmark-folder-content";
 import { mockFolders } from "@/mocks/book-mark-folders";
+import FolderEditModal from "./_components/folder-edit-modal";
 
 export default function MyPage() {
   const [selectedFolderId, setSelectedFolderId] = useState<number | null>(null);
@@ -20,6 +21,7 @@ export default function MyPage() {
           selectedFolderId={selectedFolderId}
           onFolderClick={setSelectedFolderId}
         />
+        <FolderEditModal />
       </div>
 
       {selectedFolder ? (

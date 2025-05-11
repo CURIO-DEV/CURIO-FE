@@ -3,6 +3,7 @@ import { KebabIcon } from "assets";
 import { cn } from "@/utils/cn";
 import { useEffect, useRef, useState } from "react";
 import { colorMap } from "@/constants/color";
+import { useBookmarkStore } from "@/stores/use-bookmark-store";
 
 interface FolderItemProps {
   name: string;
@@ -32,9 +33,10 @@ export default function BookmarkFolderItem({
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
 
+  const { openFolderEditModal, setShouldReturnToFolderModal } =
+    useBookmarkStore();
   const handleEdit = () => {
-    // TODO: 모달창 구현
-    console.log("Edit folder:", name);
+    openFolderEditModal("edit");
   };
 
   const handleDelete = () => {
