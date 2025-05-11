@@ -1,7 +1,7 @@
 "use client";
 
-import { mockFolders } from "../../../_mocks/book-mark-folders";
-import { useBookmarkStore } from "../../../_stores/use-bookmark-store";
+import { useBookmarkStore } from "@/stores/use-bookmark-store";
+import { mockFolders } from "@/mocks/book-mark-folders";
 import { FolderIcon } from "assets";
 import { cn } from "@/utils/cn";
 import { colorMap } from "@/constants/color";
@@ -9,10 +9,22 @@ import Modal from "@/components/modal";
 import Button from "@/components/button";
 
 export default function FolderModal() {
-  const { isFolderModalOpen, closeFolderModal } = useBookmarkStore();
-  const handleNew = () => {};
+  const {
+    isFolderModalOpen,
+    closeFolderModal,
+    openFolderEditModal,
+    setShouldReturnToFolderModal,
+    folders,
+  } = useBookmarkStore();
+
+  const handleNew = () => {
+    setShouldReturnToFolderModal(true);
+    openFolderEditModal("create");
+    closeFolderModal();
+  };
+
   const handleSave = () => {
-    //TODO : 토스트 이벤트 - 저장되었습니다.
+    // TODO: 저장 토스트
     closeFolderModal();
   };
 
