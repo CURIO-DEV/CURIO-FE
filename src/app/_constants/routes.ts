@@ -6,4 +6,5 @@ export const ROUTES = {
   SEARCH: "/search",
   SETTING: "/setting",
   DELETE_ACCOUNT: "/delete-account",
+  SNACK_NEWS: "/snack-news",
 };
