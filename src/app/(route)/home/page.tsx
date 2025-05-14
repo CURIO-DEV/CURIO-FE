@@ -16,10 +16,6 @@ export default function Home() {
     useState<string[]>(DEFAULT_CATEGORIES);
   const [categories, setCategories] = useState<string[]>(DEFAULT_CATEGORIES);
 
-  const handleClick = () => {
-    // TODO: 페이지 전환
-  };
-
   const handleEdit = () => {
     setIsModalOpen(true);
   };
@@ -50,7 +46,7 @@ export default function Home() {
 
   return (
     <div className="mt-6 flex flex-col gap-6 pr-10">
-      <Banner onClick={handleClick} />
+      <Banner />
       <div className="flex justify-between border-t border-b border-gray-200 py-4 pr-4.5 pl-18">
         <div className="grid w-full grid-cols-4">
           {categories.map((item, index) => (
