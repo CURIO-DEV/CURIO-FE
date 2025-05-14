@@ -18,7 +18,7 @@ export default function Index() {
           key={index}
           className="absolute top-[-34.5px]"
           style={{
-            left: `${-35.5 + 74 * index + 42}px`,
+            left: `${-35.5 + 74 * index + 45}px`,
             zIndex: activeIndex === index ? 100 : 10 - index,
           }}
           onClick={() => setActiveIndex(index)}

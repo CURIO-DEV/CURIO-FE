@@ -21,12 +21,22 @@ export default function Detail() {
               Curi가 N개의 기사를 요약했습니다.
             </p>
           </div>
-          <Image src="/images/image.png" width={742} height={523} alt="image" />
-          <p className="subtitle1 font-medium">
-            한 권한대행 앞에는 통상 압박 수위를 높이고 있는 도널드 트럼프 미국
-            행정부와의 관계 개선 및 통상전쟁 피해 최소화, 국내 경기 회복, 의대
-            정상화 등 난제가 산적해 있다. 마은혁 헌법재판관 임명과 ‘김건희
-            상설특검’ 후보자 추천을 재촉하는 야당의 압박도 큰 부담이다.
+          <Image
+            src="/images/image.png"
+            width={742}
+            height={523}
+            alt="image"
+            className="w-full object-cover"
+          />
+          <p className="subtitle2 mt-4">
+            돈을 받고 본인 명의의 선불 유심을 개통해 타인에게 제공한 행위가
+            전기통신사업법 위반으로 대법원 판결되었다. 대법원은 유씨에 대한 무죄
+            선고를 파기하고 사건을 대전지법으로 돌려보냈다. 유씨는 선불 유심
+            9개를 개통하고 그 대가로 2만∼3만원을 받았으며, 이는 전기통신사업법에
+            위반된다고 판단되었다. 대법원은 유씨가 타인에게 제공될 것을 알면서
+            행위한 가능성을 고려하여 유씨를 유죄로 판단하였다. 결론적으로 원심은
+            고의에 관한 법리를 오해하여 유씨에 대한 무죄 판결이 오류가 있었다고
+            판단했다.
           </p>
           <div className="my-0.5 flex items-center">
             <p className="caption1 mr-6 font-medium">
