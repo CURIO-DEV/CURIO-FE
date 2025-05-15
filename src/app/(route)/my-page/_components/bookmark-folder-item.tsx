@@ -3,7 +3,7 @@ import { KebabIcon } from "assets";
 import { cn } from "@/utils/cn";
 import { useEffect, useRef, useState } from "react";
 import { colorMap } from "@/constants/color";
-import { useBookmarkStore } from "@/stores/use-bookmark-store";
+import FolderEditModal from "./folder-edit-modal";
 
 interface FolderItemProps {
   name: string;
@@ -32,16 +32,16 @@ export default function BookmarkFolderItem({
     document.addEventListener("mousedown", handleClickOutside);
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
+  const [isUpsertModalOpen, setIsUpsertModalOpen] = useState(false);
 
-  const { openFolderEditModal, setShouldReturnToFolderModal } =
-    useBookmarkStore();
   const handleEdit = () => {
-    openFolderEditModal("edit");
+    setIsMenuOpen(false);
+    setIsUpsertModalOpen(true);
+    //TODO : 토스트 메시지 - 저장
   };
 
   const handleDelete = () => {
-    // TODO: 토스트 메시지
-    console.log("Delete folder:", name);
+    // TODO: 토스트 메시지 - 삭제
   };
 
   return (
@@ -78,6 +78,14 @@ export default function BookmarkFolderItem({
                   삭제하기
                 </button>
               </div>
+            )}
+            {isUpsertModalOpen && (
+              <FolderEditModal
+                onClick={() => {
+                  setIsUpsertModalOpen(false);
+                }}
+                mode="edit"
+              />
             )}
           </div>
         </div>

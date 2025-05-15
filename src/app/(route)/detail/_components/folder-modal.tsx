@@ -1,6 +1,5 @@
 "use client";
 
-import { useBookmarkStore } from "@/stores/use-bookmark-store";
 import { mockFolders } from "@/mocks/book-mark-folders";
 import { FolderIcon } from "assets";
 import { cn } from "@/utils/cn";
@@ -8,30 +7,26 @@ import { colorMap } from "@/constants/color";
 import Modal from "@/components/modal";
 import Button from "@/components/button";
 
-export default function FolderModal() {
-  const {
-    isFolderModalOpen,
-    closeFolderModal,
-    openFolderEditModal,
-    setShouldReturnToFolderModal,
-    folders,
-  } = useBookmarkStore();
+interface FolderModalProps {
+  onClick: () => void;
+  onCreateNewFolder: () => void;
+}
 
+export default function FolderModal({
+  onClick,
+  onCreateNewFolder,
+}: FolderModalProps) {
   const handleNew = () => {
-    setShouldReturnToFolderModal(true);
-    openFolderEditModal("create");
-    closeFolderModal();
+    onCreateNewFolder();
   };
 
   const handleSave = () => {
     // TODO: 저장 토스트
-    closeFolderModal();
+    onClick();
   };
 
-  if (!isFolderModalOpen) return null;
-
   return (
-    <Modal title="폴더 선택하기" onClick={closeFolderModal}>
+    <Modal title="폴더 선택하기" onClick={onClick}>
       <div className="mt-15 grid max-h-55.5 grid-cols-4 gap-x-6 gap-y-2.25 overflow-y-auto">
         {mockFolders.map((folder) => (
           <div key={folder.id} className="hover:bg-primary-50 rounded-md">

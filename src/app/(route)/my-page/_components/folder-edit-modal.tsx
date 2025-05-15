@@ -1,7 +1,6 @@
 "use client";
 
 import { useState } from "react";
-import { useBookmarkStore } from "@/stores/use-bookmark-store";
 import {
   FolderNameIcon,
   CoAutherIcon,
@@ -16,37 +15,24 @@ import Modal from "@/components/modal";
 import Button from "@/components/button";
 import { cn } from "@/utils/cn";
 
-export default function FolderEditModal() {
-  const {
-    isFolderEditModalOpen,
-    closeFolderEditModal,
-    folderEditMode,
-    addFolder,
-    shouldReturnToFolderModal,
-    setShouldReturnToFolderModal,
-    openFolderModal,
-  } = useBookmarkStore();
-
+interface FolderEditModalProps {
+  onClick: () => void;
+  mode: "create" | "edit";
+}
+export default function FolderEditModal({
+  onClick,
+  mode,
+}: FolderEditModalProps) {
   const [name, setName] = useState("");
-  const [color, setColor] = useState("blue");
+  const [color, setColor] = useState("red");
   const [members, setMembers] = useState<string[]>([]);
   const [inputValue, setInputValue] = useState("");
 
   const handleSave = () => {
-    const newFolder = {
-      id: Date.now(), // 임시 ID
-      name,
-      color,
-      members,
-    };
-    addFolder(newFolder);
-    closeFolderEditModal();
-
-    if (folderEditMode === "create" && shouldReturnToFolderModal) {
-      openFolderModal();
-      setShouldReturnToFolderModal(false);
-    }
+    onClick();
+    // TODO : 저장토스트
   };
+
   const MAX_MEMBERS = 3;
   const [limitReached, setLimitReached] = useState(false);
 
@@ -75,12 +61,10 @@ export default function FolderEditModal() {
     }
   };
 
-  if (!isFolderEditModalOpen) return null;
-
   return (
     <Modal
-      title={folderEditMode === "create" ? "폴더 추가하기" : "폴더 수정하기"}
-      onClick={closeFolderEditModal}
+      title={mode === "create" ? "폴더 추가하기" : "폴더 수정하기"}
+      onClick={onClick}
     >
       <div className="mt-8 flex w-80 flex-col gap-4">
         <div className="flex flex-col gap-2">
@@ -147,7 +131,7 @@ export default function FolderEditModal() {
               {members.map((email) => (
                 <div
                   key={email}
-                  className="bg-primary-100 flex items-center gap-2.5 rounded-xs px-1 py-[2px]"
+                  className="bg-primary-100 flex items-center gap-2.5 rounded-xs px-1 py-0.5"
                 >
                   <span className="caption2 text-primary-600">{email}</span>
                   <MemberDelIcon
