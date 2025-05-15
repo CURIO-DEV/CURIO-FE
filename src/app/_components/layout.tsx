@@ -11,6 +11,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
     pathname === "/" ||
     pathname === ROUTES.HOME ||
     pathname === ROUTES.SEARCH ||
+    pathname === ROUTES.SNACK_NEWS ||
     pathname.startsWith(ROUTES.DETAIL);
 
   return (
