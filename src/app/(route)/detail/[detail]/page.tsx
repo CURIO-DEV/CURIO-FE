@@ -4,7 +4,7 @@ import Image from "next/image";
 import ActionBar from "../_components/action-bar";
 import FolderModal from "../_components/folder-modal";
 import { LikeFilledIcon, LikeOutlineIcon, LogoHeadIcon } from "assets";
-import FolderEditModal from "app/(route)/my-page/_components/folder-edit-modal";
+import FolderEditModal from "app/(route)/my-page/_components/folder-upsert-modal";
 import { useState } from "react";
 
 export default function Detail() {

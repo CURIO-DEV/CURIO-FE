@@ -3,7 +3,7 @@ import { KebabIcon } from "assets";
 import { cn } from "@/utils/cn";
 import { useEffect, useRef, useState } from "react";
 import { colorMap } from "@/constants/color";
-import FolderEditModal from "./folder-edit-modal";
+import FolderUpsertModal from "./folder-upsert-modal";
 
 interface FolderItemProps {
   name: string;
@@ -80,7 +80,7 @@ export default function BookmarkFolderItem({
               </div>
             )}
             {isUpsertModalOpen && (
-              <FolderEditModal
+              <FolderUpsertModal
                 onClick={() => {
                   setIsUpsertModalOpen(false);
                 }}

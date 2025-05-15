@@ -15,14 +15,14 @@ import Modal from "@/components/modal";
 import Button from "@/components/button";
 import { cn } from "@/utils/cn";
 
-interface FolderEditModalProps {
+interface FolderUpsertModalProps {
   onClick: () => void;
   mode: "create" | "edit";
 }
-export default function FolderEditModal({
+export default function FolderUpsertModal({
   onClick,
   mode,
-}: FolderEditModalProps) {
+}: FolderUpsertModalProps) {
   const [name, setName] = useState("");
   const [color, setColor] = useState("red");
   const [members, setMembers] = useState<string[]>([]);

@@ -3,7 +3,7 @@
 import { BookmarkIcon, HeartIcon, ShareIcon } from "assets";
 import { useState } from "react";
 import FolderModal from "./folder-modal";
-import FolderEditModal from "app/(route)/my-page/_components/folder-edit-modal";
+import FolderUpsertModal from "app/(route)/my-page/_components/folder-upsert-modal";
 
 export default function ActionBar() {
   const [liked, setLiked] = useState(false);
@@ -23,16 +23,6 @@ export default function ActionBar() {
       //TODO : 토스트 이벤트 -북마크 취소
     }
   };
-
-  const handleFolderClose = () => {
-    setIsFolderModalOpen(false);
-  };
-
-  const handleFolderOpen = () => {
-    if (bookmarked === true) {
-      setIsFolderModalOpen(true);
-    }
-  };
   return (
     <>
       <div className="fixed top-1/2 flex w-17.5 -translate-y-1/2 flex-col gap-4.5 rounded-3xl bg-gray-50 px-4.25 py-8.25">
@@ -41,13 +31,6 @@ export default function ActionBar() {
           className={`${liked === true ? "text-primary-600" : "text-transparent"}`}
         />
         <BookmarkIcon
-          // onClick={() => {
-          //   handleBookmarked();
-          //   {
-          //     //TODO - API 연결 시 - 북마크 취소 토스트
-          //     bookmarked ? null : openFolderModal();
-          //   }
-          // }}
           onClick={handleBookmarked}
           className={`${bookmarked === true ? "text-primary-600" : "text-transparent"}`}
         />
@@ -63,7 +46,7 @@ export default function ActionBar() {
         />
       )}
       {isUpsertModalOpen && (
-        <FolderEditModal
+        <FolderUpsertModal
           onClick={() => {
             setIsUpsertModalOpen(false);
             setIsFolderModalOpen(true);
