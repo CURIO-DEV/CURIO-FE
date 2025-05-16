@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useCallback, useState } from "react";
 import MyProfileCard from "./_components/my-profile-card";
 import BookmarkFolderList from "./_components/bookmark-folder-list";
 import BookmarkFolderContent from "./_components/bookmark-folder-content";
@@ -24,9 +24,9 @@ export default function MyPage() {
     });
   };
 
-  const setInitialBookmarks = (ids: string[]) => {
+  const setInitialBookmarks = useCallback((ids: string[]) => {
     setBookmarkedArticles(new Set(ids));
-  };
+  }, []);
 
   const folders = mockFolders;
   const selectedFolder = folders.find((f) => f.id === selectedFolderId);

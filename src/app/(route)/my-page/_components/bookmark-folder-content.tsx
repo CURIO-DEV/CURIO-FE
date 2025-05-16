@@ -36,7 +36,7 @@ export default function BookmarkFolderContent({
     setInitialBookmarks(bookmarkedIdsForFolder);
     setSummary(defaultSummary);
     setIsSummarized(false);
-  }, [folder.id, setInitialBookmarks]);
+  }, [folder.id]);
 
   const handleSummarize = () => {
     const result = "요약된 기사 내용이 여기에 표시됩니다...";
