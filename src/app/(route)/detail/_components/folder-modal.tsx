@@ -3,7 +3,7 @@
 import { mockFolders } from "@/mocks/book-mark-folders";
 import { FolderIcon } from "assets";
 import { cn } from "@/utils/cn";
-import { colorMap } from "@/constants/color";
+import { colorMap, ColorKey } from "@/constants/color";
 import Modal from "@/components/modal";
 import Button from "@/components/button";
 
@@ -30,7 +30,12 @@ export default function FolderModal({
       <div className="mt-15 grid max-h-55.5 grid-cols-4 gap-x-6 gap-y-2.25 overflow-y-auto">
         {mockFolders.map((folder) => (
           <div key={folder.id} className="hover:bg-primary-50 rounded-md">
-            <FolderIcon className={cn(colorMap[folder.color], "h-18 w-18")} />
+            <FolderIcon
+              className={cn(
+                colorMap[folder.color as ColorKey].text,
+                "h-18 w-18",
+              )}
+            />
             <p className="caption1 line-clamp-2 h-9 w-16.5 text-center font-medium">
               {folder.name}
             </p>

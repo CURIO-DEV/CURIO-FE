@@ -9,7 +9,7 @@ import {
   CheckIcon,
   MemberDelIcon,
 } from "assets";
-import { bgColorMap } from "@/constants/bg-color";
+import { ColorKey, colorMap } from "@/constants/color";
 import Input from "@/components/input";
 import Modal from "@/components/modal";
 import Button from "@/components/button";
@@ -24,7 +24,7 @@ export default function FolderUpsertModal({
   mode,
 }: FolderUpsertModalProps) {
   const [name, setName] = useState("");
-  const [color, setColor] = useState("red");
+  const [color, setColor] = useState<ColorKey>("red");
   const [members, setMembers] = useState<string[]>([]);
   const [inputValue, setInputValue] = useState("");
 
@@ -86,16 +86,16 @@ export default function FolderUpsertModal({
             <span className="body1 font-semibold">폴더색상</span>
           </div>
           <div className="flex gap-2">
-            {Object.keys(bgColorMap).map((c) => (
+            {(Object.keys(colorMap) as ColorKey[]).map((colorKey) => (
               <div
-                key={c}
-                onClick={() => setColor(c)}
+                key={colorKey}
+                onClick={() => setColor(colorKey)}
                 className={cn(
                   "relative h-6.25 w-6.25 cursor-pointer rounded",
-                  bgColorMap[c],
+                  colorMap[colorKey].bg,
                 )}
               >
-                {color === c && (
+                {color === colorKey && (
                   <span className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2">
                     <CheckIcon />
                   </span>

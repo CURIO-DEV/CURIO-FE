@@ -2,24 +2,13 @@
 
 import Image from "next/image";
 import ActionBar from "../_components/action-bar";
-import FolderModal from "../_components/folder-modal";
 import { LikeFilledIcon, LikeOutlineIcon, LogoHeadIcon } from "assets";
-import FolderEditModal from "app/(route)/my-page/_components/folder-upsert-modal";
-import { useState } from "react";
 
 export default function Detail() {
-  // const [isFolderModalOpen, setIsFolderModalOpen] = useState(false);
-  // const [isUpsertModalOpen, setIsUpsertModalOpen] = useState(false);
-
-  const handleFolderClose = () => {
-    // setIsFolderModalOpen(false);
-  };
   return (
     <>
       <div className="mt-12 mb-10">
         <ActionBar />
-        {/* {isFolderModalOpen && <FolderModal onClick={handleFolderClose} />}
-      {isUpsertModalOpen && <FolderEditModal />} */}
         <div className="mr-14 ml-35.5">
           <h1 className="heading2 font-semibold">
             “급한 일부터 산불 챙긴 韓… ‘통상 전쟁’도 발등의 불🔥
