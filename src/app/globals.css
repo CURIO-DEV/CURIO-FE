@@ -5,6 +5,7 @@
 :root {
   --font-pretendard: Pretendard, sans-serif;
   --font-carter: "Carter One", cursive;
+  --font-roboto: Roboto, sans-serif;
   --radius: 0.625rem;
   --background: oklch(1 0 0);
   --foreground: oklch(0.145 0 0);
@@ -72,6 +73,7 @@
 
   --font-pretendard: var(--font-pretendard);
   --font-carter: var(--font-carter);
+  --font-roboto: var(--font-roboto);
 
   --font-regular: 400;
 }
