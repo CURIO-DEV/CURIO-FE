@@ -18,7 +18,9 @@ export default function Login() {
         </button>
         <button className="subtitle2 mt-5 flex h-15 w-75 items-center rounded-[12px] bg-[#FEE500] px-4">
           <KakaoSimbol className="h-7" />
-          <div className="font-roboto w-full font-medium">카카오로 로그인</div>
+          <div className="font-roboto w-full font-medium opacity-85">
+            카카오로 로그인
+          </div>
         </button>
       </div>
     </div>
