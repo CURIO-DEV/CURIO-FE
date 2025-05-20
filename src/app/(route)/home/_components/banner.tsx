@@ -3,6 +3,7 @@
 import Button from "@/components/button";
 import { ROUTES } from "@/constants/routes";
 import { useRouter } from "next/navigation";
+import WordCloudtWrapper from "./word-cloud-wrapper";
 
 export default function Banner() {
   const route = useRouter();
@@ -25,7 +26,9 @@ export default function Banner() {
           </Button>
         </div>
       </div>
-      <div className="bg-primary-50 flex-grow">시각화 컴포넌트</div>
+      <div className="bg-primary-50 flex-grow">
+        <WordCloudtWrapper />
+      </div>
     </div>
   );
 }
