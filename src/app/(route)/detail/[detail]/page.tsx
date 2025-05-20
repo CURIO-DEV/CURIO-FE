@@ -1,3 +1,5 @@
+"use client";
+
 import Image from "next/image";
 import ActionBar from "../_components/action-bar";
 import { LikeFilledIcon, LikeOutlineIcon, LogoHeadIcon } from "assets";

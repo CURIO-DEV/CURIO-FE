@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import localFont from "next/font/local";
 import { Carter_One } from "next/font/google";
+import { Roboto } from "next/font/google";
 import "./globals.css";
 import Layout from "./_components/layout";
 
@@ -18,6 +19,13 @@ const carterOne = Carter_One({
   variable: "--font-carter",
 });
 
+const roboto = Roboto({
+  weight: ["400", "500", "700"],
+  subsets: ["latin"],
+  display: "swap",
+  variable: "--font-roboto",
+});
+
 export const metadata: Metadata = {
   title: "Curio",
   description:
@@ -32,7 +40,7 @@ export default function RootLayout({
   return (
     <html lang="ko">
       <body
-        className={`${pretendard.variable} ${carterOne.variable} font-pretendard`}
+        className={`${pretendard.variable} ${carterOne.variable} ${roboto.variable} font-pretendard`}
       >
         <Layout>{children}</Layout>
       </body>

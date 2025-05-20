@@ -5,7 +5,6 @@ import Button from "@/components/button";
 import ArticleCard from "@/components/article";
 import { BookmarkIcon } from "assets";
 import { articles } from "@/mocks/article-array";
-import { useBookmarkStore } from "../../../_stores/use-bookmark-store";
 
 interface BookmarkFolderContentProps {
   folder: {
@@ -14,6 +13,9 @@ interface BookmarkFolderContentProps {
     collaborators: string[];
     color: string;
   };
+  bookmarkedArticles: Set<string>;
+  toggleBookmark: (id: string) => void;
+  setInitialBookmarks: (ids: string[]) => void;
 }
 
 const defaultSummary =
@@ -21,12 +23,12 @@ const defaultSummary =
 
 export default function BookmarkFolderContent({
   folder,
+  bookmarkedArticles,
+  toggleBookmark,
+  setInitialBookmarks,
 }: BookmarkFolderContentProps) {
   const [summary, setSummary] = useState(defaultSummary);
   const [isSummarized, setIsSummarized] = useState(false);
-
-  const { bookmarkedArticles, toggleBookmark, setInitialBookmarks } =
-    useBookmarkStore();
 
   useEffect(() => {
     // TODO: API 연동 시 해당 폴더의 북마크 기사 ID들을 fetch해서 대체
@@ -34,7 +36,7 @@ export default function BookmarkFolderContent({
     setInitialBookmarks(bookmarkedIdsForFolder);
     setSummary(defaultSummary);
     setIsSummarized(false);
-  }, [folder.id, setInitialBookmarks]);
+  }, [folder.id]);
 
   const handleSummarize = () => {
     const result = "요약된 기사 내용이 여기에 표시됩니다...";

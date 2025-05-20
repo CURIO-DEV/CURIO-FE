@@ -1,6 +1,7 @@
 import { cn } from "@/utils/cn";
+import { InputHTMLAttributes } from "react";
 
-interface InputProps {
+interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
   className?: string;
 }
 

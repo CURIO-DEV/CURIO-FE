@@ -1,3 +1,5 @@
+import { GoogleSimbol, KakaoSimbol } from "assets";
+
 export default function Login() {
   return (
     <div className="flex h-[calc(100vh-80px)] items-center justify-center">
@@ -8,11 +10,17 @@ export default function Login() {
           <br />
           원하는 방식으로 요약받는 맞춤형 뉴스 플랫폼
         </p>
-        <button className="mt-6.5 h-15 w-75 rounded-[9.48px] bg-[#F2F2F2] text-black">
-          google login
+        <button className="subtitle2 mt-5 flex h-15 w-75 items-center rounded-[12px] bg-[#F2F2F2] px-4">
+          <GoogleSimbol className="h-7" />
+          <div className="font-roboto w-full font-medium opacity-70">
+            Google로 로그인
+          </div>
         </button>
-        <button className="mt-5 h-15 w-75 rounded-[9.48px] bg-[#FEE500] text-black">
-          kakao login
+        <button className="subtitle2 mt-5 flex h-15 w-75 items-center rounded-[12px] bg-[#FEE500] px-4">
+          <KakaoSimbol className="h-7" />
+          <div className="font-roboto w-full font-medium opacity-85">
+            카카오로 로그인
+          </div>
         </button>
       </div>
     </div>

@@ -2,7 +2,8 @@ import { FolderIcon } from "assets";
 import { KebabIcon } from "assets";
 import { cn } from "@/utils/cn";
 import { useEffect, useRef, useState } from "react";
-import { colorMap } from "@/constants/color";
+import { colorMap, ColorKey } from "@/constants/color";
+import FolderUpsertModal from "./folder-upsert-modal";
 
 interface FolderItemProps {
   name: string;
@@ -31,15 +32,16 @@ export default function BookmarkFolderItem({
     document.addEventListener("mousedown", handleClickOutside);
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
+  const [isUpsertModalOpen, setIsUpsertModalOpen] = useState(false);
 
   const handleEdit = () => {
-    // TODO: 모달창 구현
-    console.log("Edit folder:", name);
+    setIsMenuOpen(false);
+    setIsUpsertModalOpen(true);
+    //TODO : 토스트 메시지 - 저장
   };
 
   const handleDelete = () => {
-    // TODO: 토스트 메시지
-    console.log("Delete folder:", name);
+    // TODO: 토스트 메시지 - 삭제
   };
 
   return (
@@ -50,7 +52,9 @@ export default function BookmarkFolderItem({
       )}
       onClick={onClick}
     >
-      <FolderIcon className={cn(colorMap[color], "h-18 w-18")} />
+      <FolderIcon
+        className={cn(colorMap[color as ColorKey].text, "h-18 w-18")}
+      />
 
       <div className="mt-3.5 flex w-39.5 flex-col justify-start gap-0.5">
         <div className="flex justify-between">
@@ -76,6 +80,14 @@ export default function BookmarkFolderItem({
                   삭제하기
                 </button>
               </div>
+            )}
+            {isUpsertModalOpen && (
+              <FolderUpsertModal
+                onClick={() => {
+                  setIsUpsertModalOpen(false);
+                }}
+                mode="edit"
+              />
             )}
           </div>
         </div>
