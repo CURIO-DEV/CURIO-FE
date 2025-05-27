@@ -12,15 +12,13 @@ import {
   DislikeFilledIcon,
   DislikeOutlineIcon,
 } from "assets";
+import { SummaryType } from "types/summary-type";
 
 export default function DetailPage() {
   const { detail: articleId } = useParams() as { detail: string };
 
   const searchParams = useSearchParams();
-  const summaryType = (searchParams.get("type") ?? "medium") as
-    | "short"
-    | "medium"
-    | "long";
+  const summaryType = (searchParams.get("type") ?? "medium") as SummaryType;
 
   const fontKey = (searchParams.get("font") ?? "default") as
     | "small"

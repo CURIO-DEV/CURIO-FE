@@ -1,4 +1,5 @@
 import { apiGet } from "../_apis/api";
+import { SummaryType } from "types/summary-type";
 
 export interface ArticleHeadlineResponse {
   title: string;
@@ -15,7 +16,7 @@ export const getArticleHeadline = async (articleId: string) => {
 export interface ArticleSummaryResponse {
   article_id: number;
   title: string;
-  summary_type: "short" | "medium" | "long";
+  summary_type: SummaryType;
   summary: string;
 }
 

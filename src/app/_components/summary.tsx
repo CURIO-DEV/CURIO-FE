@@ -4,10 +4,11 @@ import { DefaultIcon, DetailedIcon, SimpleIcon } from "assets";
 import OptionSelector from "./option-selector";
 import { cn } from "@/utils/cn";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
+import { SummaryType } from "types/summary-type";
 
 export default function Summary({ rootClassName }: { rootClassName?: string }) {
   const iconList = [SimpleIcon, DefaultIcon, DetailedIcon];
-  const typeMap = ["short", "medium", "long"] as const;
+  const typeMap: SummaryType[] = ["short", "medium", "long"];
 
   const router = useRouter();
   const pathname = usePathname();
