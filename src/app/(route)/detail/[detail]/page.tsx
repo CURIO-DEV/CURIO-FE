@@ -16,6 +16,17 @@ export default function DetailPage() {
     | "medium"
     | "long";
 
+  const fontKey = (searchParams.get("font") ?? "default") as
+    | "small"
+    | "default"
+    | "big";
+
+  const fontClass = {
+    small: "body1",
+    default: "subtitle1",
+    big: "title",
+  }[fontKey];
+
   const { data: hl, isLoading: hlLoading } = useArticleHeadline(articleId);
   const { data: sm, isLoading: smLoading } = useArticleSummary(
     articleId,
@@ -50,7 +61,7 @@ export default function DetailPage() {
               sizes="100vw"
               className="h-auto w-full"
             />
-            <p className="subtitle1 font-medium">{sm?.summary}</p>
+            <p className={`font-medium ${fontClass}`}>{sm?.summary}</p>
 
             <div className="my-0.5 flex items-center">
               <p className="caption1 mr-6 font-medium">

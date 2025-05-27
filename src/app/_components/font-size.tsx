@@ -1,20 +1,34 @@
 "use client";
 
-import { useState } from "react";
 import OptionSelector from "./option-selector";
 import { FontSizeIcon } from "assets";
 import { cn } from "@/utils/cn";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
 
 interface FontSizeProps {
   rootClassName?: string;
 }
 
 export default function FontSize({ rootClassName }: FontSizeProps) {
-  const fontSizes = [12, 24, 32];
-  const [selectedFontIndex, setSelectedFontIndex] = useState<number | null>(1);
+  /* 버튼 크기만 쓰는 숫자   ─────────────┐ */
+  const fontSizes = [12, 24, 32] as const; // ← 그대로 둠
+  /* URL 쿼리 값 / 논리적 키 ────────────┘ */
+  const sizeKeys = ["small", "default", "big"] as const;
+
+  const pathname = usePathname();
+  const searchParams = useSearchParams();
+  const router = useRouter();
+
+  const currentKey = (searchParams.get("font") ?? "default") as
+    | "small"
+    | "default"
+    | "big";
+  const selectedFontIndex = sizeKeys.indexOf(currentKey); // 0 | 1 | 2
 
   const handleFontClick = (index: number) => {
-    setSelectedFontIndex(index);
+    const params = new URLSearchParams(searchParams.toString());
+    params.set("font", sizeKeys[index]); // small / default / big
+    router.replace(`${pathname}?${params.toString()}`, { scroll: false });
   };
   return (
     <OptionSelector
@@ -28,7 +42,7 @@ export default function FontSize({ rootClassName }: FontSizeProps) {
           <button
             key={index}
             onClick={() => handleFontClick(index)}
-            className={`flex items-center justify-center rounded-full border border-gray-200 p-2 ${selectedFontIndex === index ? "bg-primary-100" : "bg-gray-50"} `}
+            className={`z-1 flex items-center justify-center rounded-full border border-gray-200 p-2 ${selectedFontIndex === index ? "bg-primary-100" : "bg-gray-50"} `}
             style={{
               width: `${16 + size}px`,
               height: `${16 + size}px`,
@@ -46,7 +60,7 @@ export default function FontSize({ rootClassName }: FontSizeProps) {
           </button>
         ))}
       </div>
-      <div className="absolute top-11.25 -z-1 h-px w-65 bg-gray-200" />
+      <div className="absolute top-11.25 z-0 h-px w-65 bg-gray-200" />
     </OptionSelector>
   );
 }
