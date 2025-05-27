@@ -2,24 +2,33 @@
 
 import { DefaultIcon, DetailedIcon, SimpleIcon } from "assets";
 import OptionSelector from "./option-selector";
-import { useState } from "react";
 import { cn } from "@/utils/cn";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
 
-interface SummaryProps {
-  rootClassName?: string;
-}
-
-export default function Summary({ rootClassName }: SummaryProps) {
+export default function Summary({ rootClassName }: { rootClassName?: string }) {
   const iconList = [SimpleIcon, DefaultIcon, DetailedIcon];
-  const [selectedIndex, setSelectedIndex] = useState<number | null>(1);
+  const typeMap = ["short", "medium", "long"] as const;
+
+  const router = useRouter();
+  const pathname = usePathname();
+  const searchParams = useSearchParams();
+
+  const currentType = (searchParams.get("type") ?? "medium") as
+    | "short"
+    | "medium"
+    | "long";
+  const selectedIndex = typeMap.indexOf(currentType);
 
   const handleSummaryClick = (index: number) => {
-    setSelectedIndex(index);
+    const params = new URLSearchParams(searchParams.toString());
+    params.set("type", typeMap[index]);
+    router.replace(`${pathname}?${params.toString()}`, { scroll: false });
   };
+
   return (
     <OptionSelector
       type="SIDEBAR"
-      label="옵션"
+      label="요약 정도"
       className="flex justify-between px-5"
       rootClassName={cn("mt-4 mb-8", rootClassName)}
     >
@@ -32,9 +41,9 @@ export default function Summary({ rootClassName }: SummaryProps) {
           }`}
         >
           <Icon
-            className={`${
+            className={
               selectedIndex === index ? "text-primary-600" : "text-gray-900"
-            }`}
+            }
           />
         </button>
       ))}

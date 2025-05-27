@@ -1,5 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
-import { getArticleHeadline } from "@/apis/article"; // 실제 API 요청 함수
+import { getArticleHeadline } from "@/apis/article";
 
 export function useArticleHeadline(articleId: string) {
   return useQuery({
