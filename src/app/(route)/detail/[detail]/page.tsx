@@ -1,18 +1,35 @@
 "use client";
 
+import { useParams, useSearchParams } from "next/navigation";
+import { useArticleHeadline } from "@/hooks/use-article-headlines";
+import { useArticleSummary } from "@/hooks/use-article-summary";
 import Image from "next/image";
 import ActionBar from "../_components/action-bar";
 import { LikeFilledIcon, LikeOutlineIcon, LogoHeadIcon } from "assets";
 
-export default function Detail() {
+export default function DetailPage() {
+  const { detail: articleId } = useParams() as { detail: string };
+
+  const searchParams = useSearchParams();
+  const summaryType = (searchParams.get("type") ?? "medium") as
+    | "short"
+    | "medium"
+    | "long";
+
+  const { data: hl, isLoading: hlLoading } = useArticleHeadline(articleId);
+  const { data: sm, isLoading: smLoading } = useArticleSummary(
+    articleId,
+    summaryType,
+  );
+
+  if (hlLoading || smLoading) return <div>로딩 중…</div>;
+  if (!hl) return <div>기사 정보가 없습니다.</div>;
   return (
     <>
       <div className="mt-12 mb-10">
         <ActionBar />
         <div className="mr-14 ml-35.5">
-          <h1 className="heading2 font-semibold">
-            “급한 일부터 산불 챙긴 韓… ‘통상 전쟁’도 발등의 불🔥
-          </h1>
+          <h1 className="heading2 font-semibold">{hl.title}</h1>
           <p className="caption1 flex gap-3 font-medium text-gray-500">
             <span>게시 2025. 03. 11 </span>
             <span>업데이트 2025. 03. 14</span>
@@ -25,17 +42,16 @@ export default function Detail() {
               </p>
             </div>
             <Image
-              src="/images/image.png"
-              width={742}
-              height={523}
-              alt="image"
+              src={hl.imageUrl}
+              alt="기사 이미지"
+              width={1200}
+              height={800}
+              quality={80}
+              sizes="100vw"
+              className="h-auto w-full"
             />
-            <p className="subtitle1 font-medium">
-              한 권한대행 앞에는 통상 압박 수위를 높이고 있는 도널드 트럼프 미국
-              행정부와의 관계 개선 및 통상전쟁 피해 최소화, 국내 경기 회복, 의대
-              정상화 등 난제가 산적해 있다. 마은혁 헌법재판관 임명과 ‘김건희
-              상설특검’ 후보자 추천을 재촉하는 야당의 압박도 큰 부담이다.
-            </p>
+            <p className="subtitle1 font-medium">{sm?.summary}</p>
+
             <div className="my-0.5 flex items-center">
               <p className="caption1 mr-6 font-medium">
                 이 내용이 마음에 드시나요?

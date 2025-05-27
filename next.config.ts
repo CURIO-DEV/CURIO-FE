@@ -1,6 +1,9 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
+  images: {
+    domains: ["flexible.img.hani.co.kr", "img.hani.co.kr"],
+  },
   experimental: {
     turbo: {
       rules: {

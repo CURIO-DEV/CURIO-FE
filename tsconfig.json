@@ -25,7 +25,9 @@
       "@/constants/*": ["app/_constants/*"],
       "@/utils/*": ["app/_utils/*"],
       "@/mocks/*": ["app/_mocks/*"],
-      "@/stores/*": ["app/_stores/*"]
+      "@/stores/*": ["app/_stores/*"],
+      "@/apis/*": ["app/_apis/*"],
+      "@/hooks/*": ["hooks/*"]
     }
   },
   "include": [

@@ -4,6 +4,7 @@ import { Carter_One } from "next/font/google";
 import { Roboto } from "next/font/google";
 import "./globals.css";
 import Layout from "./_components/layout";
+import Providers from "./providers";
 
 const pretendard = localFont({
   src: "_styles/fonts/PretendardVariable.woff2",
@@ -42,7 +43,9 @@ export default function RootLayout({
       <body
         className={`${pretendard.variable} ${carterOne.variable} ${roboto.variable} font-pretendard`}
       >
-        <Layout>{children}</Layout>
+        <Providers>
+          <Layout>{children}</Layout>
+        </Providers>
       </body>
     </html>
   );
