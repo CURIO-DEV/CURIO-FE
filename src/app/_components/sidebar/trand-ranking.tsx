@@ -1,9 +1,8 @@
 import { useState } from "react";
-import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { ROUTES } from "@/constants/routes";
 import { trends } from "@/mocks/trends";
-import { ArrowDownIcon, ArrowUpIcon } from "assets";
+import { ArrowUpIcon } from "assets";
 
 export default function TrendRanking() {
   const [isOpen, setIsOpen] = useState(false);
@@ -18,8 +17,14 @@ export default function TrendRanking() {
     setIsOpen((prev) => !prev);
   };
 
-  /* TODO: API 연결 후 대체 */
-  const dummyTimestamp = "2024.04.20 17:32";
+  const now = new Date();
+  const formattedNow = now.toLocaleString("ko-KR", {
+    year: "numeric",
+    month: "2-digit",
+    day: "2-digit",
+    hour: "2-digit",
+    minute: "2-digit",
+  });
 
   return (
     <div className="flex w-75 flex-col border-y border-gray-200">
@@ -55,7 +60,7 @@ export default function TrendRanking() {
         ))}
         <div className="mb-2.5 flex h-4.5 justify-end">
           <span className="caption1 font-medium text-gray-300">
-            {dummyTimestamp}
+            {formattedNow}
           </span>
         </div>
       </div>
