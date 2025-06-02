@@ -3,6 +3,7 @@ import { useRouter } from "next/navigation";
 import { ROUTES } from "@/constants/routes";
 import { trends } from "@/mocks/trends";
 import { ArrowUpIcon } from "assets";
+import { useGetTrendKeyword } from "@/hooks/use-trends";
 
 export default function TrendRanking() {
   const [isOpen, setIsOpen] = useState(false);
@@ -17,6 +18,11 @@ export default function TrendRanking() {
     setIsOpen((prev) => !prev);
   };
 
+  const { data } = useGetTrendKeyword();
+
+  const keywords = data?.[0]?.keyword ?? [];
+
+  console.log(keywords);
   const now = new Date();
   const formattedNow = now.toLocaleString("ko-KR", {
     year: "numeric",
@@ -32,7 +38,7 @@ export default function TrendRanking() {
         <div className="group body1 flex w-58 items-center gap-3 font-medium text-black">
           <span>1</span>
           <span className="cursor-pointer group-hover:underline">
-            {trends[0]}
+            {keywords[0]}
           </span>
         </div>
         <ArrowUpIcon
@@ -46,15 +52,15 @@ export default function TrendRanking() {
           isOpen ? "max-h-96" : "max-h-0"
         }`}
       >
-        {trends.slice(1).map((trends, index) => (
+        {keywords.slice(1).map((keywords, index) => (
           <div
-            key={trends}
+            key={keywords}
             className="mb-3 flex items-center justify-between"
             onClick={() => handleClick()}
           >
             <div className="group body1 flex w-58 cursor-pointer items-center gap-3 font-medium text-black">
               <span>{index + 2}</span>
-              <span className="group-hover:underline">{trends}</span>
+              <span className="group-hover:underline">{keywords}</span>
             </div>
           </div>
         ))}
