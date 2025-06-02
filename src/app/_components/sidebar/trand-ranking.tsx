@@ -10,8 +10,8 @@ export default function TrendRanking() {
 
   const router = useRouter();
 
-  const handleClick = () => {
-    router.push(ROUTES.SEARCH);
+  const handleClick = (keyword: string) => {
+    router.push(`${ROUTES.SEARCH}?q=${encodeURIComponent(keyword)}`);
   };
 
   const toggleDropdown = () => {
@@ -35,7 +35,10 @@ export default function TrendRanking() {
   return (
     <div className="flex w-75 flex-col border-y border-gray-200">
       <div className="flex items-center justify-between px-5 py-2.5">
-        <div className="group body1 flex w-58 items-center gap-3 font-medium text-black">
+        <div
+          className="group body1 flex w-58 items-center gap-3 font-medium text-black"
+          onClick={() => handleClick(keywords[0])}
+        >
           <span>1</span>
           <span className="cursor-pointer group-hover:underline">
             {keywords[0]}
@@ -56,7 +59,7 @@ export default function TrendRanking() {
           <div
             key={keywords}
             className="mb-3 flex items-center justify-between"
-            onClick={() => handleClick()}
+            onClick={() => handleClick(keywords)}
           >
             <div className="group body1 flex w-58 cursor-pointer items-center gap-3 font-medium text-black">
               <span>{index + 2}</span>
