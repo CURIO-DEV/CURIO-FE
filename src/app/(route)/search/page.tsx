@@ -1,5 +1,5 @@
 "use client";
-import { useState } from "react";
+import { useState, useMemo } from "react";
 import ArticleCard from "@/components/article";
 import { articles } from "@/mocks/article-array";
 import {
@@ -14,45 +14,40 @@ import {
 
 const ARTICLES_PER_PAGE = 10;
 
+function getPageNumbers(
+  current: number,
+  total: number,
+  delta = 1,
+): (number | "...")[] {
+  const range: (number | "...")[] = [];
+  const left = Math.max(2, current - delta);
+  const right = Math.min(total - 1, current + delta);
+
+  range.push(1);
+  if (left > 2) range.push("...");
+  for (let i = left; i <= right; i++) range.push(i);
+  if (right < total - 1) range.push("...");
+  if (total > 1) range.push(total);
+
+  return range;
+}
+
 export default function Search() {
   const [currentPage, setCurrentPage] = useState(1);
-  const totalPages = Math.ceil(articles.length / ARTICLES_PER_PAGE);
+  const totalPages = useMemo(
+    () => Math.ceil(articles.length / ARTICLES_PER_PAGE),
+    [],
+  );
+  const pageNumbers = useMemo(
+    () => getPageNumbers(currentPage, totalPages),
+    [currentPage, totalPages],
+  );
 
   const startIdx = (currentPage - 1) * ARTICLES_PER_PAGE;
-  const endIdx = startIdx + ARTICLES_PER_PAGE;
-  const currentArticles = articles.slice(startIdx, endIdx);
-
-  const handlePageChange = (page: number) => {
-    if (page >= 1 && page <= totalPages) {
-      setCurrentPage(page);
-    }
-  };
-  function getPageNumbers(current: number, total: number): (number | "...")[] {
-    const delta = 1; // 현재 페이지 기준 앞뒤로 몇 개 보여줄지
-    const range: (number | "...")[] = [];
-    const left = Math.max(2, current - delta);
-    const right = Math.min(total - 1, current + delta);
-
-    range.push(1); // Always show the first page
-
-    if (left > 2) {
-      range.push("...");
-    }
-
-    for (let i = left; i <= right; i++) {
-      range.push(i);
-    }
-
-    if (right < total - 1) {
-      range.push("...");
-    }
-
-    if (total > 1) {
-      range.push(total); // Always show the last page
-    }
-
-    return range;
-  }
+  const currentArticles = articles.slice(
+    startIdx,
+    startIdx + ARTICLES_PER_PAGE,
+  );
 
   return (
     <div className="pb-18.5">
@@ -70,34 +65,23 @@ export default function Search() {
         <PaginationContent className="mt-8 flex justify-center space-x-2">
           <PaginationItem>
             <PaginationPrevious
-              href="#"
-              className="hover:bg-primary-50 flex h-8 w-8 items-center justify-center rounded border border-gray-200 text-gray-300 disabled:opacity-50"
-              onClick={(e) => {
-                e.preventDefault();
-                handlePageChange(currentPage - 1);
-              }}
+              aria-disabled={currentPage === 1}
+              onClick={() => setCurrentPage((prev) => Math.max(1, prev - 1))}
+              className="hover:bg-primary-50"
             />
           </PaginationItem>
 
-          {getPageNumbers(currentPage, totalPages).map((page, idx) => (
+          {pageNumbers.map((p, idx) => (
             <PaginationItem key={idx}>
-              {page === "..." ? (
-                <PaginationEllipsis className="flex h-8 w-8 items-center justify-center rounded border border-gray-100 text-gray-300" />
+              {p === "..." ? (
+                <PaginationEllipsis />
               ) : (
                 <PaginationLink
-                  href="#"
-                  onClick={(e) => {
-                    e.preventDefault();
-                    handlePageChange(Number(page));
-                  }}
-                  className={`flex h-8 w-8 items-center justify-center rounded border text-sm ${
-                    currentPage === page
-                      ? "border-primary-600 text-primary-600 font-semibold"
-                      : "hover:bg-primary-50 border-gray-300 text-gray-300"
-                  }`}
-                  isActive={currentPage === page}
+                  isActive={p === currentPage}
+                  onClick={() => setCurrentPage(p as number)}
+                  className="hover:bg-primary-50 cursor-pointer"
                 >
-                  {page}
+                  {p}
                 </PaginationLink>
               )}
             </PaginationItem>
@@ -105,12 +89,11 @@ export default function Search() {
 
           <PaginationItem>
             <PaginationNext
-              href="#"
-              className="hover:bg-primary-50 flex h-8 w-8 items-center justify-center rounded border border-gray-200 text-gray-300 disabled:opacity-50"
-              onClick={(e) => {
-                e.preventDefault();
-                handlePageChange(currentPage + 1);
-              }}
+              aria-disabled={currentPage === totalPages}
+              onClick={() =>
+                setCurrentPage((prev) => Math.min(totalPages, prev + 1))
+              }
+              className="hover:bg-primary-50"
             />
           </PaginationItem>
         </PaginationContent>
