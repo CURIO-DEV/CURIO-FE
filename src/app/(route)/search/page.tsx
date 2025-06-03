@@ -67,7 +67,7 @@ export default function SearchPage() {
 
   const handlePageChange = (page: number) => {
     if (page < 1 || page > totalPages) return;
-    const baseParam = headerKeyword !== null ? "query" : "q";
+    const baseParam = headerKeyword !== null ? "keyword" : "trends";
     const baseValue = keywordParam;
     router.push(
       `/search?${baseParam}=${encodeURIComponent(baseValue)}&page=${page}`,
