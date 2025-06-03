@@ -14,8 +14,6 @@ export default function TrandingNews() {
     router.push(`${ROUTES.DETAIL}/${articleId}`);
   };
 
-  console.log(data);
-
   return (
     <div className="flex h-75.5 w-75 flex-col items-center gap-1.5 rounded-lg border border-gray-100 px-3.5 py-2">
       {/* 뉴스 목록 */}
