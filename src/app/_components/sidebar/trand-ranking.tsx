@@ -22,7 +22,6 @@ export default function TrendRanking() {
 
   const keywords = data?.[0]?.keyword ?? [];
 
-  console.log(keywords);
   const now = new Date();
   const formattedNow = now.toLocaleString("ko-KR", {
     year: "numeric",
