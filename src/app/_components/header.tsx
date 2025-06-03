@@ -1,10 +1,22 @@
 import { SearchIcon } from "assets";
-import { useRouter } from "next/navigation";
-import { useState } from "react";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
+import { useEffect, useState } from "react";
 
 export default function Header() {
   const [query, setQuery] = useState("");
   const router = useRouter();
+  const pathname = usePathname();
+  const searchParams = useSearchParams();
+
+  useEffect(() => {
+    if (pathname === "/search") {
+      const q1 = searchParams.get("query");
+      const q2 = searchParams.get("q");
+      setQuery(q1 ?? q2 ?? "");
+    } else {
+      setQuery("");
+    }
+  }, [pathname, searchParams]);
 
   const handleClick = () => {
     if (!query.trim()) return;
@@ -17,7 +29,7 @@ export default function Header() {
   return (
     <header className="flex h-20 items-center justify-between border-b border-gray-200 px-20">
       <h1
-        className="logo-s font-carter text-primary-600"
+        className="logo-s font-carter text-primary-600 cursor-pointer"
         onClick={handleLogoClick}
       >
         Curio
@@ -27,6 +39,11 @@ export default function Header() {
           className="w-full py-2.5 outline-none"
           value={query}
           onChange={(e) => setQuery(e.target.value)}
+          onKeyDown={(e) => {
+            if (e.key === "Enter") {
+              handleClick();
+            }
+          }}
         />
         <button type="button" onClick={handleClick}>
           <SearchIcon />
