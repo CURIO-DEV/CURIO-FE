@@ -36,9 +36,9 @@ export default function SearchPage() {
   const searchParams = useSearchParams();
   const router = useRouter();
 
-  const headerQuery = searchParams.get("query");
-  const trendQuery = searchParams.get("q");
-  const keywordParam = headerQuery ?? trendQuery ?? "";
+  const headerKeyword = searchParams.get("keyword");
+  const trendKeyword = searchParams.get("trends");
+  const keywordParam = headerKeyword ?? trendKeyword ?? "";
 
   const pageParam = parseInt(searchParams.get("page") ?? "1", 10);
 
@@ -67,7 +67,7 @@ export default function SearchPage() {
 
   const handlePageChange = (page: number) => {
     if (page < 1 || page > totalPages) return;
-    const baseParam = headerQuery !== null ? "query" : "q";
+    const baseParam = headerKeyword !== null ? "query" : "q";
     const baseValue = keywordParam;
     router.push(
       `/search?${baseParam}=${encodeURIComponent(baseValue)}&page=${page}`,

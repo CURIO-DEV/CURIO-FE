@@ -10,7 +10,7 @@ export default function TrendRanking() {
   const router = useRouter();
 
   const handleClick = (keyword: string) => {
-    router.push(`${ROUTES.SEARCH}?q=${encodeURIComponent(keyword)}`);
+    router.push(`${ROUTES.SEARCH}?trends=${encodeURIComponent(keyword)}`);
   };
 
   const toggleDropdown = () => {

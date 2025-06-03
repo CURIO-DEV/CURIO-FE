@@ -3,24 +3,24 @@ import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 
 export default function Header() {
-  const [query, setQuery] = useState("");
+  const [keyword, setKeyword] = useState("");
   const router = useRouter();
   const pathname = usePathname();
   const searchParams = useSearchParams();
 
   useEffect(() => {
     if (pathname === "/search") {
-      const q1 = searchParams.get("query");
-      const q2 = searchParams.get("q");
-      setQuery(q1 ?? q2 ?? "");
+      const q1 = searchParams.get("keyword");
+      const q2 = searchParams.get("trends");
+      setKeyword(q1 ?? q2 ?? "");
     } else {
-      setQuery("");
+      setKeyword("");
     }
   }, [pathname, searchParams]);
 
   const handleClick = () => {
-    if (!query.trim()) return;
-    router.push(`/search?query=${encodeURIComponent(query)}`);
+    if (!keyword.trim()) return;
+    router.push(`/search?keyword=${encodeURIComponent(keyword)}`);
   };
 
   const handleLogoClick = () => {
@@ -37,8 +37,8 @@ export default function Header() {
       <div className="bg-primary-50 flex w-124.5 rounded-2xl pr-3 pl-6">
         <input
           className="w-full py-2.5 outline-none"
-          value={query}
-          onChange={(e) => setQuery(e.target.value)}
+          value={keyword}
+          onChange={(e) => setKeyword(e.target.value)}
           onKeyDown={(e) => {
             if (e.key === "Enter") {
               handleClick();
