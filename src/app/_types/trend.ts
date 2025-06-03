@@ -9,3 +9,8 @@ export interface GetPopularArticlesResponse {
   likeCount: number;
   saveCount: number;
 }
+
+export interface GetInterestKeywordResponse {
+  keyword: string;
+  weight: number;
+}
