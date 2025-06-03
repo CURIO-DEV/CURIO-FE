@@ -5,17 +5,14 @@ import { useArticleHeadline } from "@/hooks/use-article-headlines";
 import { useArticleSummary } from "@/hooks/use-article-summary";
 import Image from "next/image";
 import ActionBar from "../_components/action-bar";
-import {
-  LikeFilledIcon,
-  LikeOutlineIcon,
-  LogoHeadIcon,
-  DislikeFilledIcon,
-  DislikeOutlineIcon,
-} from "assets";
+import { LikeOutlineIcon, LogoHeadIcon, DislikeOutlineIcon } from "assets";
 import { SummaryType } from "types/summary-type";
 
 export default function DetailPage() {
-  const { detail: articleId } = useParams() as { detail: string };
+  const { id } = useParams();
+
+  console.log(id, "id");
+  const articleId = Number(id);
 
   const searchParams = useSearchParams();
   const summaryType = (searchParams.get("type") ?? "medium") as SummaryType;
@@ -36,6 +33,8 @@ export default function DetailPage() {
     articleId,
     summaryType,
   );
+
+  console.log(hl);
 
   if (hlLoading || smLoading) return <div>로딩 중…</div>;
   if (!hl) return <div>기사 정보가 없습니다.</div>;
