@@ -9,7 +9,7 @@ export interface ArticleHeadlineResponse {
   updatedAt: string;
 }
 
-export const getArticleHeadline = async (articleId: string) => {
+export const getArticleHeadline = async (articleId: number) => {
   return await apiGet<ArticleHeadlineResponse>(
     `/articles/${articleId}/headline`,
   );
@@ -23,7 +23,7 @@ export interface ArticleSummaryResponse {
 }
 
 export const getArticleSummary = async (
-  articleId: string,
+  articleId: number,
   type: "short" | "medium" | "long",
 ) => {
   return await apiGet<ArticleSummaryResponse, { type: string }>(

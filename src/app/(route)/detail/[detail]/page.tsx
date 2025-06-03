@@ -15,7 +15,8 @@ import {
 import { SummaryType } from "types/summary-type";
 
 export default function DetailPage() {
-  const { detail: articleId } = useParams() as { detail: string };
+  const { detail: detailParam } = useParams() as { detail: string };
+  const articleId = Number(detailParam);
 
   const searchParams = useSearchParams();
   const summaryType = (searchParams.get("type") ?? "medium") as SummaryType;

@@ -1,7 +1,6 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { ROUTES } from "@/constants/routes";
-import { trends } from "@/mocks/trends";
 import { ArrowUpIcon } from "assets";
 import { useGetTrendKeyword } from "@/hooks/use-trends";
 
