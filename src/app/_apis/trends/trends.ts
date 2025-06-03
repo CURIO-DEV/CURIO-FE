@@ -1,4 +1,5 @@
 import {
+  GetInterestKeywordResponse,
   GetPopularArticlesResponse,
   GetTrendKeywordResponse,
 } from "app/_types/trend";
@@ -11,4 +12,8 @@ export const GetTrendKeyword = () => {
 
 export const GetPopularArticles = () => {
   return apiGet<GetPopularArticlesResponse[]>(END_POINTS.GET_POPULAR_ARTICLES);
+};
+
+export const GetInterestKeywords = () => {
+  return apiGet<GetInterestKeywordResponse[]>(END_POINTS.GET_INTEREST_KEYWORDS);
 };

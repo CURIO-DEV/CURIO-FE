@@ -1,9 +1,14 @@
 import { queryOptions, UseQueryOptions } from "@tanstack/react-query";
-import { GetPopularArticles, GetTrendKeyword } from "./trends";
+import {
+  GetInterestKeywords,
+  GetPopularArticles,
+  GetTrendKeyword,
+} from "./trends";
 
 export const TRENDS_KEY = {
   TREND_KEYWORD: () => ["trend-keyword"],
   POPULAR_ARTICLES: () => ["popular-articles"],
+  INTEREST_KEYWORDS: () => ["interest-keywords"],
 } as const;
 
 export const TRENDS_OPTION = {
@@ -16,5 +21,10 @@ export const TRENDS_OPTION = {
     queryOptions({
       queryKey: TRENDS_KEY.POPULAR_ARTICLES(),
       queryFn: () => GetPopularArticles(),
+    }),
+  INTEREST_KEYWORDS: () =>
+    queryOptions({
+      queryKey: TRENDS_KEY.INTEREST_KEYWORDS(),
+      queryFn: () => GetInterestKeywords(),
     }),
 };

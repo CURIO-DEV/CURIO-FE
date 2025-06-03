@@ -8,3 +8,7 @@ export const useGetTrendKeyword = () => {
 export const useGetPopularArtiles = () => {
   return useQuery(TRENDS_OPTION.POPULAR_ARTICLES());
 };
+
+export const useGetIntertestKeywords = () => {
+  return useQuery(TRENDS_OPTION.INTEREST_KEYWORDS());
+};
