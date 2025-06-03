@@ -3,28 +3,28 @@ import { dummyNews } from "@/mocks/dummyNews";
 import { useRouter } from "next/navigation";
 import { ROUTES } from "@/constants/routes";
 import { BookmarkIcon, HeartIcon } from "assets";
-
-/* 더미데이터 사용 */
-/* TODO api 연결 후 수정하기*/
+import { useGetPopularArtiles } from "@/hooks/use-trends";
 
 export default function TrandingNews() {
   const router = useRouter();
 
-  const handleClick = () => {
-    router.push(ROUTES.DETAIL);
+  const { data } = useGetPopularArtiles();
+
+  const handleClick = (articleId: number) => {
+    router.push(`${ROUTES.DETAIL}/${articleId}`);
   };
+
   return (
     <div className="flex h-75.5 w-75 flex-col items-center gap-1.5 rounded-lg border border-gray-100 px-3.5 py-2">
       {/* 뉴스 목록 */}
-      {dummyNews.map((news) => (
+      {data?.map((news) => (
         <div
-          key={news.id}
+          key={news.articleId}
           className="flex w-68 cursor-pointer justify-center gap-3 rounded-md"
-          onClick={() => handleClick()}
+          onClick={() => handleClick(news.articleId)}
         >
-          {/* TODO api 연결 후 수정 - 뉴스 썸네일*/}
           <Image
-            src={news.thumbnail}
+            src={news.imageUrl}
             alt="thumbnail"
             width={60}
             height={60}
@@ -39,14 +39,14 @@ export default function TrandingNews() {
                 style={{ stroke: "var(--gray-400)" }}
               />
               <span className="w-6">
-                {news.likes > 99 ? "99+" : news.likes}
+                {news.likeCount > 99 ? "99+" : news.likeCount}
               </span>
               <BookmarkIcon
                 className="h-4 w-4"
                 style={{ stroke: "var(--gray-400)" }}
               />
               <span className="w-6">
-                {news.clips > 99 ? "99+" : news.clips}
+                {news.saveCount > 99 ? "99+" : news.saveCount}
               </span>
             </div>
           </div>

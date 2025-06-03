@@ -16,7 +16,7 @@ export const getArticleHeadline = async (articleId: number) => {
 };
 
 export interface ArticleSummaryResponse {
-  article_id: number;
+  articleId: number;
   title: string;
   summary_type: SummaryType;
   summary: string;
