@@ -10,9 +10,9 @@ export default function Header() {
 
   useEffect(() => {
     if (pathname === "/search") {
-      const q1 = searchParams.get("keyword");
-      const q2 = searchParams.get("trends");
-      setKeyword(q1 ?? q2 ?? "");
+      const keyword = searchParams.get("keyword");
+      const trends = searchParams.get("trends");
+      setKeyword(keyword ?? trends ?? "");
     } else {
       setKeyword("");
     }

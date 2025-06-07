@@ -12,13 +12,13 @@ export interface SearchResponse {
 }
 
 export async function searchNews(
-  type: string,
+  type: "news",
   query: string,
   pageIndex: number,
 ): Promise<SearchResponse> {
   const params = { type, query, page: pageIndex };
   return await apiGet<
     SearchResponse,
-    { type: string; query: string; page: number }
+    { type: "news"; query: string; page: number }
   >("/search", params);
 }
