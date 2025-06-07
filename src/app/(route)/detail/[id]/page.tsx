@@ -11,7 +11,6 @@ import { SummaryType } from "types/summary-type";
 export default function DetailPage() {
   const { id } = useParams();
 
-  console.log(id, "id");
   const articleId = Number(id);
 
   const searchParams = useSearchParams();
@@ -33,8 +32,6 @@ export default function DetailPage() {
     articleId,
     summaryType,
   );
-
-  console.log(hl);
 
   if (hlLoading || smLoading) return <div>로딩 중…</div>;
   if (!hl) return <div>기사 정보가 없습니다.</div>;
