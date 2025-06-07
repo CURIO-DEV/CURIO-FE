@@ -5,6 +5,8 @@ export interface ArticleHeadlineResponse {
   title: string;
   content: string;
   imageUrl: string;
+  createdAt: string;
+  updatedAt: string;
 }
 
 export const getArticleHeadline = async (articleId: number) => {

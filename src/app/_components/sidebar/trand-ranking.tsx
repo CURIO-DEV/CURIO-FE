@@ -1,7 +1,6 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { ROUTES } from "@/constants/routes";
-import { trends } from "@/mocks/trends";
 import { ArrowUpIcon } from "assets";
 import { useGetTrendKeyword } from "@/hooks/use-trends";
 
@@ -11,7 +10,7 @@ export default function TrendRanking() {
   const router = useRouter();
 
   const handleClick = (keyword: string) => {
-    router.push(`${ROUTES.SEARCH}?q=${encodeURIComponent(keyword)}`);
+    router.push(`${ROUTES.SEARCH}?trends=${encodeURIComponent(keyword)}`);
   };
 
   const toggleDropdown = () => {
