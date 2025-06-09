@@ -5,9 +5,12 @@ import Modal from "../modal";
 import Input from "../input";
 import Button from "../button";
 import { ShortcutIcon } from "assets";
+import { usePatchSubscribe } from "@/hooks/use-user";
 
 export default function Subscribe() {
   const [isModalOpen, SetIsModalOpen] = useState(false);
+
+  const { mutate } = usePatchSubscribe();
 
   const handleClick = () => {
     SetIsModalOpen(true);

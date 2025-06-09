@@ -1,4 +1,4 @@
-import { queryOptions, UseQueryOptions } from "@tanstack/react-query";
+import { queryOptions } from "@tanstack/react-query";
 import {
   GetInterestKeywords,
   GetPopularArticles,
