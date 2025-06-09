@@ -4,22 +4,22 @@ import { ROUTES } from "@/constants/routes";
 import { SettingIcon } from "assets";
 import { useGetUserProfile } from "@/hooks/use-user";
 
-export default function ProfileCard() {
+export default function ProfileCard({ ...props }) {
   const router = useRouter();
 
   const handleClick = () => {
     router.push(ROUTES.MYPAGE);
   };
 
-  const { data } = useGetUserProfile();
+  // const { data } = useGetUserProfile();
 
   return (
     <div className="mt-6 flex h-23 w-75 items-center rounded-lg border border-gray-200 pl-3.75">
       <div className="relative">
         <div className="flex h-13.75 w-13.75 items-center justify-center rounded-full border border-gray-200">
-          {data && (
+          {props && (
             <Image
-              src={data.profile_image_url}
+              src={props.profile_image_url}
               alt="profile"
               width={38}
               height={32}
@@ -33,7 +33,7 @@ export default function ProfileCard() {
 
       <div className="ml-3.25 flex flex-col">
         <div className="flex items-end gap-1">
-          <span className="body1 text font-medium">{data?.nickname}</span>
+          <span className="body1 text font-medium">{props?.nickname}</span>
           <button
             className="caption2 font-regular mt-2.25 text-gray-500 hover:underline"
             onClick={handleClick}
@@ -43,7 +43,7 @@ export default function ProfileCard() {
         </div>
 
         <span className="caption1 font-medium text-gray-700">
-          {data?.email}
+          {props?.email}
         </span>
       </div>
     </div>

@@ -1,5 +1,7 @@
+"use client";
+
 import Image from "next/image";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Button from "../button";
 import { IMAGES_PATH } from "@/constants/images";
 import Subscribe from "./subscribe";
@@ -11,17 +13,29 @@ import { ROUTES } from "@/constants/routes";
 import { usePathname } from "next/navigation";
 import FontSize from "../font-size";
 import Summary from "../summary";
+import Cookies from "js-cookie";
+import { useGetUserProfile } from "@/hooks/use-user";
 
 export default function Sidebar() {
   const router = useRouter();
   const pathname = usePathname();
-  const [isLogin, setIsLogin] = useState(true);
+  // const [isLogin, setIsLogin] = useState(false);
 
   const isDetailPage = pathname.startsWith("/detail");
 
   const handleClick = () => {
     router.push(ROUTES.LOGIN);
   };
+
+  const { data, isError } = useGetUserProfile();
+  const isLogin = !!data && !isError;
+
+  // useEffect(() => {
+  //   const token = Cookies.get("accessToken");
+  //   if (token) {
+  //     setIsLogin(true);
+  //   }
+  // }, []);
 
   return (
     <aside className="min-h-screen w-85 border-l-1 border-gray-100 pl-10">
@@ -33,7 +47,7 @@ export default function Sidebar() {
         </>
       ) : isLogin ? (
         <div className="flex flex-col gap-6">
-          <ProfileCard />
+          <ProfileCard {...data} />
           <TrandRanking />
           <TrandingNews />
           <Subscribe />
