@@ -17,3 +17,6 @@ export const GetPopularArticles = () => {
 export const GetInterestKeywords = () => {
   return apiGet<GetInterestKeywordResponse[]>(END_POINTS.GET_INTEREST_KEYWORDS);
 };
+
+export const getRelatedArticles = (articleId: number) =>
+  apiGet<GetPopularArticlesResponse[]>(`/articles/${articleId}/related`);
