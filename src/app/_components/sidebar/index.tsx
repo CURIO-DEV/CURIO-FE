@@ -19,7 +19,6 @@ import { useGetUserProfile } from "@/hooks/use-user";
 export default function Sidebar() {
   const router = useRouter();
   const pathname = usePathname();
-  // const [isLogin, setIsLogin] = useState(false);
 
   const isDetailPage = pathname.startsWith("/detail");
 
@@ -30,20 +29,13 @@ export default function Sidebar() {
   const { data, isError } = useGetUserProfile();
   const isLogin = !!data && !isError;
 
-  // useEffect(() => {
-  //   const token = Cookies.get("accessToken");
-  //   if (token) {
-  //     setIsLogin(true);
-  //   }
-  // }, []);
-
   return (
     <aside className="min-h-screen w-85 border-l-1 border-gray-100 pl-10">
       {isDetailPage ? (
         <>
           <FontSize />
           <Summary />
-          <TrandingNews isDetailPage />
+          <TrandingNews />
         </>
       ) : isLogin ? (
         <div className="flex flex-col gap-6">
