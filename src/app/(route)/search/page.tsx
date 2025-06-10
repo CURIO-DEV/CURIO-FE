@@ -1,7 +1,7 @@
 "use client";
-import { useState, useMemo } from "react";
+
+import { useSearchParams, useRouter } from "next/navigation";
 import ArticleCard from "@/components/article";
-import { articles } from "@/mocks/article-array";
 import {
   Pagination,
   PaginationContent,
@@ -11,8 +11,7 @@ import {
   PaginationNext,
   PaginationPrevious,
 } from "@/styles/components/ui/pagination";
-
-const ARTICLES_PER_PAGE = 10;
+import { useSearchArticles } from "@/hooks/use-search-articles";
 
 function getPageNumbers(
   current: number,
@@ -28,76 +27,101 @@ function getPageNumbers(
   for (let i = left; i <= right; i++) range.push(i);
   if (right < total - 1) range.push("...");
   if (total > 1) range.push(total);
-
   return range;
 }
 
-export default function Search() {
-  const [currentPage, setCurrentPage] = useState(1);
-  const totalPages = useMemo(
-    () => Math.ceil(articles.length / ARTICLES_PER_PAGE),
-    [],
-  );
-  const pageNumbers = useMemo(
-    () => getPageNumbers(currentPage, totalPages),
-    [currentPage, totalPages],
-  );
+export default function SearchPage() {
+  const params = useSearchParams();
+  const router = useRouter();
 
-  const startIdx = (currentPage - 1) * ARTICLES_PER_PAGE;
-  const currentArticles = articles.slice(
-    startIdx,
-    startIdx + ARTICLES_PER_PAGE,
-  );
+  const headerKeyword = params.get("keyword");
+  const trendKeyword = params.get("trends");
+  const keyword = headerKeyword ?? trendKeyword ?? "";
 
+  const page = parseInt(params.get("page") ?? "1", 10);
+
+  const { data, isLoading, error } = useSearchArticles(keyword, page);
+  const items = data?.content ?? [];
+  const totalPages = data?.totalPages ?? 1;
+  const totalElements = data?.totalElements ?? 0;
+  const pageNumbers = getPageNumbers(page, totalPages);
+
+  const handlePageChange = (p: number) => {
+    if (p < 1 || p > totalPages) return;
+    const key = headerKeyword !== null ? "keyword" : "trends";
+    const q = encodeURIComponent(keyword);
+    router.push(`/search?${key}=${q}&page=${p}`);
+  };
   return (
-    <div className="pb-18.5">
-      <div className="body1 mt-10 h-10 w-225 border-b border-gray-100 font-bold">
-        <p>검색어에 대한 검색결과 {articles.length}건</p>
+    <div className="p-6 pb-18.5">
+      <div className="body1 mb-4 h-10 w-full border-b border-gray-100 font-bold">
+        <p>
+          "{keyword}"에 대한 검색결과 {totalElements}건
+        </p>
       </div>
 
-      <div className="mt-6 flex flex-col gap-4">
-        {currentArticles.map((article) => (
-          <ArticleCard key={article.id} article={article} />
-        ))}
-      </div>
+      {isLoading && <div className="mb-4">로딩 중…</div>}
+      {error && <div>error:{error.message}</div>}
 
-      <Pagination>
-        <PaginationContent className="mt-8 flex justify-center space-x-2">
-          <PaginationItem>
-            <PaginationPrevious
-              aria-disabled={currentPage === 1}
-              onClick={() => setCurrentPage((prev) => Math.max(1, prev - 1))}
-              className="hover:bg-primary-50"
-            />
-          </PaginationItem>
+      {isLoading && <div>로딩 중…</div>}
+      {error && <div>error: {error.message}</div>}
 
-          {pageNumbers.map((p, idx) => (
-            <PaginationItem key={idx}>
-              {p === "..." ? (
-                <PaginationEllipsis />
-              ) : (
-                <PaginationLink
-                  isActive={p === currentPage}
-                  onClick={() => setCurrentPage(p as number)}
-                  className="hover:bg-primary-50 cursor-pointer"
-                >
-                  {p}
-                </PaginationLink>
-              )}
-            </PaginationItem>
-          ))}
+      {!isLoading && items.length === 0 && (
+        <div className="mt-8 text-center text-gray-500">
+          검색 결과가 없습니다.
+        </div>
+      )}
 
-          <PaginationItem>
-            <PaginationNext
-              aria-disabled={currentPage === totalPages}
-              onClick={() =>
-                setCurrentPage((prev) => Math.min(totalPages, prev + 1))
-              }
-              className="hover:bg-primary-50"
-            />
-          </PaginationItem>
-        </PaginationContent>
-      </Pagination>
+      {!isLoading && items.length > 0 && (
+        <>
+          <div className="mt-6 flex flex-col gap-4">
+            {items.map((item) => (
+              <ArticleCard
+                key={item.newsId}
+                article={{
+                  id: item.newsId,
+                  title: item.title,
+                  summary: item.content,
+                  imageUrl: item.imageUrl,
+                }}
+              />
+            ))}
+          </div>
+
+          <Pagination>
+            <PaginationContent className="mt-8 flex justify-center space-x-2">
+              <PaginationItem>
+                <PaginationPrevious
+                  aria-disabled={page === 1}
+                  onClick={() => handlePageChange(page - 1)}
+                />
+              </PaginationItem>
+
+              {pageNumbers.map((p, idx) => (
+                <PaginationItem key={idx}>
+                  {p === "..." ? (
+                    <PaginationEllipsis />
+                  ) : (
+                    <PaginationLink
+                      isActive={p === page}
+                      onClick={() => handlePageChange(p as number)}
+                    >
+                      {p}
+                    </PaginationLink>
+                  )}
+                </PaginationItem>
+              ))}
+
+              <PaginationItem>
+                <PaginationNext
+                  aria-disabled={page === totalPages}
+                  onClick={() => handlePageChange(page + 1)}
+                />
+              </PaginationItem>
+            </PaginationContent>
+          </Pagination>
+        </>
+      )}
     </div>
   );
 }
