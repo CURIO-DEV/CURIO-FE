@@ -1,14 +1,31 @@
 import Image from "next/image";
 import { dummyNews } from "@/mocks/dummyNews";
-import { useRouter } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { ROUTES } from "@/constants/routes";
 import { BookmarkIcon, HeartIcon } from "assets";
 import { useGetPopularArtiles } from "@/hooks/use-trends";
+import { useRelatedArticles } from "@/hooks/use-related";
 
-export default function TrandingNews() {
+export interface TrandingNewsProps {
+  isDetailPage?: boolean;
+}
+export default function TrendingNews({
+  isDetailPage = false,
+}: TrandingNewsProps) {
   const router = useRouter();
 
-  const { data } = useGetPopularArtiles();
+  const pathname = usePathname();
+  const rawId = pathname.replace(/^\/detail\//, "").split("/")[0];
+  const articleId =
+    rawId && /^\d+$/.test(rawId) ? parseInt(rawId, 10) : undefined;
+
+  const { data: related } = useRelatedArticles(articleId, {
+    enabled: isDetailPage && articleId !== undefined,
+  });
+
+  const { data: popular } = useGetPopularArtiles();
+
+  const list = isDetailPage ? (related ?? []) : (popular ?? []);
 
   const handleClick = (articleId: number) => {
     router.push(`${ROUTES.DETAIL}/${articleId}`);
@@ -16,8 +33,7 @@ export default function TrandingNews() {
 
   return (
     <div className="flex h-75.5 w-75 flex-col items-center gap-1.5 rounded-lg border border-gray-100 px-3.5 py-2">
-      {/* 뉴스 목록 */}
-      {data?.map((news) => (
+      {list?.map((news) => (
         <div
           key={news.articleId}
           className="flex w-68 cursor-pointer justify-center gap-3 rounded-md"

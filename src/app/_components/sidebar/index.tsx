@@ -29,7 +29,7 @@ export default function Sidebar() {
         <>
           <FontSize />
           <Summary />
-          <TrandingNews />
+          <TrandingNews isDetailPage />
         </>
       ) : isLogin ? (
         <div className="flex flex-col gap-6">
