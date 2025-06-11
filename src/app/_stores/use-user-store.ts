@@ -1,3 +1,4 @@
+import { GetUserProfileResponse } from "app/_types/user";
 import { create } from "zustand";
 
 interface UserStore {
