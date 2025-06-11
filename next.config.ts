@@ -2,8 +2,26 @@ import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
   images: {
-    domains: ["flexible.img.hani.co.kr", "img.hani.co.kr"],
+    remotePatterns: [
+      {
+        protocol: "http",
+        hostname: "img1.kakaocdn.net",
+      },
+      {
+        protocol: "http",
+        hostname: "t1.kakaocdn.net",
+      },
+      {
+        protocol: "https",
+        hostname: "flexible.img.hani.co.kr",
+      },
+      {
+        protocol: "https",
+        hostname: "img.hani.co.kr",
+      },
+    ],
   },
+
   experimental: {
     turbo: {
       rules: {
