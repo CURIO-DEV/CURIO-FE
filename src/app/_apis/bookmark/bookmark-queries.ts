@@ -1,5 +1,5 @@
 import { queryOptions } from "@tanstack/react-query";
-import { GetBookmarkFolderList } from "./bookmark";
+import { GetBookmarkArticles, GetBookmarkFolderList } from "./bookmark";
 
 export const BOOKMARK_KEY = {
   FOLDER_LIST: () => ["bookmark-folder-list"],
@@ -10,5 +10,11 @@ export const BOOKMARK_OPTION = {
     queryOptions({
       queryKey: BOOKMARK_KEY.FOLDER_LIST(),
       queryFn: GetBookmarkFolderList,
+    }),
+  ARTICLES_IN_FOLDER: (folderId: number, enabled: boolean) =>
+    queryOptions({
+      queryKey: ["bookmark-articles", folderId],
+      queryFn: () => GetBookmarkArticles(folderId),
+      enabled,
     }),
 };

@@ -13,6 +13,12 @@ interface BookmarkFolderContentProps {
     collaborators: string[];
     color: string;
   };
+  articles: {
+    articleId: number;
+    title: string;
+    content: string;
+    imageUrl: string;
+  }[];
   bookmarkedArticles: Set<string>;
   toggleBookmark: (id: string) => void;
   setInitialBookmarks: (ids: string[]) => void;
@@ -23,6 +29,7 @@ const defaultSummary =
 
 export default function BookmarkFolderContent({
   folder,
+  articles,
   bookmarkedArticles,
   toggleBookmark,
   setInitialBookmarks,
@@ -31,12 +38,12 @@ export default function BookmarkFolderContent({
   const [isSummarized, setIsSummarized] = useState(false);
 
   useEffect(() => {
-    // TODO: API 연동 시 해당 폴더의 북마크 기사 ID들을 fetch해서 대체
-    const bookmarkedIdsForFolder = ["1", "3", "5"];
+    // 초기 북마크 ID 설정 (임시로 모든 articleId를 string으로 변환)
+    const bookmarkedIdsForFolder = articles.map((a) => String(a.articleId));
     setInitialBookmarks(bookmarkedIdsForFolder);
     setSummary(defaultSummary);
     setIsSummarized(false);
-  }, [folder.id]);
+  }, [folder.id, articles, setInitialBookmarks]);
 
   const handleSummarize = () => {
     const result = "요약된 기사 내용이 여기에 표시됩니다...";
@@ -65,14 +72,16 @@ export default function BookmarkFolderContent({
 
       <div className="mt-10">
         {articles.map((article) => {
-          const isBookmarked = bookmarkedArticles.has(article.id);
+          const idStr = String(article.articleId);
+          const isBookmarked = bookmarkedArticles.has(idStr);
+
           return (
             <div
-              key={article.id}
+              key={article.articleId}
               className="relative flex h-33 items-center border-t border-gray-100"
             >
               <button
-                onClick={() => toggleBookmark(article.id)}
+                onClick={() => toggleBookmark(idStr)}
                 className="absolute -top-1.5 right-5"
               >
                 <BookmarkIcon
@@ -83,7 +92,14 @@ export default function BookmarkFolderContent({
                   }}
                 />
               </button>
-              <ArticleCard article={article} />
+              <ArticleCard
+                article={{
+                  id: article.articleId,
+                  title: article.title,
+                  summary: article.content,
+                  imageUrl: article.imageUrl,
+                }}
+              />
             </div>
           );
         })}

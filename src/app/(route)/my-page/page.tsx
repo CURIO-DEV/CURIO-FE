@@ -5,7 +5,10 @@ import MyProfileCard from "./_components/my-profile-card";
 import BookmarkFolderList from "./_components/bookmark-folder-list";
 import BookmarkFolderContent from "./_components/bookmark-folder-content";
 import { mockFolders } from "@/mocks/book-mark-folders";
-import { useGetBookmarkFolders } from "@/hooks/use-bookmark";
+import {
+  useGetBookmarkArticles,
+  useGetBookmarkFolders,
+} from "@/hooks/use-bookmark";
 
 export default function MyPage() {
   const [selectedFolderId, setSelectedFolderId] = useState<number | null>(null);
@@ -42,6 +45,8 @@ export default function MyPage() {
 
   const selectedFolder = mappedFolders.find((f) => f.id === selectedFolderId);
 
+  const { data: articles = [] } = useGetBookmarkArticles(selectedFolderId);
+
   return (
     <div className="mt-10 flex w-full gap-12">
       <div className="flex w-74 flex-col gap-8">
@@ -56,6 +61,7 @@ export default function MyPage() {
       {selectedFolder ? (
         <BookmarkFolderContent
           folder={selectedFolder}
+          articles={articles} // ✅ 실제 API 데이터
           bookmarkedArticles={bookmarkedArticles}
           toggleBookmark={toggleBookmark}
           setInitialBookmarks={setInitialBookmarks}

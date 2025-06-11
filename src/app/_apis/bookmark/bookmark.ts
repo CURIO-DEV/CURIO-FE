@@ -11,3 +11,14 @@ export interface BookmarkFolderResponse {
 export const GetBookmarkFolderList = () => {
   return apiGet<BookmarkFolderResponse[]>(END_POINTS.GET_BOOKMARK_FOLDER_LIST);
 };
+
+export interface BookmarkArticle {
+  articleId: number;
+  title: string;
+  content: string;
+  imageUrl: string;
+}
+
+export const GetBookmarkArticles = (folderId: number) => {
+  return apiGet<BookmarkArticle[]>(END_POINTS.GET_BOOKMARK_ARTICLES(folderId));
+};
