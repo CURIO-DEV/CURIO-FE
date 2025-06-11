@@ -7,3 +7,7 @@ export interface GetUserProfileResponse {
   profile_image_url: string;
   nickname: string;
 }
+
+export interface GetUserMeResponse {
+  isLogin: boolean;
+}
