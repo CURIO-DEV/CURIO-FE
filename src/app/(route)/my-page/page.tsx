@@ -5,6 +5,7 @@ import MyProfileCard from "./_components/my-profile-card";
 import BookmarkFolderList from "./_components/bookmark-folder-list";
 import BookmarkFolderContent from "./_components/bookmark-folder-content";
 import { mockFolders } from "@/mocks/book-mark-folders";
+import { useGetBookmarkFolders } from "@/hooks/use-bookmark";
 
 export default function MyPage() {
   const [selectedFolderId, setSelectedFolderId] = useState<number | null>(null);
@@ -28,15 +29,25 @@ export default function MyPage() {
     setBookmarkedArticles(new Set(ids));
   }, []);
 
-  const folders = mockFolders;
-  const selectedFolder = folders.find((f) => f.id === selectedFolderId);
+  // const folders = mockFolders;
+  // const selectedFolder = folders.find((f) => f.id === selectedFolderId);
+  const { data: folders = [] } = useGetBookmarkFolders();
+
+  const mappedFolders = folders.map((f) => ({
+    id: f.bookmarkId,
+    name: f.name,
+    color: f.color,
+    collaborators: f.members,
+  }));
+
+  const selectedFolder = mappedFolders.find((f) => f.id === selectedFolderId);
 
   return (
     <div className="mt-10 flex w-full gap-12">
       <div className="flex w-74 flex-col gap-8">
         <MyProfileCard />
         <BookmarkFolderList
-          folders={folders}
+          folders={mappedFolders}
           selectedFolderId={selectedFolderId}
           onFolderClick={setSelectedFolderId}
         />

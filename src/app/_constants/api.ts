@@ -5,4 +5,5 @@ export const END_POINTS = {
   PATCH_NEWSLETTER_SUBSCRIBE: "/users/newsletter/subscribe",
   GET_USER_PROFILE: "/users/profile",
   GET_USER_ME: "/users/me",
+  GET_BOOKMARK_FOLDER_LIST: "/bookmarks/list",
 };
