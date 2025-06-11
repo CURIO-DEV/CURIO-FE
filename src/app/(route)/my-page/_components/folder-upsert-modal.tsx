@@ -14,11 +14,17 @@ import Input from "@/components/input";
 import Modal from "@/components/modal";
 import Button from "@/components/button";
 import { cn } from "@/utils/cn";
+import {
+  CreateBookmarkFolder,
+  UpdateBookmarkFolder,
+} from "@/apis/bookmark/bookmark";
+import { toast } from "sonner";
 
 interface FolderUpsertModalProps {
   onClick: () => void;
   mode: "create" | "edit";
 }
+
 export default function FolderUpsertModal({
   onClick,
   mode,
@@ -27,12 +33,6 @@ export default function FolderUpsertModal({
   const [color, setColor] = useState<ColorKey>("red");
   const [members, setMembers] = useState<string[]>([]);
   const [inputValue, setInputValue] = useState("");
-
-  const handleSave = () => {
-    onClick();
-    // TODO : 저장토스트
-  };
-
   const MAX_MEMBERS = 3;
   const [limitReached, setLimitReached] = useState(false);
 
@@ -58,6 +58,21 @@ export default function FolderUpsertModal({
     setMembers(updated);
     if (updated.length < MAX_MEMBERS) {
       setLimitReached(false);
+    }
+  };
+
+  const handleSave = async () => {
+    try {
+      if (mode === "create") {
+        await CreateBookmarkFolder({ name, color, members });
+        toast.success("폴더가 생성되었습니다.");
+      } else {
+        // TODO: edit API 연결 필요
+        toast.success("폴더가 수정되었습니다.");
+      }
+      onClick();
+    } catch (error) {
+      toast.error("폴더 저장에 실패했습니다.");
     }
   };
 
@@ -140,11 +155,11 @@ export default function FolderUpsertModal({
                   />
                 </div>
               ))}
-              {limitReached ? (
+              {limitReached && (
                 <p className="caption2 text-primary-500">
                   ⚠️ 공동 작업자는 최대 3명까지 추가할 수 있습니다.
                 </p>
-              ) : null}
+              )}
             </div>
           </div>
         </div>

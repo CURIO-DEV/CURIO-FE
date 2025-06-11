@@ -45,7 +45,7 @@ export default function DetailPage() {
   };
   return (
     <div className="mt-12 mb-10">
-      <ActionBar />
+      <ActionBar newsId={articleId} />
       <div className="mr-14 ml-35.5">
         <h1 className="heading2 font-semibold">{hl.title}</h1>
         <p className="caption1 flex gap-3 font-medium text-gray-500">

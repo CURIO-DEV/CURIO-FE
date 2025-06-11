@@ -6,6 +6,7 @@ import { colorMap, ColorKey } from "@/constants/color";
 import FolderUpsertModal from "./folder-upsert-modal";
 
 interface FolderItemProps {
+  // bookmarkId: number;
   name: string;
   collaborators: string[];
   color: string;
@@ -14,6 +15,7 @@ interface FolderItemProps {
 }
 
 export default function BookmarkFolderItem({
+  //bookmarkId,
   name,
   collaborators,
   color,
@@ -87,6 +89,7 @@ export default function BookmarkFolderItem({
                   setIsUpsertModalOpen(false);
                 }}
                 mode="edit"
+                //bookmarkId={bookmarkId}
               />
             )}
           </div>
