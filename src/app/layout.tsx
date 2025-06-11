@@ -5,6 +5,7 @@ import { Roboto } from "next/font/google";
 import "./globals.css";
 import Layout from "./_components/layout";
 import Providers from "./providers";
+import { Toaster } from "sonner";
 
 const pretendard = localFont({
   src: "_styles/fonts/PretendardVariable.woff2",
@@ -45,6 +46,7 @@ export default function RootLayout({
       >
         <Providers>
           <Layout>{children}</Layout>
+          <Toaster></Toaster>
         </Providers>
       </body>
     </html>
