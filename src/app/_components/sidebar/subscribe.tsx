@@ -19,6 +19,8 @@ export default function Subscribe() {
     SetIsModalOpen(true);
   };
 
+  console.log("email", email);
+
   const handleClose = () => {
     mutate(
       { "newsletter-email": email },
