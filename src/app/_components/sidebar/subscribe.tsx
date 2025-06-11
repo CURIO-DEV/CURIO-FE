@@ -1,6 +1,8 @@
+"use client";
+
 import { IMAGES_PATH } from "@/constants/images";
 import Image from "next/image";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Modal from "../modal";
 import Input from "../input";
 import Button from "../button";
@@ -19,9 +21,19 @@ export default function Subscribe() {
     SetIsModalOpen(true);
   };
 
+  useEffect(() => {
+    if (isModalOpen) {
+      setInputEmail(email);
+    }
+  }, [isModalOpen, email]);
+
   console.log("email", email);
 
   const handleClose = () => {
+    SetIsModalOpen(false);
+  };
+
+  const handleSubscribe = () => {
     mutate(
       { "newsletter-email": email },
       {
@@ -30,11 +42,6 @@ export default function Subscribe() {
         },
       },
     );
-    SetIsModalOpen(false);
-  };
-
-  const handleSubscribe = () => {
-    // TODO: 메일 구독 신청 API 연결
     SetIsModalOpen(false);
   };
   return (
