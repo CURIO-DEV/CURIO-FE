@@ -9,25 +9,8 @@ import {
   useGetBookmarkArticles,
   useGetBookmarkFolders,
 } from "@/hooks/use-bookmark";
-import { CreateBookmarkFolder } from "@/apis/bookmark/bookmark";
 
 export default function MyPage() {
-  const handleCreateDummyFolder = () => {
-    CreateBookmarkFolder({
-      name: "테스트 폴더",
-      color: "green",
-      members: ["test@curio.com"],
-    })
-      .then((res) => {
-        console.log("✅ 폴더 생성 성공:", res);
-        alert("테스트 폴더가 생성되었습니다. 새로고침 해보세요!");
-      })
-      .catch((err) => {
-        console.error("❌ 폴더 생성 실패:", err);
-        alert("폴더 생성에 실패했습니다.");
-      });
-  }; // 테스트용
-
   const [selectedFolderId, setSelectedFolderId] = useState<number | null>(null);
   const [bookmarkedArticles, setBookmarkedArticles] = useState<Set<string>>(
     new Set(),
@@ -68,15 +51,6 @@ export default function MyPage() {
     <div className="mt-10 flex w-full gap-12">
       <div className="flex w-74 flex-col gap-8">
         <MyProfileCard />
-        <div className="mb-4">
-          <button
-            onClick={handleCreateDummyFolder}
-            className="rounded bg-gray-200 px-4 py-2 text-sm font-semibold text-gray-800 hover:bg-gray-300"
-          >
-            + 테스트 폴더 만들기
-          </button>
-        </div>
-
         <BookmarkFolderList
           folders={mappedFolders}
           selectedFolderId={selectedFolderId}

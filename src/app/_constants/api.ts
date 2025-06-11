@@ -7,5 +7,4 @@ export const END_POINTS = {
   GET_USER_ME: "/users/me",
   GET_BOOKMARK_FOLDER_LIST: "/bookmarks/list",
   GET_BOOKMARK_ARTICLES: (folderId: number) => `/bookmarks/${folderId}/news`,
-  CREATE_BOOKMARK_FOLDER: "/bookmarks/create",
 };
