@@ -27,8 +27,6 @@ export default function Subscribe() {
     }
   }, [isModalOpen, email]);
 
-  console.log("email", email);
-
   const handleClose = () => {
     SetIsModalOpen(false);
   };
