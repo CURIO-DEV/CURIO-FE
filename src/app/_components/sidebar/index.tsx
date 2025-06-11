@@ -38,7 +38,6 @@ export default function Sidebar() {
   }, [isLogin, data, setProfile]);
 
   const profile = useUserStore((s) => s.profile);
-  console.log("[Sidebar] Zustand에 저장된 프로필", profile);
 
   return (
     <aside className="min-h-screen w-85 border-l-1 border-gray-100 pl-10">
