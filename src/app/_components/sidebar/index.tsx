@@ -26,18 +26,10 @@ export default function Sidebar() {
     router.push(ROUTES.LOGIN);
   };
 
-  const { data, isError } = useGetUserProfile();
-  const isLogin = !!data && !isError;
-
-  const setProfile = useUserStore((s) => s.setProfile);
-
-  useEffect(() => {
-    if (isLogin && data) {
-      setProfile(data);
-    }
-  }, [isLogin, data, setProfile]);
+  const { data } = useGetUserProfile();
 
   const profile = useUserStore((s) => s.profile);
+  const isLogin = !!profile;
 
   return (
     <aside className="min-h-screen w-85 border-l-1 border-gray-100 pl-10">
