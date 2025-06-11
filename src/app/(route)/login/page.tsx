@@ -3,12 +3,14 @@
 import { GoogleSimbol, KakaoSimbol } from "assets";
 
 export default function Login() {
+  const isLocal = process.env.NODE_ENV !== "production";
+  const stateParam = isLocal ? "&state=local" : "";
+
   const handleKakaoLogin = () => {
     const REST_API_KEY = process.env.NEXT_PUBLIC_KAKAO_REST_API_KEY!;
     const REDIRECT_URI = process.env.NEXT_PUBLIC_KAKAO_REDIRECT_URI!;
 
-    const kakaoAuthURL = `https://kauth.kakao.com/oauth/authorize?client_id=${REST_API_KEY}&redirect_uri=${REDIRECT_URI}&response_type=code`;
-
+    const kakaoAuthURL = `https://kauth.kakao.com/oauth/authorize?client_id=${REST_API_KEY}&redirect_uri=${REDIRECT_URI}&response_type=code${stateParam}`;
     window.location.href = kakaoAuthURL;
   };
 

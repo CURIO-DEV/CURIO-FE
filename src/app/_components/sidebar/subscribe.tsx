@@ -1,24 +1,45 @@
+"use client";
+
 import { IMAGES_PATH } from "@/constants/images";
 import Image from "next/image";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Modal from "../modal";
 import Input from "../input";
 import Button from "../button";
 import { ShortcutIcon } from "assets";
+import { usePatchSubscribe } from "@/hooks/use-user";
+import { useUserStore } from "@/stores/use-user-store";
 
 export default function Subscribe() {
   const [isModalOpen, SetIsModalOpen] = useState(false);
+  const email = useUserStore((s) => s.profile?.email || "");
+  const [inputEmail, setInputEmail] = useState(email);
+
+  const { mutate } = usePatchSubscribe();
 
   const handleClick = () => {
     SetIsModalOpen(true);
   };
+
+  useEffect(() => {
+    if (isModalOpen) {
+      setInputEmail(email);
+    }
+  }, [isModalOpen, email]);
 
   const handleClose = () => {
     SetIsModalOpen(false);
   };
 
   const handleSubscribe = () => {
-    // TODO: 메일 구독 신청 API 연결
+    mutate(
+      { "newsletter-email": email },
+      {
+        onSuccess: () => {
+          setInputEmail(email);
+        },
+      },
+    );
     SetIsModalOpen(false);
   };
   return (
@@ -55,7 +76,11 @@ export default function Subscribe() {
             <label className="caption1 flex flex-col font-medium">
               이메일
               {/* // TODO:API 연결 시 value 넣어주기 */}
-              <Input placeholder="sample@naver.com" />
+              <Input
+                placeholder="sample@naver.com"
+                value={inputEmail}
+                onChange={(e) => setInputEmail(e.target.value)}
+              />
             </label>
           </div>
           <Button onClick={handleSubscribe} className="mt-7">
