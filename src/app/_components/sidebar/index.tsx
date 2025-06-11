@@ -30,11 +30,7 @@ export default function Sidebar() {
   const { data } = useGetUserProfile();
   const token = Cookies.get("accessToken");
 
-  console.log(token);
-
-  const profile = useUserStore((s) => s.profile);
-  const isLogin = !!profile;
-
+  const isLogin = !!token;
   return (
     <aside className="min-h-screen w-85 border-l-1 border-gray-100 pl-10">
       {isDetailPage ? (

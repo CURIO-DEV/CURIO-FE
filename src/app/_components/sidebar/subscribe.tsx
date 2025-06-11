@@ -6,9 +6,12 @@ import Input from "../input";
 import Button from "../button";
 import { ShortcutIcon } from "assets";
 import { usePatchSubscribe } from "@/hooks/use-user";
+import { useUserStore } from "@/stores/use-user-store";
 
 export default function Subscribe() {
   const [isModalOpen, SetIsModalOpen] = useState(false);
+  const email = useUserStore((s) => s.profile?.email || "");
+  const [inputEmail, setInputEmail] = useState(email);
 
   const { mutate } = usePatchSubscribe();
 
@@ -17,6 +20,14 @@ export default function Subscribe() {
   };
 
   const handleClose = () => {
+    mutate(
+      { "newsletter-email": email },
+      {
+        onSuccess: () => {
+          setInputEmail(email);
+        },
+      },
+    );
     SetIsModalOpen(false);
   };
 
@@ -58,7 +69,11 @@ export default function Subscribe() {
             <label className="caption1 flex flex-col font-medium">
               이메일
               {/* // TODO:API 연결 시 value 넣어주기 */}
-              <Input placeholder="sample@naver.com" />
+              <Input
+                placeholder="sample@naver.com"
+                value={inputEmail}
+                onChange={(e) => setInputEmail(e.target.value)}
+              />
             </label>
           </div>
           <Button onClick={handleSubscribe} className="mt-7">
