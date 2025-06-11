@@ -2,18 +2,36 @@
 
 import Image from "next/image";
 import { SettingIcon } from "assets";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { IMAGES_PATH } from "@/constants/images";
 import { useRouter } from "next/navigation";
 import { ROUTES } from "@/constants/routes";
+import { useUserStore } from "@/stores/use-user-store";
+import { useGetUserMe, useGetUserProfile } from "@/hooks/use-user";
 
 export default function MyProfileCard() {
   const router = useRouter();
+
+  const { data: userMe } = useGetUserMe();
+
+  const { data: userProfile } = useGetUserProfile({
+    enabled: !!userMe?.isLogin,
+  });
+
+  const setProfile = useUserStore((s) => s.setProfile);
+
+  useEffect(() => {
+    if (userProfile) {
+      setProfile(userProfile);
+    }
+  }, [userProfile, setProfile]);
+
   const handleClick = () => {
     router.push(ROUTES.SETTING);
   };
-  /* TODO 닉네임 API연결 */
-  const [nickname] = useState("닉네임");
+
+  const profileImage = userProfile?.profile_image_url || IMAGES_PATH.LOGO_HEAD;
+  const nickname = userProfile?.nickname || "닉네임";
 
   return (
     <div className="box-border flex flex-col items-center rounded-lg border border-gray-100">
