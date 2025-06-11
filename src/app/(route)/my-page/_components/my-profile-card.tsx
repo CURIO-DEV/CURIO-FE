@@ -37,12 +37,12 @@ export default function MyProfileCard() {
     <div className="box-border flex flex-col items-center rounded-lg border border-gray-100">
       <div className="relative mt-11.25 flex items-center justify-center rounded-full border border-gray-200 px-[25.5px] py-8.75">
         <Image
-          src={IMAGES_PATH.LOGO_HEAD}
+          src={profileImage}
           alt="profile"
           width={115}
           height={96}
-          style={{ width: "115px", height: "96px" }}
-          className="block"
+          // style={{ width: "115px", height: "96px" }}
+          className="block h-24 w-28.75 rounded-full"
         />
         <button className="absolute right-0 bottom-0" onClick={handleClick}>
           <SettingIcon className="h-10 w-10" />
