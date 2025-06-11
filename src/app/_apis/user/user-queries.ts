@@ -1,6 +1,5 @@
 import { queryOptions } from "@tanstack/react-query";
 import { GetUserInterests, GetUserMe, GetUserProfile } from "./user";
-import Cookies from "js-cookie";
 
 export const USER_KEY = {
   USER_PROFILE: () => ["profile"],
