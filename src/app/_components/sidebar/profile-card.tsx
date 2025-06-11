@@ -20,7 +20,7 @@ export default function ProfileCard({ ...props }) {
               alt="profile"
               width={38}
               height={32}
-              className="h-13.75 w-13.75 border border-gray-200 object-cover"
+              className="h-13.75 w-13.75 rounded-full border border-gray-200 object-cover"
             />
           )}
         </div>
