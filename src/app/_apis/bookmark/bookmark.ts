@@ -41,16 +41,20 @@ export const CreateBookmarkFolder = (body: CreateBookmarkBody) => {
 
 export const UpdateBookmarkFolder = (
   bookmarkId: number,
-  body: CreateBookmarkBody,
+  body: {
+    name: string;
+    color: string;
+    members: string[];
+  },
 ) => {
-  return apiPatch<BookmarkFolderResponse, CreateBookmarkBody>(
-    `/bookmarks/${bookmarkId}/update`,
-    body,
-  );
+  return apiPatch(`/bookmarks/${bookmarkId}/update`, body);
 };
 
-export const AddBookmarkArticle = async (folderId: number, newsId: number) => {
-  return apiPost<string>(`/bookmarks/${folderId}/news/${newsId}`);
+export const AddBookmarkArticle = (
+  folderId: number,
+  newsId: number,
+): Promise<{ message: string }> => {
+  return apiPost(`/bookmarks/${folderId}/news/${newsId}`);
 };
 
 export const GetBookmarkArticles = (folderId: number) => {

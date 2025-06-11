@@ -6,7 +6,7 @@ import { colorMap, ColorKey } from "@/constants/color";
 import FolderUpsertModal from "./folder-upsert-modal";
 
 interface FolderItemProps {
-  // bookmarkId: number;
+  bookmarkId: number;
   name: string;
   collaborators: string[];
   color: string;
@@ -15,7 +15,7 @@ interface FolderItemProps {
 }
 
 export default function BookmarkFolderItem({
-  //bookmarkId,
+  bookmarkId,
   name,
   collaborators,
   color,
@@ -39,7 +39,7 @@ export default function BookmarkFolderItem({
   const handleEdit = () => {
     setIsMenuOpen(false);
     setIsUpsertModalOpen(true);
-    //TODO : 토스트 메시지 - 저장
+    //수정 토스트
   };
 
   const handleDelete = () => {
@@ -85,11 +85,12 @@ export default function BookmarkFolderItem({
             )}
             {isUpsertModalOpen && (
               <FolderUpsertModal
-                onClick={() => {
-                  setIsUpsertModalOpen(false);
-                }}
+                onClick={() => setIsUpsertModalOpen(false)}
                 mode="edit"
-                //bookmarkId={bookmarkId}
+                bookmarkId={bookmarkId} // 🧡 key point
+                defaultName={name}
+                defaultColor={color}
+                defaultMembers={collaborators}
               />
             )}
           </div>

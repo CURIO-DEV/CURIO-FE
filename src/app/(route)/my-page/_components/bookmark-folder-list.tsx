@@ -26,7 +26,10 @@ export default function BookmarkFolderList({
           {folders.map((folder) => (
             <BookmarkFolderItem
               key={folder.id}
-              {...folder}
+              bookmarkId={folder.id} // ✅ 추가
+              name={folder.name}
+              color={folder.color}
+              collaborators={folder.collaborators}
               isSelected={folder.id === selectedFolderId}
               onClick={() => onFolderClick(folder.id)}
             />

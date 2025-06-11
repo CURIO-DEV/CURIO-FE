@@ -35,8 +35,8 @@ export default function FolderModal({
     }
 
     try {
-      const message = await AddBookmarkArticle(selectedFolderId, newsId);
-      toast.success(message);
+      const response = await AddBookmarkArticle(selectedFolderId, newsId);
+      toast.success(response.message);
       onClick();
     } catch (error) {
       toast.error("북마크 추가에 실패했습니다.");

@@ -23,18 +23,29 @@ import { toast } from "sonner";
 interface FolderUpsertModalProps {
   onClick: () => void;
   mode: "create" | "edit";
+  bookmarkId?: number;
+  defaultName?: string;
+  defaultColor?: string;
+  defaultMembers?: string[];
 }
 
 export default function FolderUpsertModal({
   onClick,
   mode,
+  bookmarkId,
+  defaultName,
+  defaultColor,
+  defaultMembers,
 }: FolderUpsertModalProps) {
-  const [name, setName] = useState("");
-  const [color, setColor] = useState<ColorKey>("red");
-  const [members, setMembers] = useState<string[]>([]);
+  const [name, setName] = useState(defaultName ?? "");
+  const [color, setColor] = useState(defaultColor ?? "red");
+  const [members, setMembers] = useState<string[]>(defaultMembers ?? []);
   const [inputValue, setInputValue] = useState("");
   const MAX_MEMBERS = 3;
   const [limitReached, setLimitReached] = useState(false);
+  // const [name, setName] = useState(defaultName ?? "");
+  // const [color, setColor] = useState(defaultColor ?? "gray");
+  // const [members, setMembers] = useState<string[]>(defaultMembers ?? []);
 
   const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === "Enter" && inputValue.trim() !== "") {
@@ -62,17 +73,22 @@ export default function FolderUpsertModal({
   };
 
   const handleSave = async () => {
+    const payload = {
+      name,
+      color,
+      members,
+    };
+
     try {
       if (mode === "create") {
-        await CreateBookmarkFolder({ name, color, members });
-        toast.success("폴더가 생성되었습니다.");
-      } else {
-        // TODO: edit API 연결 필요
-        toast.success("폴더가 수정되었습니다.");
+        await CreateBookmarkFolder(payload);
+      } else if (mode === "edit" && bookmarkId !== undefined) {
+        await UpdateBookmarkFolder(bookmarkId, payload); // PATCH API 연결
       }
+      toast.success("저장되었습니다.");
       onClick();
-    } catch (error) {
-      toast.error("폴더 저장에 실패했습니다.");
+    } catch (e) {
+      toast.error("저장에 실패했습니다.");
     }
   };
 
