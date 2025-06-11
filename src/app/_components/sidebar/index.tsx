@@ -15,6 +15,7 @@ import FontSize from "../font-size";
 import Summary from "../summary";
 import { useGetUserProfile } from "@/hooks/use-user";
 import { useUserStore } from "@/stores/use-user-store";
+import Cookies from "js-cookie";
 
 export default function Sidebar() {
   const router = useRouter();
@@ -27,6 +28,9 @@ export default function Sidebar() {
   };
 
   const { data } = useGetUserProfile();
+  const token = Cookies.get("accessToken");
+
+  console.log(token);
 
   const profile = useUserStore((s) => s.profile);
   const isLogin = !!profile;
