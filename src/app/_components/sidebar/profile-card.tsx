@@ -18,8 +18,6 @@ export default function ProfileCard({ ...props }) {
             <Image
               src={props.profile_image_url}
               alt="profile"
-              width={38}
-              height={32}
               fill
               className="h-13.75 w-13.75 border border-gray-200 object-cover"
             />
