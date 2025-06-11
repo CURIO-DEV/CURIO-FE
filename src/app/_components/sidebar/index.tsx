@@ -29,8 +29,6 @@ export default function Sidebar() {
 
   const { data: userMe } = useGetUserMe();
 
-  console.log(userMe);
-
   const { data } = useGetUserProfile({
     enabled: !!userMe?.isLogin,
   });
