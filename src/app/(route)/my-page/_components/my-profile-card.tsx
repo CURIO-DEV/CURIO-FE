@@ -41,8 +41,7 @@ export default function MyProfileCard() {
           alt="profile"
           width={115}
           height={96}
-          // style={{ width: "115px", height: "96px" }}
-          className="block h-42 w-42 rounded-full"
+          className="h-42 w-42 rounded-full"
         />
         <button className="absolute right-0 bottom-0" onClick={handleClick}>
           <SettingIcon className="h-10 w-10" />
