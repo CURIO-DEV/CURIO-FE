@@ -11,7 +11,7 @@ export const usePatchSubscribe = () => {
 };
 
 export const useGetUserProfile = (p0: { enabled: boolean }) => {
-  return useQuery(USER_OPTION.USER_PROFILE());
+  return useQuery(USER_OPTION.USER_PROFILE(p0.enabled));
 };
 
 export const useGetUserMe = () => {

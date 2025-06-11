@@ -8,14 +8,12 @@ export const USER_KEY = {
 } as const;
 
 export const USER_OPTION = {
-  USER_PROFILE: () => {
-    const token = Cookies.get("accessToken");
-
-    return queryOptions({
+  USER_PROFILE: (enabled: boolean) =>
+    queryOptions({
       queryKey: USER_KEY.USER_PROFILE(),
       queryFn: () => GetUserProfile(),
-    });
-  },
+      enabled,
+    }),
   USER_ME: () => {
     return queryOptions({
       queryKey: USER_KEY.USER_ME(),
