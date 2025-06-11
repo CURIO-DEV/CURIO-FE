@@ -1,7 +1,7 @@
 "use client";
 
 import Image from "next/image";
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import Button from "../button";
 import { IMAGES_PATH } from "@/constants/images";
 import Subscribe from "./subscribe";
@@ -13,8 +13,8 @@ import { ROUTES } from "@/constants/routes";
 import { usePathname } from "next/navigation";
 import FontSize from "../font-size";
 import Summary from "../summary";
-import Cookies from "js-cookie";
 import { useGetUserProfile } from "@/hooks/use-user";
+import { useUserStore } from "@/stores/use-user-store";
 
 export default function Sidebar() {
   const router = useRouter();
@@ -28,6 +28,17 @@ export default function Sidebar() {
 
   const { data, isError } = useGetUserProfile();
   const isLogin = !!data && !isError;
+
+  const setProfile = useUserStore((s) => s.setProfile);
+
+  useEffect(() => {
+    if (isLogin && data) {
+      setProfile(data);
+    }
+  }, [isLogin, data, setProfile]);
+
+  const profile = useUserStore((s) => s.profile);
+  console.log("[Sidebar] Zustand에 저장된 프로필", profile);
 
   return (
     <aside className="min-h-screen w-85 border-l-1 border-gray-100 pl-10">

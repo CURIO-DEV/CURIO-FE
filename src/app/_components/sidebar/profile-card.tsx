@@ -2,7 +2,6 @@ import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { ROUTES } from "@/constants/routes";
 import { SettingIcon } from "assets";
-import { useGetUserProfile } from "@/hooks/use-user";
 
 export default function ProfileCard({ ...props }) {
   const router = useRouter();
@@ -10,8 +9,6 @@ export default function ProfileCard({ ...props }) {
   const handleClick = () => {
     router.push(ROUTES.MYPAGE);
   };
-
-  // const { data } = useGetUserProfile();
 
   return (
     <div className="mt-6 flex h-23 w-75 items-center rounded-lg border border-gray-200 pl-3.75">
