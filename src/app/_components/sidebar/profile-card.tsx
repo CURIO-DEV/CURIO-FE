@@ -16,9 +16,9 @@ export default function ProfileCard({ ...props }) {
     <div className="mt-6 flex h-23 w-75 items-center rounded-lg border border-gray-200 pl-3.75">
       <div className="relative">
         <div className="flex h-13.75 w-13.75 items-center justify-center rounded-full border border-gray-200">
-          {props && (
+          {props.profile_image_url && (
             <Image
-              src={props.profile_image_url}
+              src={props.profile_image_url || "/images/logo-head.png"}
               alt="profile"
               width={38}
               height={32}

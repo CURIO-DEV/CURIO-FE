@@ -13,9 +13,8 @@ import { ROUTES } from "@/constants/routes";
 import { usePathname } from "next/navigation";
 import FontSize from "../font-size";
 import Summary from "../summary";
-import { useGetUserProfile } from "@/hooks/use-user";
+import { useGetUserMe, useGetUserProfile } from "@/hooks/use-user";
 import { useUserStore } from "@/stores/use-user-store";
-import Cookies from "js-cookie";
 
 export default function Sidebar() {
   const router = useRouter();
@@ -28,10 +27,13 @@ export default function Sidebar() {
     router.push(ROUTES.LOGIN);
   };
 
-  const { data } = useGetUserProfile();
-  const token = Cookies.get("accessToken");
+  const { data: userMe } = useGetUserMe();
 
-  const isLogin = !!token;
+  console.log(userMe);
+
+  const { data } = useGetUserProfile({
+    enabled: !!userMe?.isLogin,
+  });
 
   useEffect(() => {
     if (data) {
@@ -46,7 +48,7 @@ export default function Sidebar() {
           <Summary />
           <TrandingNews />
         </>
-      ) : isLogin ? (
+      ) : userMe?.isLogin ? (
         <div className="flex flex-col gap-6">
           <ProfileCard {...data} />
           <TrandRanking />
