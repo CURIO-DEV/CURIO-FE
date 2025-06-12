@@ -62,6 +62,8 @@ export default function FolderUpsertModal({
     }
   }, [mode, defaultName, defaultColor, defaultMembers]);
 
+  console.log("mode 가 궁금해", mode);
+
   /* ---------- 공동 작업자 입력 ---------- */
   const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key !== "Enter" || inputValue.trim() === "") return;
