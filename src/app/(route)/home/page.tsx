@@ -13,11 +13,13 @@ import { useGetUserInterests, usePatchUserInterests } from "@/hooks/use-user";
 
 export default function Home() {
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [selectedCategories, setSelectedCategories] =
-    useState<string[]>(DEFAULT_CATEGORIES);
 
   const { data: userInterests } = useGetUserInterests();
   const [categories, setCategories] = useState<string[]>(
+    userInterests?.interests ?? DEFAULT_CATEGORIES,
+  );
+
+  const [selectedCategories, setSelectedCategories] = useState<string[]>(
     userInterests?.interests ?? DEFAULT_CATEGORIES,
   );
 
