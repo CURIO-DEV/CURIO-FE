@@ -17,3 +17,10 @@ export interface GetUserInterestsResponse {
 }
 
 export type UserInterestsData = string[];
+
+export interface GetUserInterestsNewsResponse {
+  title: string;
+  content: string;
+  imageUrl: string;
+  articleId: number;
+}

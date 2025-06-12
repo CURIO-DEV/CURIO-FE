@@ -9,11 +9,14 @@ import { CATEGORIES, DEFAULT_CATEGORIES } from "@/constants/categories";
 import ArticleCard from "@/components/article";
 import { EditIcon } from "assets";
 import { articles } from "@/mocks/article-array";
-import { useGetUserInterests, usePatchUserInterests } from "@/hooks/use-user";
+import {
+  useGetUserInterests,
+  useGetUserInterestsNews,
+  usePatchUserInterests,
+} from "@/hooks/use-user";
 
 export default function Home() {
   const [isModalOpen, setIsModalOpen] = useState(false);
-
   const { data: userInterests } = useGetUserInterests();
   const [categories, setCategories] = useState<string[]>(
     userInterests?.interests ?? DEFAULT_CATEGORIES,
@@ -23,7 +26,13 @@ export default function Home() {
     userInterests?.interests ?? DEFAULT_CATEGORIES,
   );
 
+  const [selectedCategory, setSelectedCategory] = useState<string>(
+    selectedCategories[0],
+  );
+
   const { mutate } = usePatchUserInterests();
+
+  const { data: userInterestsNews } = useGetUserInterestsNews(selectedCategory);
 
   const handleEdit = () => {
     setIsModalOpen(true);
@@ -37,6 +46,7 @@ export default function Home() {
     setIsModalOpen(false);
     setCategories(selectedCategories);
     mutate(selectedCategories);
+    setSelectedCategory(selectedCategories[0]);
   };
 
   const handleCategoryClick = (item: string) => {
@@ -68,8 +78,8 @@ export default function Home() {
         <EditIcon onClick={handleEdit} className="cursor-pointer" />
       </div>
       <div className="flex flex-col gap-4">
-        {articles.map((article) => (
-          <ArticleCard key={article.id} article={article} />
+        {userInterestsNews?.map((article) => (
+          <ArticleCard key={article.articleId} article={article} />
         ))}
       </div>
       {isModalOpen && (

@@ -33,3 +33,7 @@ export const usePatchUserInterests = () => {
     },
   });
 };
+
+export const useGetUserInterestsNews = (interestNews: string) => {
+  return useQuery(USER_OPTION.USER_INTERESTS_NEWS(interestNews));
+};
