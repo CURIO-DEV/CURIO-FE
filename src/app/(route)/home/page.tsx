@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Banner from "./_components/banner";
 import Modal from "@/components/modal";
 import Button from "@/components/button";
@@ -8,7 +8,6 @@ import Chip from "./_components/chip";
 import { CATEGORIES, DEFAULT_CATEGORIES } from "@/constants/categories";
 import ArticleCard from "@/components/article";
 import { EditIcon } from "assets";
-import { articles } from "@/mocks/article-array";
 import {
   useGetUserInterests,
   useGetUserInterestsNews,
@@ -41,6 +40,13 @@ export default function Home() {
   const handleClose = () => {
     setIsModalOpen(false);
   };
+
+  useEffect(() => {
+    if (userInterests?.interests) {
+      setCategories(userInterests.interests);
+      setSelectedCategories(userInterests.interests);
+    }
+  }, [userInterests]);
 
   const handleApply = () => {
     setIsModalOpen(false);
