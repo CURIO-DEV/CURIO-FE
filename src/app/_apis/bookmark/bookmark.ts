@@ -54,7 +54,7 @@ export const AddBookmarkArticle = (
   folderId: number,
   newsId: number,
 ): Promise<{ message: string }> => {
-  return apiPost(`/bookmarks/${folderId}/news/${newsId}`);
+  return apiPost<{ message: string }>(`/bookmarks/${folderId}/news/${newsId}`);
 };
 
 export const GetBookmarkArticles = (folderId: number) => {

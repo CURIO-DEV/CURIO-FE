@@ -39,7 +39,8 @@ export default function FolderModal({
       toast.success(response.message);
       onClick();
     } catch (error) {
-      toast.error("북마크 추가에 실패했습니다.");
+      const message = (error as any)?.response?.data?.message;
+      toast.error(message ?? "오류가 발생했습니다.");
     }
   };
 
