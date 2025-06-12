@@ -1,5 +1,5 @@
 export interface GetCurioGoResponse {
-  newId: number;
+  articleId: number;
   imageUrl: string;
   summaryMedium: string;
 }
