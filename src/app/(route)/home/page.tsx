@@ -33,6 +33,8 @@ export default function Home() {
 
   const { data: userInterestsNews } = useGetUserInterestsNews(selectedCategory);
 
+  console.log(userInterestsNews);
+
   const handleEdit = () => {
     setIsModalOpen(true);
   };
