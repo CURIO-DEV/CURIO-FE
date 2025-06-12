@@ -122,7 +122,7 @@ export default function Card() {
             width={115}
             height={96}
             alt="profile image"
-            className="h-42 w-42 rounded-full"
+            className="h-42 w-42 rounded-full border border-gray-200 object-cover"
           />
         )}
       </div>
