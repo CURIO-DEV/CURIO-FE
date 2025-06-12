@@ -107,7 +107,7 @@ export default function Card() {
 
   if (isLoading) {
     return (
-      <div className="flex h-40 items-center justify-center">
+      <div className="items-centerh-full flex h-40 justify-center">
         불러오는 중...
       </div>
     );
@@ -131,7 +131,11 @@ export default function Card() {
         <label className="body2 flex w-full flex-col font-medium">
           이메일
           <div className="flex items-center gap-5">
-            <Input className="mt-3 mb-2 flex-grow" disabled defaultValue="" />
+            <Input
+              className="mt-3 mb-2 flex-grow"
+              disabled
+              defaultValue={profile?.email}
+            />
             <KakaoIcon />
           </div>
           <span className="caption1 font-regular">

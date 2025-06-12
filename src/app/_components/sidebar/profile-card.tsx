@@ -12,6 +12,10 @@ export default function ProfileCard({ ...props }) {
     router.push(ROUTES.MYPAGE);
   };
 
+  const handleSettingClick = () => {
+    router.push(ROUTES.SETTING);
+  };
+
   return (
     <div className="mt-6 flex h-23 w-75 items-center rounded-lg border border-gray-200 pl-3.75">
       <div className="relative">
@@ -26,7 +30,10 @@ export default function ProfileCard({ ...props }) {
             />
           )}
         </div>
-        <button className="absolute right-0 bottom-0" onClick={handleClick}>
+        <button
+          className="absolute right-0 bottom-0"
+          onClick={handleSettingClick}
+        >
           <SettingIcon className="h-5 w-5" />
         </button>
       </div>
