@@ -78,9 +78,7 @@ export default function Home() {
         <EditIcon onClick={handleEdit} className="cursor-pointer" />
       </div>
       <div className="flex flex-col gap-4">
-        {userInterestsNews?.map((article) => (
-          <ArticleCard key={article.articleId} article={article} />
-        ))}
+        {userInterestsNews?.map((article) => <ArticleCard article={article} />)}
       </div>
       {isModalOpen && (
         <Modal title="카테고리 수정하기" onClick={handleClose}>
