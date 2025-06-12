@@ -88,7 +88,10 @@ export default function Card() {
         categories: selectedCategories,
       },
       {
-        onSuccess: () => toast.success("설정이 저장되었습니다."),
+        onSuccess: () => {
+          toast.success("설정이 저장되었습니다.");
+          router.back();
+        },
         onError: () => toast.error("저장에 실패했습니다. 다시 시도해 주세요."),
       },
     );
