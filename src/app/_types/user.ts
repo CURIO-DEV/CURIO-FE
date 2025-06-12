@@ -11,3 +11,9 @@ export interface GetUserProfileResponse {
 export interface GetUserMeResponse {
   isLogin: boolean;
 }
+
+export interface GetUserInterestsResponse {
+  interests: string[];
+}
+
+export type UserInterestsData = string[];

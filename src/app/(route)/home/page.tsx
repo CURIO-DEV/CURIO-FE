@@ -9,12 +9,21 @@ import { CATEGORIES, DEFAULT_CATEGORIES } from "@/constants/categories";
 import ArticleCard from "@/components/article";
 import { EditIcon } from "assets";
 import { articles } from "@/mocks/article-array";
+import { useGetUserInterests, usePatchUserInterests } from "@/hooks/use-user";
 
 export default function Home() {
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [selectedCategories, setSelectedCategories] =
-    useState<string[]>(DEFAULT_CATEGORIES);
-  const [categories, setCategories] = useState<string[]>(DEFAULT_CATEGORIES);
+
+  const { data: userInterests } = useGetUserInterests();
+  const [categories, setCategories] = useState<string[]>(
+    userInterests?.interests ?? DEFAULT_CATEGORIES,
+  );
+
+  const [selectedCategories, setSelectedCategories] = useState<string[]>(
+    userInterests?.interests ?? DEFAULT_CATEGORIES,
+  );
+
+  const { mutate } = usePatchUserInterests();
 
   const handleEdit = () => {
     setIsModalOpen(true);
@@ -27,6 +36,7 @@ export default function Home() {
   const handleApply = () => {
     setIsModalOpen(false);
     setCategories(selectedCategories);
+    mutate(selectedCategories);
   };
 
   const handleCategoryClick = (item: string) => {
@@ -55,7 +65,7 @@ export default function Home() {
             </button>
           ))}
         </div>
-        <EditIcon onClick={handleEdit} />
+        <EditIcon onClick={handleEdit} className="cursor-pointer" />
       </div>
       <div className="flex flex-col gap-4">
         {articles.map((article) => (
