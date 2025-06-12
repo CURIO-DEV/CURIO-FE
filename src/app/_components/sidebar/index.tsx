@@ -21,7 +21,7 @@ export default function Sidebar() {
   const pathname = usePathname();
 
   const isDetailPage = pathname.startsWith("/detail");
-  const setProfile = useUserStore((s) => s.setProfile);
+  // const setProfile = useUserStore((s) => s.setProfile);
 
   const handleClick = () => {
     router.push(ROUTES.LOGIN);
@@ -33,11 +33,11 @@ export default function Sidebar() {
     enabled: !!userMe?.isLogin,
   });
 
-  useEffect(() => {
-    if (data) {
-      setProfile(data);
-    }
-  }, [data, setProfile]);
+  // useEffect(() => {
+  //   if (data) {
+  //     setProfile(data);
+  //   }
+  // }, [data, setProfile]);
   return (
     <aside className="min-h-screen w-85 border-l-1 border-gray-100 pl-10">
       {isDetailPage ? (
