@@ -83,9 +83,9 @@ export default function FolderUpsertModal({
       if (mode === "create") {
         await CreateBookmarkFolder(payload);
       } else if (mode === "edit" && bookmarkId !== undefined) {
-        await UpdateBookmarkFolder(bookmarkId, payload); // PATCH API 연결
+        await UpdateBookmarkFolder(bookmarkId, payload);
       }
-      toast.success("저장되었습니다.");
+      toast.success("변경사항이 저장되었습니다.");
       onClick();
     } catch (e) {
       toast.error("저장에 실패했습니다.");

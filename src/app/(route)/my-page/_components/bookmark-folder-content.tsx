@@ -5,7 +5,12 @@ import Button from "@/components/button";
 import ArticleCard from "@/components/article";
 import { BookmarkIcon } from "assets";
 import { articles } from "@/mocks/article-array";
-import { GetBookmarkSummary } from "@/apis/bookmark/bookmark";
+import {
+  GetBookmarkSummary,
+  RemoveBookmarkArticle,
+} from "@/apis/bookmark/bookmark";
+import { toast } from "sonner";
+import { useQueryClient } from "@tanstack/react-query";
 
 interface BookmarkFolderContentProps {
   folder: {
@@ -58,6 +63,23 @@ export default function BookmarkFolderContent({
     }
   };
 
+  const queryClient = useQueryClient();
+
+  const handleToggleBookmark = async (id: string, isBookmarked: boolean) => {
+    toggleBookmark(id);
+    if (isBookmarked) {
+      try {
+        const res = await RemoveBookmarkArticle(folder.id, Number(id));
+        toast.success(res.message);
+        queryClient.invalidateQueries({
+          queryKey: ["bookmark-articles", folder.id],
+        });
+      } catch (error) {
+        toast.error("북마크 제거에 실패했습니다.");
+      }
+    }
+  };
+
   return (
     <div className="flex flex-1 flex-col">
       <div className="flex justify-between">
@@ -88,7 +110,7 @@ export default function BookmarkFolderContent({
               className="relative flex h-33 items-center border-t border-gray-100"
             >
               <button
-                onClick={() => toggleBookmark(idStr)}
+                onClick={() => handleToggleBookmark(idStr, isBookmarked)}
                 className="absolute -top-1.5 right-5"
               >
                 <BookmarkIcon

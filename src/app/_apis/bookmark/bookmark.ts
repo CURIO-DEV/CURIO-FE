@@ -71,3 +71,10 @@ export const GetBookmarkSummary = async (
 ): Promise<{ summary: string }> => {
   return await apiGet(`/bookmarks/${bookmarkId}/summary`);
 };
+
+export const RemoveBookmarkArticle = (
+  folderId: number,
+  newsId: number,
+): Promise<{ message: string }> => {
+  return apiDelete(`/bookmarks/${folderId}/news/${newsId}`);
+};
