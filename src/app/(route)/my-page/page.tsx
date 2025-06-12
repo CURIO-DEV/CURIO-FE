@@ -55,11 +55,14 @@ export default function MyPage() {
 
   const handleFolderDelete = async (id: number) => {
     try {
-      await DeleteBookmarkFolder(id);
-      await DeleteBookmarkFolder(id);
+      const message = await DeleteBookmarkFolder(id);
+      toast.success(message ?? "삭제되었습니다.");
       queryClient.invalidateQueries({ queryKey: BOOKMARK_KEY.FOLDER_LIST() });
-    } catch {
-      toast.error("폴더 삭제에 실패했습니다.");
+    } catch (error: any) {
+      const fallbackMsg =
+        error?.response?.data?.message ?? "삭제 중 오류가 발생했습니다.";
+      toast.error(fallbackMsg);
+      console.error(error);
     }
   };
 

@@ -61,6 +61,7 @@ export const GetBookmarkArticles = (folderId: number) => {
   return apiGet<BookmarkArticle[]>(END_POINTS.GET_BOOKMARK_ARTICLES(folderId));
 };
 
-export const DeleteBookmarkFolder = (bookmarkId: number): Promise<void> => {
-  return apiDelete(`/bookmarks/${bookmarkId}/delete`);
+export const DeleteBookmarkFolder = async (id: number): Promise<string> => {
+  const res = await apiDelete<{ message: string }>(`/bookmarks/${id}/delete`);
+  return res.message;
 };
