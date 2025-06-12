@@ -18,12 +18,18 @@ import { cn } from "@/utils/cn";
 
 import { useUserSettings, useUpdateUserSettings } from "@/hooks/use-setting";
 import { SummaryType } from "types/summary-type";
+import { useGetUserMe, useGetUserProfile } from "@/hooks/use-user";
 
 export default function Card() {
   const router = useRouter();
   const pathname = usePathname();
   const searchParams = useSearchParams();
 
+  const { data: userMe } = useGetUserMe();
+
+  const { data: profile } = useGetUserProfile({
+    enabled: !!userMe?.isLogin,
+  });
   // ────────────────────────────────────
   // remote data
   // ────────────────────────────────────
@@ -110,14 +116,16 @@ export default function Card() {
   return (
     <div className="mt-10 mb-30 flex h-full flex-col items-center rounded-xl border border-gray-200 px-21 pb-13.5">
       <div className="mt-13.75 flex h-42 w-42 items-center justify-center rounded-full border border-gray-200">
-        <Image
-          src={IMAGES_PATH.LOGO_HEAD}
-          width={115}
-          height={96}
-          alt="logo-head"
-        />
+        {profile?.profile_image_url && (
+          <Image
+            src={profile?.profile_image_url}
+            width={115}
+            height={96}
+            alt="logo-head"
+          />
+        )}
       </div>
-      <p className="mt-4">닉네임</p>
+      <p className="mt-4">{profile?.nickname}</p>
       <div className="flex w-full flex-col gap-10">
         <label className="body2 flex w-full flex-col font-medium">
           이메일
