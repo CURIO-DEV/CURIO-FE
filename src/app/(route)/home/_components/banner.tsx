@@ -4,13 +4,20 @@ import Button from "@/components/button";
 import { ROUTES } from "@/constants/routes";
 import { useRouter } from "next/navigation";
 import WordCloudtWrapper from "./word-cloud-wrapper";
+import { useUserStore } from "@/stores/use-user-store";
 
 export default function Banner() {
   const route = useRouter();
+  const isLogin = useUserStore((s) => s.isLogin);
 
   const handleClick = () => {
-    route.push(ROUTES.SNACK_NEWS);
+    if (isLogin) {
+      route.push(ROUTES.SNACK_NEWS);
+    } else {
+      console.log("로그인이 필요합니다.");
+    }
   };
+
   return (
     <div className="flex h-100 w-full">
       <div className="bg-primary-100 w-63">
