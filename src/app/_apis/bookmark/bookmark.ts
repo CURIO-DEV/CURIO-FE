@@ -65,3 +65,9 @@ export const DeleteBookmarkFolder = async (id: number): Promise<string> => {
   const res = await apiDelete<{ message: string }>(`/bookmarks/${id}/delete`);
   return res.message;
 };
+
+export const GetBookmarkSummary = async (
+  bookmarkId: number,
+): Promise<{ summary: string }> => {
+  return await apiGet(`/bookmarks/${bookmarkId}/summary`);
+};

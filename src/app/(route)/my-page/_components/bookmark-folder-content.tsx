@@ -5,6 +5,7 @@ import Button from "@/components/button";
 import ArticleCard from "@/components/article";
 import { BookmarkIcon } from "assets";
 import { articles } from "@/mocks/article-array";
+import { GetBookmarkSummary } from "@/apis/bookmark/bookmark";
 
 interface BookmarkFolderContentProps {
   folder: {
@@ -45,10 +46,16 @@ export default function BookmarkFolderContent({
     setIsSummarized(false);
   }, [folder.id, articles, setInitialBookmarks]);
 
-  const handleSummarize = () => {
-    const result = "요약된 기사 내용이 여기에 표시됩니다...";
-    setSummary(result);
-    setIsSummarized(true);
+  const handleSummarize = async () => {
+    try {
+      const res = await GetBookmarkSummary(folder.id);
+      setSummary(res.summary);
+      setIsSummarized(true);
+    } catch (error) {
+      console.error(error);
+      setSummary("요약에 실패했습니다.");
+      setIsSummarized(false);
+    }
   };
 
   return (
