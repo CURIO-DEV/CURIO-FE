@@ -1,9 +1,11 @@
 import { END_POINTS } from "@/constants/api";
 import { apiGet, apiPatch } from "../api";
 import {
+  GetUserInterestsResponse,
   GetUserMeResponse,
   GetUserProfileResponse,
   NewsletterSubscribeData,
+  UserInterestsData,
 } from "app/_types/user";
 
 export const PatchNewsletterSubscribe = (body: NewsletterSubscribeData) => {
@@ -16,4 +18,12 @@ export const GetUserProfile = () => {
 
 export const GetUserMe = () => {
   return apiGet<GetUserMeResponse>(END_POINTS.GET_USER_ME);
+};
+
+export const GetUserInterests = () => {
+  return apiGet<GetUserInterestsResponse>(END_POINTS.USER_INTEREST);
+};
+
+export const PatchUserInterests = (body: UserInterestsData) => {
+  return apiPatch(END_POINTS.USER_INTEREST, body);
 };
