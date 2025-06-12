@@ -4,7 +4,6 @@ import { useCallback, useState } from "react";
 import MyProfileCard from "./_components/my-profile-card";
 import BookmarkFolderList from "./_components/bookmark-folder-list";
 import BookmarkFolderContent from "./_components/bookmark-folder-content";
-import { mockFolders } from "@/mocks/book-mark-folders";
 import {
   useGetBookmarkArticles,
   useGetBookmarkFolders,
@@ -13,6 +12,7 @@ import { DeleteBookmarkFolder } from "@/apis/bookmark/bookmark";
 import { toast } from "sonner";
 import { useQueryClient } from "@tanstack/react-query";
 import { BOOKMARK_KEY } from "@/apis/bookmark/bookmark-queries";
+import FolderUpsertModal from "./_components/folder-upsert-modal";
 
 export default function MyPage() {
   const [selectedFolderId, setSelectedFolderId] = useState<number | null>(null);
@@ -36,8 +36,6 @@ export default function MyPage() {
     setBookmarkedArticles(new Set(ids));
   }, []);
 
-  // const folders = mockFolders;
-  // const selectedFolder = folders.find((f) => f.id === selectedFolderId);
   const { data: folders = [] } = useGetBookmarkFolders();
 
   const mappedFolders = folders.map((f) => ({
@@ -48,7 +46,6 @@ export default function MyPage() {
   }));
 
   const selectedFolder = mappedFolders.find((f) => f.id === selectedFolderId);
-
   const { data: articles = [] } = useGetBookmarkArticles(selectedFolderId);
 
   const queryClient = useQueryClient();
@@ -58,6 +55,9 @@ export default function MyPage() {
       const message = await DeleteBookmarkFolder(id);
       toast.success(message ?? "삭제되었습니다.");
       queryClient.invalidateQueries({ queryKey: BOOKMARK_KEY.FOLDER_LIST() });
+
+      // 선택된 폴더 삭제된 경우 초기화
+      if (selectedFolderId === id) setSelectedFolderId(null);
     } catch (error: any) {
       const fallbackMsg =
         error?.response?.data?.message ?? "삭제 중 오류가 발생했습니다.";
@@ -65,6 +65,14 @@ export default function MyPage() {
       console.error(error);
     }
   };
+
+  // 폴더 수정 모달 상태
+  const [editFolder, setEditFolder] = useState<{
+    id: number;
+    name: string;
+    color: string;
+    collaborators: string[];
+  } | null>(null);
 
   return (
     <div className="mt-10 flex w-full gap-12">
@@ -75,6 +83,7 @@ export default function MyPage() {
           selectedFolderId={selectedFolderId}
           onFolderClick={setSelectedFolderId}
           onFolderDelete={handleFolderDelete}
+          onFolderEdit={(folder) => setEditFolder(folder)}
         />
       </div>
 
@@ -92,6 +101,17 @@ export default function MyPage() {
             Curio
           </h1>
         </div>
+      )}
+
+      {editFolder && (
+        <FolderUpsertModal
+          mode="edit"
+          bookmarkId={editFolder.id}
+          defaultName={editFolder.name}
+          defaultColor={editFolder.color}
+          defaultMembers={editFolder.collaborators}
+          onClick={() => setEditFolder(null)}
+        />
       )}
     </div>
   );

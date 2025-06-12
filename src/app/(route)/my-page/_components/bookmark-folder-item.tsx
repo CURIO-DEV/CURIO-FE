@@ -3,9 +3,6 @@ import { KebabIcon } from "assets";
 import { cn } from "@/utils/cn";
 import { useEffect, useRef, useState } from "react";
 import { colorMap, ColorKey } from "@/constants/color";
-import FolderUpsertModal from "./folder-upsert-modal";
-import { DeleteBookmarkFolder } from "@/apis/bookmark/bookmark";
-import { toast } from "sonner";
 
 interface FolderItemProps {
   bookmarkId: number;
@@ -14,16 +11,17 @@ interface FolderItemProps {
   color: string;
   onClick: () => void;
   onDelete: () => void;
+  onEdit: () => void;
   isSelected: boolean;
 }
 
 export default function BookmarkFolderItem({
-  bookmarkId,
   name,
   collaborators,
   color,
   onClick,
   onDelete,
+  onEdit,
   isSelected,
 }: FolderItemProps) {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -38,17 +36,15 @@ export default function BookmarkFolderItem({
     document.addEventListener("mousedown", handleClickOutside);
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
-  const [isUpsertModalOpen, setIsUpsertModalOpen] = useState(false);
-
-  const handleEdit = () => {
-    setIsMenuOpen(false);
-    setIsUpsertModalOpen(true);
-    //수정 토스트
-  };
 
   const handleDelete = () => {
     setIsMenuOpen(false);
     onDelete();
+  };
+
+  const handleEdit = () => {
+    setIsMenuOpen(false);
+    onEdit();
   };
 
   return (
@@ -66,7 +62,11 @@ export default function BookmarkFolderItem({
       <div className="mt-3.5 flex w-39.5 flex-col justify-start gap-0.5">
         <div className="flex justify-between">
           <span className="body1 truncate font-semibold">{name}</span>
-          <div className="relative" ref={menuRef}>
+          <div
+            className="relative"
+            ref={menuRef}
+            onClick={(e) => e.stopPropagation()} // ✅ 폴더 클릭 이벤트 차단
+          >
             <button onClick={() => setIsMenuOpen((prev) => !prev)}>
               <KebabIcon className="h-6 w-6" />
             </button>
@@ -81,22 +81,12 @@ export default function BookmarkFolderItem({
                 </button>
                 <hr className="w-17.25 border-gray-400" />
                 <button
-                  onClick={onDelete}
+                  onClick={handleDelete}
                   className="h-full w-full rounded-b-lg hover:bg-gray-50"
                 >
                   삭제하기
                 </button>
               </div>
-            )}
-            {isUpsertModalOpen && (
-              <FolderUpsertModal
-                onClick={() => setIsUpsertModalOpen(false)}
-                mode="edit"
-                bookmarkId={bookmarkId}
-                defaultName={name}
-                defaultColor={color}
-                defaultMembers={collaborators}
-              />
             )}
           </div>
         </div>

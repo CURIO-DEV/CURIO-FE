@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {
   FolderNameIcon,
   CoAutherIcon,
@@ -37,15 +37,21 @@ export default function FolderUpsertModal({
   defaultColor,
   defaultMembers,
 }: FolderUpsertModalProps) {
-  const [name, setName] = useState(defaultName ?? "");
-  const [color, setColor] = useState(defaultColor ?? "red");
-  const [members, setMembers] = useState<string[]>(defaultMembers ?? []);
+  const [name, setName] = useState("");
+  const [color, setColor] = useState("red");
+  const [members, setMembers] = useState<string[]>([]);
   const [inputValue, setInputValue] = useState("");
-  const MAX_MEMBERS = 3;
   const [limitReached, setLimitReached] = useState(false);
-  // const [name, setName] = useState(defaultName ?? "");
-  // const [color, setColor] = useState(defaultColor ?? "gray");
-  // const [members, setMembers] = useState<string[]>(defaultMembers ?? []);
+  const MAX_MEMBERS = 3;
+
+  // ✅ default props 동기화
+  useEffect(() => {
+    if (mode === "edit") {
+      setName(defaultName ?? "");
+      setColor(defaultColor ?? "red");
+      setMembers(defaultMembers ?? []);
+    }
+  }, [defaultName, defaultColor, defaultMembers, mode]);
 
   const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === "Enter" && inputValue.trim() !== "") {
@@ -86,9 +92,10 @@ export default function FolderUpsertModal({
         await UpdateBookmarkFolder(bookmarkId, payload);
       }
       toast.success("변경사항이 저장되었습니다.");
-      onClick();
-    } catch (e) {
-      toast.error("저장에 실패했습니다.");
+      onClick(); // 모달 닫기
+    } catch (e: any) {
+      const msg = e?.response?.data?.message ?? "저장에 실패했습니다.";
+      toast.error(msg);
     }
   };
 
@@ -98,6 +105,7 @@ export default function FolderUpsertModal({
       onClick={onClick}
     >
       <div className="mt-8 flex w-80 flex-col gap-4">
+        {/* 이름 입력 */}
         <div className="flex flex-col gap-2">
           <div className="flex items-center gap-2">
             <FolderNameIcon />
@@ -111,6 +119,7 @@ export default function FolderUpsertModal({
           />
         </div>
 
+        {/* 색상 선택 */}
         <div className="flex items-center gap-4">
           <div className="flex items-center gap-2">
             <TagIcon />
@@ -136,6 +145,7 @@ export default function FolderUpsertModal({
           </div>
         </div>
 
+        {/* 공동 작업자 */}
         <div className="flex flex-col gap-2">
           <div className="flex gap-1.5">
             <div className="flex items-center gap-2">
@@ -180,6 +190,8 @@ export default function FolderUpsertModal({
           </div>
         </div>
       </div>
+
+      {/* 저장 버튼 */}
       <Button onClick={handleSave} className="mt-8">
         저장하기
       </Button>
