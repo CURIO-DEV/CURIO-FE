@@ -248,6 +248,7 @@ export default function FolderUpsertModal({
       <Button
         onClick={(e: React.MouseEvent<HTMLButtonElement>) => {
           e.stopPropagation();
+          if (isSubmitting) return;
           mode === "create" ? handlePostBookmark() : handlePatchBookmark();
           // handleSaveClick();
         }}
