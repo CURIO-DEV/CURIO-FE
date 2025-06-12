@@ -88,32 +88,6 @@ export default function FolderUpsertModal({
     if (next.length < MAX_MEMBERS) setLimitReached(false);
   };
 
-  const queryClient = useQueryClient();
-  const handleSave = async () => {
-    if (lockRef.current) return;
-    lockRef.current = true;
-    setIsSubmitting(true);
-
-    const payload = { name, color, members };
-
-    try {
-      if (mode === "create") {
-        await CreateBookmarkFolder(payload);
-      } else if (mode === "edit" && bookmarkId !== undefined) {
-        await UpdateBookmarkFolder(bookmarkId, payload);
-      }
-      toast.success("변경사항이 저장되었습니다.");
-      queryClient.invalidateQueries({ queryKey: BOOKMARK_KEY.FOLDER_LIST() }); // ← 추가
-      onClick();
-    } catch (err: any) {
-      const msg = err?.response?.data?.message ?? "저장에 실패했습니다.";
-      toast.error(msg);
-    } finally {
-      setIsSubmitting(false);
-      lockRef.current = false;
-    }
-  };
-
   const { mutate: patchBookmarkFolder } = usePatchBookmarkFolder(bookmarkId!);
   const { mutate: postBookmarkFolder } = usePostBookmarkFolder();
 
@@ -158,6 +132,41 @@ export default function FolderUpsertModal({
         },
       },
     );
+  };
+
+  const handleSubmit = () => {
+    if (isSubmitting) return;
+    setIsSubmitting(true);
+
+    const payload = { name, color, members };
+
+    if (mode === "create") {
+      postBookmarkFolder(payload, {
+        onSuccess: () => {
+          toast.success("북마크 폴더가 성공적으로 생성되었습니다.");
+          setIsSubmitting(false);
+          onClick(); // 모달 닫기
+        },
+        onError: (error: any) => {
+          console.error("폴더 생성 실패:", error);
+          toast.error("폴더 생성에 실패했습니다. 다시 시도해주세요.");
+          setIsSubmitting(false);
+        },
+      });
+    } else if (mode === "edit" && bookmarkId !== undefined) {
+      patchBookmarkFolder(payload, {
+        onSuccess: () => {
+          toast.success("북마크 폴더가 성공적으로 수정되었습니다.");
+          setIsSubmitting(false);
+          onClick(); // 모달 닫기
+        },
+        onError: (error: any) => {
+          console.error("폴더 수정 실패:", error);
+          toast.error("폴더 수정에 실패했습니다. 다시 시도해주세요.");
+          setIsSubmitting(false);
+        },
+      });
+    }
   };
 
   /* ---------- UI ---------- */
@@ -246,12 +255,7 @@ export default function FolderUpsertModal({
       </div>
 
       <Button
-        onClick={(e: React.MouseEvent<HTMLButtonElement>) => {
-          e.stopPropagation();
-          if (isSubmitting) return;
-          mode === "create" ? handlePostBookmark() : handlePatchBookmark();
-          // handleSaveClick();
-        }}
+        onClick={handleSubmit}
         className={cn("mt-8", isSubmitting && "pointer-events-none opacity-50")}
         aria-disabled={isSubmitting}
       >
