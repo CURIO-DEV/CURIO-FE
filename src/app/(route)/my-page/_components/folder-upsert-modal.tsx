@@ -83,8 +83,13 @@ export default function FolderUpsertModal({
   const { mutate: patchBookmarkFolder } = usePatchBookmarkFolder();
   const { mutate: postBookmarkFolder } = usePostBookmarkFolder();
 
+  // 중복 제출 방지를 위한 ref 추가
+  const isSubmittingRef = useRef(false);
+
   const handleSubmit = () => {
-    if (isSubmitting) return;
+    // ref를 사용하여 중복 제출 방지
+    if (isSubmittingRef.current || isSubmitting) return;
+    isSubmittingRef.current = true;
     setIsSubmitting(true);
 
     const payload = { name, color, members };
@@ -93,15 +98,18 @@ export default function FolderUpsertModal({
       postBookmarkFolder(payload, {
         onSuccess: () => {
           toast.success("북마크 폴더가 성공적으로 생성되었습니다.");
+          isSubmittingRef.current = false;
           setIsSubmitting(false);
           onClick(); // 모달 닫기
         },
         onError: (error: any) => {
           console.error("폴더 생성 실패:", error);
           toast.error("폴더 생성에 실패했습니다. 다시 시도해주세요.");
+          isSubmittingRef.current = false;
           setIsSubmitting(false);
         },
         onSettled: () => {
+          isSubmittingRef.current = false;
           setIsSubmitting(false);
         },
       });
@@ -114,23 +122,34 @@ export default function FolderUpsertModal({
         {
           onSuccess: () => {
             toast.success("북마크 폴더가 성공적으로 수정되었습니다.");
+            isSubmittingRef.current = false;
             setIsSubmitting(false);
             onClick(); // 모달 닫기
           },
           onError: (error: any) => {
             console.error("폴더 수정 실패:", error);
             toast.error("폴더 수정에 실패했습니다. 다시 시도해주세요.");
+            isSubmittingRef.current = false;
             setIsSubmitting(false);
           },
           onSettled: () => {
+            isSubmittingRef.current = false;
             setIsSubmitting(false);
           },
         },
       );
     } else {
+      isSubmittingRef.current = false;
       setIsSubmitting(false);
       toast.error("폴더 정보가 올바르지 않습니다.");
     }
+  };
+
+  // 이벤트 버블링 방지를 위한 함수
+  const handleButtonClick = (e: React.MouseEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+    handleSubmit();
   };
 
   /* ---------- UI ---------- */
@@ -219,7 +238,7 @@ export default function FolderUpsertModal({
       </div>
 
       <Button
-        onClick={handleSubmit}
+        onClick={handleButtonClick}
         className={cn("mt-8", isSubmitting && "pointer-events-none opacity-50")}
         aria-disabled={isSubmitting}
       >
