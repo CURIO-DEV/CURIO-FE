@@ -1,6 +1,7 @@
 import { END_POINTS } from "@/constants/api";
 import { apiGet, apiPatch } from "../api";
 import {
+  GetUserInterestsNewsResponse,
   GetUserInterestsResponse,
   GetUserMeResponse,
   GetUserProfileResponse,
@@ -26,4 +27,10 @@ export const GetUserInterests = () => {
 
 export const PatchUserInterests = (body: UserInterestsData) => {
   return apiPatch(END_POINTS.USER_INTEREST, body);
+};
+
+export const GetUserInterestsNews = (interestNews: string) => {
+  return apiGet<GetUserInterestsNewsResponse[]>(
+    END_POINTS.GET_USER_INTEREST_NEWS(interestNews),
+  );
 };

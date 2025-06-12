@@ -4,9 +4,9 @@ import { ROUTES } from "@/constants/routes";
 import { useRouter } from "next/navigation";
 
 interface Article {
-  id: number;
+  articleId: number;
   title: string;
-  summary: string;
+  content: string;
   imageUrl?: string;
 }
 
@@ -18,7 +18,7 @@ export default function ArticleCard({ article }: Props) {
   const router = useRouter();
 
   const handleClick = () => {
-    router.push(`${ROUTES.DETAIL}/${article.id}`);
+    router.push(`${ROUTES.DETAIL}/${article.articleId}`);
   };
 
   return (
@@ -37,7 +37,7 @@ export default function ArticleCard({ article }: Props) {
       <div className="flex w-full flex-col overflow-hidden px-1 py-1.25">
         <h2 className="subTitle truncate font-semibold">{article.title}</h2>
         <p className="text-muted-foreground mt-2.5 line-clamp-2 text-sm">
-          {article.summary}
+          {article.content}
         </p>
       </div>
     </div>

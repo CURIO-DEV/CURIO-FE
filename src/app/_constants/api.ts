@@ -8,4 +8,6 @@ export const END_POINTS = {
   GET_CURIO_GO: "/curio-go",
 
   USER_INTEREST: "/users/interests",
+  GET_USER_INTEREST_NEWS: (interestNews: string) =>
+    `/users/interests/${interestNews}/news`,
 };
