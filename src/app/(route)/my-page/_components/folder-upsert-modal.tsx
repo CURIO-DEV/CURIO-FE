@@ -19,6 +19,8 @@ import {
   UpdateBookmarkFolder,
 } from "@/apis/bookmark/bookmark";
 import { toast } from "sonner";
+import { useQueryClient } from "@tanstack/react-query";
+import { BOOKMARK_KEY } from "@/apis/bookmark/bookmark-queries";
 
 interface FolderUpsertModalProps {
   onClick: () => void; // 모달 닫기
@@ -79,8 +81,10 @@ export default function FolderUpsertModal({
     setMembers(next);
     if (next.length < MAX_MEMBERS) setLimitReached(false);
   };
+
+  const queryClient = useQueryClient();
   const handleSave = async () => {
-    if (lockRef.current) return; // 재진입 방지
+    if (lockRef.current) return;
     lockRef.current = true;
     setIsSubmitting(true);
 
@@ -93,6 +97,7 @@ export default function FolderUpsertModal({
         await UpdateBookmarkFolder(bookmarkId, payload);
       }
       toast.success("변경사항이 저장되었습니다.");
+      queryClient.invalidateQueries({ queryKey: BOOKMARK_KEY.FOLDER_LIST() }); // ← 추가
       onClick();
     } catch (err: any) {
       const msg = err?.response?.data?.message ?? "저장에 실패했습니다.";
@@ -102,6 +107,7 @@ export default function FolderUpsertModal({
       lockRef.current = false;
     }
   };
+
   const handleSaveClick = () => {
     (window.event as MouseEvent | undefined)?.stopPropagation();
     void handleSave();
