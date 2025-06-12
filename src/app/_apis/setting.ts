@@ -9,7 +9,7 @@ export interface UserCustomSettings {
 }
 
 export const getUserSettings = () =>
-  apiGet<UserCustomSettings>("/users/custom");
+  apiGet<UserCustomSettings>("/users/settings");
 
 export const patchUserSettings = (payload: Partial<UserCustomSettings>) =>
   apiPatch<void, Partial<UserCustomSettings>>("/users/settings", payload);
