@@ -129,11 +129,35 @@ export default function FolderUpsertModal({
   // };
 
   const handlePostBookmark = () => {
-    postBookmarkFolder({ name, color, members });
+    postBookmarkFolder(
+      { name, color, members },
+      {
+        onSuccess: () => {
+          toast.success("북마크 폴더가 성공적으로 생성되었습니다.");
+          onClick(); // 모달 닫기 등
+        },
+        onError: (error: any) => {
+          console.error("폴더 생성 실패:", error);
+          toast.error("폴더 생성에 실패했습니다. 다시 시도해주세요.");
+        },
+      },
+    );
   };
 
   const handlePatchBookmark = () => {
-    patchBookmarkFolder({ name, color, members });
+    patchBookmarkFolder(
+      { name, color, members },
+      {
+        onSuccess: () => {
+          toast.success("북마크 폴더가 성공적으로 수정되었습니다.");
+          onClick(); // 모달 닫기 등
+        },
+        onError: (error: any) => {
+          console.error("폴더 수정 실패:", error);
+          toast.error("폴더 수정에 실패했습니다. 다시 시도해주세요.");
+        },
+      },
+    );
   };
 
   /* ---------- UI ---------- */
