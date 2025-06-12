@@ -23,7 +23,7 @@ import { toast } from "sonner";
 interface FolderUpsertModalProps {
   onClick: () => void; // 모달 닫기
   mode: "create" | "edit";
-  bookmarkId?: number; // edit 모드일 때만
+  bookmarkId?: number;
   defaultName?: string;
   defaultColor?: string;
   defaultMembers?: string[];
@@ -37,16 +37,17 @@ export default function FolderUpsertModal({
   defaultColor,
   defaultMembers,
 }: FolderUpsertModalProps) {
-  /* ────────── 상태 ────────── */
+  /* ---------- state ---------- */
   const [name, setName] = useState("");
   const [color, setColor] = useState<ColorKey>("red");
   const [members, setMembers] = useState<string[]>([]);
   const [inputValue, setInputValue] = useState("");
   const [limitReached, setLimitReached] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const lockRef = useRef(false);
+  const lockRef = useRef(false); // 중복 실행 락
   const MAX_MEMBERS = 3;
 
+  /* ---------- edit 모드 기본값 ---------- */
   useEffect(() => {
     if (mode === "edit") {
       setName(defaultName ?? "");
@@ -55,8 +56,9 @@ export default function FolderUpsertModal({
     }
   }, [mode, defaultName, defaultColor, defaultMembers]);
 
+  /* ---------- 공동 작업자 입력 ---------- */
   const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
-    if (e.key !== "Enter" || !inputValue.trim()) return;
+    if (e.key !== "Enter" || inputValue.trim() === "") return;
     e.preventDefault();
 
     if (members.length >= MAX_MEMBERS) {
@@ -64,22 +66,21 @@ export default function FolderUpsertModal({
       return;
     }
 
-    const newEmail = inputValue.trim();
-    if (!members.includes(newEmail)) {
-      setMembers([...members, newEmail]);
+    const email = inputValue.trim();
+    if (!members.includes(email)) {
+      setMembers([...members, email]);
     }
     setInputValue("");
     setLimitReached(false);
   };
 
   const removeMember = (email: string) => {
-    const updated = members.filter((c) => c !== email);
-    setMembers(updated);
-    if (updated.length < MAX_MEMBERS) setLimitReached(false);
+    const next = members.filter((m) => m !== email);
+    setMembers(next);
+    if (next.length < MAX_MEMBERS) setLimitReached(false);
   };
-
   const handleSave = async () => {
-    if (lockRef.current) return;
+    if (lockRef.current) return; // 재진입 방지
     lockRef.current = true;
     setIsSubmitting(true);
 
@@ -93,15 +94,20 @@ export default function FolderUpsertModal({
       }
       toast.success("변경사항이 저장되었습니다.");
       onClick();
-    } catch (e: any) {
-      const msg = e?.response?.data?.message ?? "저장에 실패했습니다.";
+    } catch (err: any) {
+      const msg = err?.response?.data?.message ?? "저장에 실패했습니다.";
       toast.error(msg);
     } finally {
       setIsSubmitting(false);
       lockRef.current = false;
     }
   };
+  const handleSaveClick = () => {
+    (window.event as MouseEvent | undefined)?.stopPropagation();
+    void handleSave();
+  };
 
+  /* ---------- UI ---------- */
   return (
     <Modal
       title={mode === "create" ? "폴더 추가하기" : "폴더 수정하기"}
@@ -114,7 +120,6 @@ export default function FolderUpsertModal({
             <span className="body1 font-semibold">이름</span>
           </div>
           <Input
-            className="caption1"
             value={name}
             onChange={(e) => setName(e.target.value)}
             placeholder="폴더 이름 입력"
@@ -127,16 +132,16 @@ export default function FolderUpsertModal({
             <span className="body1 font-semibold">폴더색상</span>
           </div>
           <div className="flex gap-2">
-            {(Object.keys(colorMap) as ColorKey[]).map((colorKey) => (
+            {(Object.keys(colorMap) as ColorKey[]).map((c) => (
               <div
-                key={colorKey}
-                onClick={() => setColor(colorKey)}
+                key={c}
+                onClick={() => setColor(c)}
                 className={cn(
                   "relative h-6.25 w-6.25 cursor-pointer rounded",
-                  colorMap[colorKey].bg,
+                  colorMap[c].bg,
                 )}
               >
-                {color === colorKey && (
+                {color === c && (
                   <span className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2">
                     <CheckIcon />
                   </span>
@@ -148,20 +153,15 @@ export default function FolderUpsertModal({
 
         <div className="flex flex-col gap-2">
           <div className="flex gap-1.5">
-            <div className="flex items-center gap-2">
-              <CoAutherIcon />
-              <span className="body1 font-semibold">공동 작업자</span>
-            </div>
-            <div className="flex items-center gap-0.75">
-              <InfoIcon />
-              <p className="caption2 text-gray-300">
-                엔터 키 입력 시 공동작업자가 추가됩니다.
-              </p>
-            </div>
+            <CoAutherIcon />
+            <span className="body1 font-semibold">공동 작업자</span>
+            <InfoIcon className="ml-1" />
+            <p className="caption2 text-gray-300">
+              엔터 키 입력 시 추가됩니다.
+            </p>
           </div>
 
           <Input
-            className="caption1"
             value={inputValue}
             onChange={(e) => setInputValue(e.target.value)}
             onKeyDown={handleKeyDown}
@@ -193,11 +193,11 @@ export default function FolderUpsertModal({
       </div>
 
       <Button
-        onClick={handleSave}
+        onClick={handleSaveClick}
         className={cn("mt-8", isSubmitting && "pointer-events-none opacity-50")}
         aria-disabled={isSubmitting}
       >
-        {isSubmitting ? "저장 중..." : "저장하기"}
+        {isSubmitting ? "저장 중…" : "저장하기"}
       </Button>
     </Modal>
   );
