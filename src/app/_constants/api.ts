@@ -6,5 +6,5 @@ export const END_POINTS = {
   GET_USER_PROFILE: "/users/profile",
   GET_USER_ME: "/users/me",
 
-  USER_INTEREST: "/users/interets",
+  USER_INTEREST: "/users/interests",
 };
