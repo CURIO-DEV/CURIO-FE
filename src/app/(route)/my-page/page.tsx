@@ -9,6 +9,10 @@ import {
   useGetBookmarkArticles,
   useGetBookmarkFolders,
 } from "@/hooks/use-bookmark";
+import { DeleteBookmarkFolder } from "@/apis/bookmark/bookmark";
+import { toast } from "sonner";
+import { useQueryClient } from "@tanstack/react-query";
+import { BOOKMARK_KEY } from "@/apis/bookmark/bookmark-queries";
 
 export default function MyPage() {
   const [selectedFolderId, setSelectedFolderId] = useState<number | null>(null);
@@ -47,6 +51,18 @@ export default function MyPage() {
 
   const { data: articles = [] } = useGetBookmarkArticles(selectedFolderId);
 
+  const queryClient = useQueryClient();
+
+  const handleFolderDelete = async (id: number) => {
+    try {
+      await DeleteBookmarkFolder(id);
+      await DeleteBookmarkFolder(id);
+      queryClient.invalidateQueries({ queryKey: BOOKMARK_KEY.FOLDER_LIST() });
+    } catch {
+      toast.error("폴더 삭제에 실패했습니다.");
+    }
+  };
+
   return (
     <div className="mt-10 flex w-full gap-12">
       <div className="flex w-74 flex-col gap-8">
@@ -55,13 +71,14 @@ export default function MyPage() {
           folders={mappedFolders}
           selectedFolderId={selectedFolderId}
           onFolderClick={setSelectedFolderId}
+          onFolderDelete={handleFolderDelete}
         />
       </div>
 
       {selectedFolder ? (
         <BookmarkFolderContent
           folder={selectedFolder}
-          articles={articles} // ✅ 실제 API 데이터
+          articles={articles}
           bookmarkedArticles={bookmarkedArticles}
           toggleBookmark={toggleBookmark}
           setInitialBookmarks={setInitialBookmarks}

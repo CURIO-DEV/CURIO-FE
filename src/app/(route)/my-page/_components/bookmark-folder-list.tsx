@@ -5,12 +5,14 @@ interface Props {
   folders: typeof mockFolders;
   selectedFolderId: number | null;
   onFolderClick: (id: number) => void;
+  onFolderDelete: (id: number) => void;
 }
 
 export default function BookmarkFolderList({
   folders,
   selectedFolderId,
   onFolderClick,
+  onFolderDelete,
 }: Props) {
   return (
     <div className="flex min-h-47.25 flex-col items-center rounded-lg border border-gray-200 px-3.75">
@@ -26,12 +28,13 @@ export default function BookmarkFolderList({
           {folders.map((folder) => (
             <BookmarkFolderItem
               key={folder.id}
-              bookmarkId={folder.id} // ✅ 추가
+              bookmarkId={folder.id}
               name={folder.name}
               color={folder.color}
               collaborators={folder.collaborators}
               isSelected={folder.id === selectedFolderId}
               onClick={() => onFolderClick(folder.id)}
+              onDelete={() => onFolderDelete(folder.id)}
             />
           ))}
         </div>

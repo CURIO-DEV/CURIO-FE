@@ -4,6 +4,8 @@ import { cn } from "@/utils/cn";
 import { useEffect, useRef, useState } from "react";
 import { colorMap, ColorKey } from "@/constants/color";
 import FolderUpsertModal from "./folder-upsert-modal";
+import { DeleteBookmarkFolder } from "@/apis/bookmark/bookmark";
+import { toast } from "sonner";
 
 interface FolderItemProps {
   bookmarkId: number;
@@ -11,6 +13,7 @@ interface FolderItemProps {
   collaborators: string[];
   color: string;
   onClick: () => void;
+  onDelete: () => void;
   isSelected: boolean;
 }
 
@@ -20,6 +23,7 @@ export default function BookmarkFolderItem({
   collaborators,
   color,
   onClick,
+  onDelete,
   isSelected,
 }: FolderItemProps) {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -43,7 +47,8 @@ export default function BookmarkFolderItem({
   };
 
   const handleDelete = () => {
-    // TODO: 토스트 메시지 - 삭제
+    setIsMenuOpen(false);
+    onDelete();
   };
 
   return (
@@ -76,7 +81,7 @@ export default function BookmarkFolderItem({
                 </button>
                 <hr className="w-17.25 border-gray-400" />
                 <button
-                  onClick={handleDelete}
+                  onClick={onDelete}
                   className="h-full w-full rounded-b-lg hover:bg-gray-50"
                 >
                   삭제하기
@@ -87,7 +92,7 @@ export default function BookmarkFolderItem({
               <FolderUpsertModal
                 onClick={() => setIsUpsertModalOpen(false)}
                 mode="edit"
-                bookmarkId={bookmarkId} // 🧡 key point
+                bookmarkId={bookmarkId}
                 defaultName={name}
                 defaultColor={color}
                 defaultMembers={collaborators}

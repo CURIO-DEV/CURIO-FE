@@ -1,4 +1,4 @@
-import { apiGet, apiPatch, apiPost } from "../api";
+import { apiDelete, apiGet, apiPatch, apiPost } from "../api";
 import { END_POINTS } from "@/constants/api";
 
 export interface BookmarkFolderResponse {
@@ -59,4 +59,8 @@ export const AddBookmarkArticle = (
 
 export const GetBookmarkArticles = (folderId: number) => {
   return apiGet<BookmarkArticle[]>(END_POINTS.GET_BOOKMARK_ARTICLES(folderId));
+};
+
+export const DeleteBookmarkFolder = (bookmarkId: number): Promise<void> => {
+  return apiDelete(`/bookmarks/${bookmarkId}/delete`);
 };
