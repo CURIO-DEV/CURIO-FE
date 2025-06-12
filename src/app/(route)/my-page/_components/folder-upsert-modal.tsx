@@ -88,7 +88,7 @@ export default function FolderUpsertModal({
     if (next.length < MAX_MEMBERS) setLimitReached(false);
   };
 
-  const { mutate: patchBookmarkFolder } = usePatchBookmarkFolder(bookmarkId!);
+  const { mutate: patchBookmarkFolder } = usePatchBookmarkFolder();
   const { mutate: postBookmarkFolder } = usePostBookmarkFolder();
 
   // const handleSaveClick = () => {
@@ -119,8 +119,16 @@ export default function FolderUpsertModal({
   };
 
   const handlePatchBookmark = () => {
+    if (!bookmarkId) {
+      toast.error("북마크 폴더 수정에 실패했습니다. 다시 시도해주세요.");
+      return;
+    }
+
     patchBookmarkFolder(
-      { name, color, members },
+      {
+        bookmarkId,
+        body: { name, color, members },
+      },
       {
         onSuccess: () => {
           toast.success("북마크 폴더가 성공적으로 수정되었습니다.");
@@ -134,44 +142,60 @@ export default function FolderUpsertModal({
     );
   };
 
+  // const handleSubmit = () => {
+  //   if (isSubmitting) return;
+  //   setIsSubmitting(true);
+
+  //   const payload = { name, color, members };
+
+  //   if (mode === "create") {
+  //     console.log("payload", payload);
+  //     console.log("bookmarkId", bookmarkId);
+  //     console.log("if문 진입 - create");
+  //     postBookmarkFolder(payload, {
+  //       onSuccess: () => {
+  //         toast.success("북마크 폴더가 성공적으로 생성되었습니다.");
+  //         setIsSubmitting(false);
+  //         onClick(); // 모달 닫기
+  //       },
+  //       onError: (error: any) => {
+  //         console.error("폴더 생성 실패:", error);
+  //         toast.error("폴더 생성에 실패했습니다. 다시 시도해주세요.");
+  //         setIsSubmitting(false);
+  //       },
+  //     });
+  //   } else if (mode === "edit" && bookmarkId !== undefined) {
+  //     console.log("payload", payload);
+  //     console.log("bookmarkId", bookmarkId);
+  //     console.log("if문 진입 - edit");
+  //     patchBookmarkFolder(payload, {
+  //       onSuccess: () => {
+  //         toast.success("북마크 폴더가 성공적으로 수정되었습니다.");
+  //         setIsSubmitting(false);
+  //         onClick(); // 모달 닫기
+  //       },
+  //       onError: (error: any) => {
+  //         console.error("폴더 수정 실패:", error);
+  //         toast.error("폴더 수정에 실패했습니다. 다시 시도해주세요.");
+  //         setIsSubmitting(false);
+  //       },
+  //     });
+  //   }
+  // };
+
   const handleSubmit = () => {
     if (isSubmitting) return;
     setIsSubmitting(true);
 
-    const payload = { name, color, members };
-
     if (mode === "create") {
-      console.log("payload", payload);
-      console.log("bookmarkId", bookmarkId);
-      console.log("if문 진입 - create");
-      postBookmarkFolder(payload, {
-        onSuccess: () => {
-          toast.success("북마크 폴더가 성공적으로 생성되었습니다.");
-          setIsSubmitting(false);
-          onClick(); // 모달 닫기
-        },
-        onError: (error: any) => {
-          console.error("폴더 생성 실패:", error);
-          toast.error("폴더 생성에 실패했습니다. 다시 시도해주세요.");
-          setIsSubmitting(false);
-        },
-      });
-    } else if (mode === "edit" && bookmarkId !== undefined) {
-      console.log("payload", payload);
-      console.log("bookmarkId", bookmarkId);
-      console.log("if문 진입 - edit");
-      patchBookmarkFolder(payload, {
-        onSuccess: () => {
-          toast.success("북마크 폴더가 성공적으로 수정되었습니다.");
-          setIsSubmitting(false);
-          onClick(); // 모달 닫기
-        },
-        onError: (error: any) => {
-          console.error("폴더 수정 실패:", error);
-          toast.error("폴더 수정에 실패했습니다. 다시 시도해주세요.");
-          setIsSubmitting(false);
-        },
-      });
+      handlePostBookmark();
+    } else if (mode === "edit") {
+      if (!bookmarkId) {
+        toast.error("수정할 폴더의 ID가 없습니다.");
+        setIsSubmitting(false);
+        return;
+      }
+      handlePatchBookmark();
     }
   };
 

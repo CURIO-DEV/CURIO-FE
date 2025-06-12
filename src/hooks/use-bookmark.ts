@@ -25,12 +25,17 @@ export const usePostBookmarkFolder = () => {
   });
 };
 
-export const usePatchBookmarkFolder = (bookmarkId: number) => {
+export const usePatchBookmarkFolder = () => {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: (body: CreateBookmarkBody) =>
-      UpdateBookmarkFolder(bookmarkId, body),
+    mutationFn: ({
+      bookmarkId,
+      body,
+    }: {
+      bookmarkId: number;
+      body: CreateBookmarkBody;
+    }) => UpdateBookmarkFolder(bookmarkId, body),
     onSuccess: () => {
       queryClient.invalidateQueries({
         queryKey: BOOKMARK_KEY.FOLDER_LIST(),
