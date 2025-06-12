@@ -15,6 +15,7 @@ import FontSize from "../font-size";
 import Summary from "../summary";
 import { useGetUserMe, useGetUserProfile } from "@/hooks/use-user";
 import { useUserStore } from "@/stores/use-user-store";
+import { useLoginStore } from "@/stores/use-login";
 
 export default function Sidebar() {
   const router = useRouter();
@@ -33,11 +34,20 @@ export default function Sidebar() {
     enabled: !!userMe?.isLogin,
   });
 
+  const setIsLogin = useLoginStore((s) => s.setIsLogin);
+
   useEffect(() => {
     if (data) {
       setProfile(data);
     }
   }, [data, setProfile]);
+
+  useEffect(() => {
+    if (userMe?.isLogin !== undefined) {
+      setIsLogin(userMe.isLogin);
+    }
+  }, [userMe?.isLogin, setIsLogin]);
+
   return (
     <aside className="min-h-screen w-85 border-l-1 border-gray-100 pl-10">
       {isDetailPage ? (
