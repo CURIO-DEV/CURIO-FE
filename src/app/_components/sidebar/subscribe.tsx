@@ -36,7 +36,8 @@ export default function Subscribe() {
       { "newsletter-email": email },
       {
         onSuccess: () => {
-          setInputEmail(email);
+          console.log("subscribe success");
+          // TODO: 토스트
         },
       },
     );

@@ -11,3 +11,16 @@ export interface GetUserProfileResponse {
 export interface GetUserMeResponse {
   isLogin: boolean;
 }
+
+export interface GetUserInterestsResponse {
+  interests: string[];
+}
+
+export type UserInterestsData = string[];
+
+export interface GetUserInterestsNewsResponse {
+  title: string;
+  content: string;
+  imageUrl: string;
+  articleId: number;
+}
