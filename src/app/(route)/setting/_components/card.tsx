@@ -77,15 +77,21 @@ export default function Card() {
     }
 
     const q = new URLSearchParams(searchParams.toString());
-    updateSettings.mutate({
-      summaryType: q.get("type") as SummaryType,
-      fontSize: fontQueryToApi(
-        (q.get("font") ?? "default") as "small" | "default" | "big",
-      ),
-      receiveNewsletter: newsletterOn,
-      newsletterEmail: newsletterOn ? newsletterEmail : null,
-      categories: selectedCategories,
-    });
+    updateSettings.mutate(
+      {
+        summaryType: q.get("type") as SummaryType,
+        fontSize: fontQueryToApi(
+          (q.get("font") ?? "default") as "small" | "default" | "big",
+        ),
+        receiveNewsletter: newsletterOn,
+        newsletterEmail: newsletterOn ? newsletterEmail : null,
+        categories: selectedCategories,
+      },
+      {
+        onSuccess: () => toast.success("설정이 저장되었습니다."),
+        onError: () => toast.error("저장에 실패했습니다. 다시 시도해 주세요."),
+      },
+    );
   };
 
   if (isLoading) {
