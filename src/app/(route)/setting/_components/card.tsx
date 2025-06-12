@@ -121,7 +121,8 @@ export default function Card() {
             src={profile?.profile_image_url}
             width={115}
             height={96}
-            alt="logo-head"
+            alt="profile image"
+            className="h-42 w-42 rounded-full"
           />
         )}
       </div>
