@@ -1,5 +1,9 @@
 "use client";
 
+import { useEffect, useState, Suspense } from "react";
+import Image from "next/image";
+import { useRouter, usePathname, useSearchParams } from "next/navigation";
+
 import Button from "@/components/button";
 import FontSize from "@/components/font-size";
 import Input from "@/components/input";
@@ -10,36 +14,98 @@ import { ROUTES } from "@/constants/routes";
 import { Switch } from "@radix-ui/react-switch";
 import Chip from "app/(route)/home/_components/chip";
 import { KakaoIcon } from "assets";
-import Image from "next/image";
-import { useRouter } from "next/navigation";
-import { Suspense, useState } from "react";
+import { cn } from "@/utils/cn";
+
+import { useUserSettings, useUpdateUserSettings } from "@/hooks/use-setting";
+import { SummaryType } from "types/summary-type";
 
 export default function Card() {
   const router = useRouter();
+  const pathname = usePathname();
+  const searchParams = useSearchParams();
+
+  // ────────────────────────────────────
+  // remote data
+  // ────────────────────────────────────
+  const { data, isLoading } = useUserSettings();
+  const updateSettings = useUpdateUserSettings();
+
+  // ────────────────────────────────────
+  // local state
+  // ────────────────────────────────────
   const [selectedCategories, setSelectedCategories] =
     useState<string[]>(DEFAULT_CATEGORIES);
-  const [on, setOn] = useState(false);
+  const [newsletterOn, setNewsletterOn] = useState(false);
+  const [newsletterEmail, setNewsletterEmail] = useState("");
+
+  const fontApiToQuery = (v: "small" | "medium" | "large") =>
+    v === "small" ? "small" : v === "medium" ? "default" : "big";
+
+  const fontQueryToApi = (v: "small" | "default" | "big") =>
+    v === "small" ? "small" : v === "default" ? "medium" : "large";
+
+  const syncSearchParam = (key: string, value: string) => {
+    const params = new URLSearchParams(searchParams.toString());
+    if (params.get(key) !== value) {
+      params.set(key, value);
+      router.replace(`${pathname}?${params.toString()}`, { scroll: false });
+    }
+  };
+
+  // ────────────────────────────────────
+  // side‑effect: hydrate UI from API
+  // ────────────────────────────────────
+  useEffect(() => {
+    if (!data) return;
+
+    // 1. 요약 정도 (URL 쿼리)
+    syncSearchParam("type", data.summaryType);
+
+    // 2. 글자 크기
+    syncSearchParam("font", fontApiToQuery(data.fontSize));
+
+    // 3. 이메일 수신
+    setNewsletterOn(data.receiveNewsletter);
+    setNewsletterEmail(data.newsletterEmail ?? "");
+
+    // 4. 카테고리
+    setSelectedCategories(data.categories);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [data]);
 
   const handleCategoryClick = (item: string) => {
-    setSelectedCategories((prev) => {
-      if (prev.includes(item)) {
-        return prev.filter((i) => i !== item);
-      } else {
-        if (prev.length < 4) {
-          return [...prev, item];
-        } else {
-          return prev;
-          //TODO: 토스트 이벤트
-        }
-      }
+    setSelectedCategories(
+      (prev) =>
+        prev.includes(item)
+          ? prev.filter((i) => i !== item)
+          : prev.length < 4
+            ? [...prev, item]
+            : prev, // TODO: toast
+    );
+  };
+
+  const handleCancel = () => router.back();
+
+  const handleConfirm = () => {
+    const params = new URLSearchParams(searchParams.toString());
+    updateSettings.mutate({
+      summaryType: params.get("type") as SummaryType,
+      fontSize: fontQueryToApi(
+        (params.get("font") ?? "default") as "small" | "default" | "big",
+      ),
+      receiveNewsletter: newsletterOn,
+      newsletterEmail: newsletterOn ? newsletterEmail : null,
+      categories: selectedCategories,
     });
   };
 
-  const handleCancel = () => {};
-  const handleConfirm = () => {};
-  const handleClick = () => {
-    router.push(ROUTES.DELETE_ACCOUNT);
-  };
+  if (isLoading) {
+    return (
+      <div className="flex h-40 items-center justify-center">
+        불러오는 중...
+      </div>
+    );
+  }
 
   return (
     <div className="mt-10 mb-30 flex h-full flex-col items-center rounded-xl border border-gray-200 px-21 pb-13.5">
@@ -56,7 +122,7 @@ export default function Card() {
         <label className="body2 flex w-full flex-col font-medium">
           이메일
           <div className="flex items-center gap-5">
-            <Input className="mt-3 mb-2 flex-grow" />
+            <Input className="mt-3 mb-2 flex-grow" disabled defaultValue="" />
             <KakaoIcon />
           </div>
           <span className="caption1 font-regular">
@@ -66,13 +132,17 @@ export default function Card() {
         <label className="body2 flex w-full flex-col font-medium">
           수신 이메일
           <div className="flex items-center gap-5">
-            <Input className="mt-3 mb-2 flex-grow" />
-            <Switch checked={on} onCheckedChange={setOn} />
+            <Input
+              className="mt-3 mb-2 flex-grow"
+              value={newsletterEmail}
+              onChange={(e) => setNewsletterEmail(e.target.value)}
+              disabled={!newsletterOn}
+            />
+            <Switch checked={newsletterOn} onCheckedChange={setNewsletterOn} />
           </div>
-          <span className="caption1 font-regular"></span>
         </label>
         <label className="flex flex-col">
-          <span> 카테고리</span>
+          <span>카테고리</span>
           <div className="mt-3 flex w-102 flex-wrap justify-center gap-x-2 gap-y-3">
             {CATEGORIES.map((item) => (
               <Chip
@@ -100,7 +170,7 @@ export default function Card() {
       </div>
       <p
         className="caption1 mt-4 cursor-pointer font-medium text-gray-700 underline"
-        onClick={handleClick}
+        onClick={() => router.push(ROUTES.DELETE_ACCOUNT)}
       >
         탈퇴하기
       </p>
