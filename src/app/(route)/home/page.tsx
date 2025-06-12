@@ -64,13 +64,21 @@ export default function Home() {
     });
   };
 
+  const handleCategoryButtonClick = (item: string) => {
+    setSelectedCategory(item);
+  };
+
   return (
     <div className="mt-6 flex flex-col gap-6 pr-10">
       <Banner />
       <div className="flex justify-between border-t border-b border-gray-200 py-4 pr-4.5 pl-18">
         <div className="grid w-full grid-cols-4">
           {categories.map((item, index) => (
-            <button key={index} className="text-left hover:underline">
+            <button
+              key={index}
+              className="text-left hover:underline"
+              onClick={() => handleCategoryButtonClick(item)}
+            >
               {item}
             </button>
           ))}
