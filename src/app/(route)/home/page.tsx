@@ -92,8 +92,11 @@ export default function Home() {
         <EditIcon onClick={handleEdit} className="cursor-pointer" />
       </div>
       <div className="flex flex-col gap-4">
-        {userInterestsNews?.map((article, index) => (
-          <ArticleCard key={index} article={article} />
+        {userInterestsNews?.map((article) => (
+          <>
+            <ArticleCard key={article.articleId} article={article} />
+            <div>{article.articleId}</div>
+          </>
         ))}
       </div>
       {isModalOpen && (
