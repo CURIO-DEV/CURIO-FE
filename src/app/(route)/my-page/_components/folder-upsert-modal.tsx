@@ -21,6 +21,10 @@ import {
 import { toast } from "sonner";
 import { useQueryClient } from "@tanstack/react-query";
 import { BOOKMARK_KEY } from "@/apis/bookmark/bookmark-queries";
+import {
+  usePatchBookmarkFolder,
+  usePostBookmarkFolder,
+} from "@/hooks/use-bookmark";
 
 interface FolderUpsertModalProps {
   onClick: () => void; // 모달 닫기
@@ -108,9 +112,26 @@ export default function FolderUpsertModal({
     }
   };
 
-  const handleSaveClick = () => {
-    (window.event as MouseEvent | undefined)?.stopPropagation();
-    void handleSave();
+  const { mutate: patchBookmarkFolder } = usePatchBookmarkFolder(bookmarkId!);
+  const { mutate: postBookmarkFolder } = usePostBookmarkFolder();
+
+  // const handleSaveClick = () => {
+  //   if (isSubmitting) return;
+
+  //   const payload = { name, color, members };
+  //   if (mode === "create") {
+  //     postBookmarkFolder(payload);
+  //   } else if (mode == "edit") {
+  //     patchBookmarkFolder(payload);
+  //   }
+  // };
+
+  const handlePostBookmark = () => {
+    postBookmarkFolder({ name, color, members });
+  };
+
+  const handlePatchBookmark = () => {
+    patchBookmarkFolder({ name, color, members });
   };
 
   /* ---------- UI ---------- */
@@ -199,7 +220,11 @@ export default function FolderUpsertModal({
       </div>
 
       <Button
-        onClick={handleSaveClick}
+        onClick={(e: React.MouseEvent<HTMLButtonElement>) => {
+          e.stopPropagation();
+          mode === "create" ? handlePostBookmark() : handlePatchBookmark();
+          // handleSaveClick();
+        }}
         className={cn("mt-8", isSubmitting && "pointer-events-none opacity-50")}
         aria-disabled={isSubmitting}
       >
