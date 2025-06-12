@@ -14,7 +14,7 @@ export default function Index() {
   const { data } = useGetCurioGo();
 
   const handleClick = () => {
-    router.push(`/${ROUTES.DETAIL}/${data?.[activeIndex]?.articleId}`);
+    router.push(`${ROUTES.DETAIL}/${data?.[activeIndex]?.articleId}`);
   };
 
   return (
