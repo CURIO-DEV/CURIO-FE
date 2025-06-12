@@ -141,6 +141,9 @@ export default function FolderUpsertModal({
     const payload = { name, color, members };
 
     if (mode === "create") {
+      console.log("payload", payload);
+      console.log("bookmarkId", bookmarkId);
+      console.log("if문 진입 - create");
       postBookmarkFolder(payload, {
         onSuccess: () => {
           toast.success("북마크 폴더가 성공적으로 생성되었습니다.");
@@ -154,6 +157,9 @@ export default function FolderUpsertModal({
         },
       });
     } else if (mode === "edit" && bookmarkId !== undefined) {
+      console.log("payload", payload);
+      console.log("bookmarkId", bookmarkId);
+      console.log("if문 진입 - edit");
       patchBookmarkFolder(payload, {
         onSuccess: () => {
           toast.success("북마크 폴더가 성공적으로 수정되었습니다.");
