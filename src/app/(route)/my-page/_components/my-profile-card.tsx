@@ -2,29 +2,46 @@
 
 import Image from "next/image";
 import { SettingIcon } from "assets";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { IMAGES_PATH } from "@/constants/images";
 import { useRouter } from "next/navigation";
 import { ROUTES } from "@/constants/routes";
+import { useUserStore } from "@/stores/use-user-store";
+import { useGetUserMe, useGetUserProfile } from "@/hooks/use-user";
 
 export default function MyProfileCard() {
   const router = useRouter();
+
+  const { data: userMe } = useGetUserMe();
+
+  const { data: userProfile } = useGetUserProfile({
+    enabled: !!userMe?.isLogin,
+  });
+
+  const setProfile = useUserStore((s) => s.setProfile);
+
+  useEffect(() => {
+    if (userProfile) {
+      setProfile(userProfile);
+    }
+  }, [userProfile, setProfile]);
+
   const handleClick = () => {
     router.push(ROUTES.SETTING);
   };
-  /* TODO 닉네임 API연결 */
-  const [nickname] = useState("닉네임");
+
+  const profileImage = userProfile?.profile_image_url || IMAGES_PATH.LOGO_HEAD;
+  const nickname = userProfile?.nickname || "닉네임";
 
   return (
     <div className="box-border flex flex-col items-center rounded-lg border border-gray-100">
-      <div className="relative mt-11.25 flex items-center justify-center rounded-full border border-gray-200 px-[25.5px] py-8.75">
+      <div className="relative mt-11.25 flex items-center justify-center rounded-full border border-gray-200">
         <Image
-          src={IMAGES_PATH.LOGO_HEAD}
+          src={profileImage}
           alt="profile"
           width={115}
           height={96}
-          style={{ width: "115px", height: "96px" }}
-          className="block"
+          className="h-42 w-42 rounded-full"
         />
         <button className="absolute right-0 bottom-0" onClick={handleClick}>
           <SettingIcon className="h-10 w-10" />

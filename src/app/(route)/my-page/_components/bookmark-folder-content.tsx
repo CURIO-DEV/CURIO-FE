@@ -5,6 +5,12 @@ import Button from "@/components/button";
 import ArticleCard from "@/components/article";
 import { BookmarkIcon } from "assets";
 import { articles } from "@/mocks/article-array";
+import {
+  GetBookmarkSummary,
+  RemoveBookmarkArticle,
+} from "@/apis/bookmark/bookmark";
+import { toast } from "sonner";
+import { useQueryClient } from "@tanstack/react-query";
 
 interface BookmarkFolderContentProps {
   folder: {
@@ -13,6 +19,12 @@ interface BookmarkFolderContentProps {
     collaborators: string[];
     color: string;
   };
+  articles: {
+    articleId: number;
+    title: string;
+    content: string;
+    imageUrl: string;
+  }[];
   bookmarkedArticles: Set<string>;
   toggleBookmark: (id: string) => void;
   setInitialBookmarks: (ids: string[]) => void;
@@ -23,6 +35,7 @@ const defaultSummary =
 
 export default function BookmarkFolderContent({
   folder,
+  articles,
   bookmarkedArticles,
   toggleBookmark,
   setInitialBookmarks,
@@ -31,17 +44,40 @@ export default function BookmarkFolderContent({
   const [isSummarized, setIsSummarized] = useState(false);
 
   useEffect(() => {
-    // TODO: API 연동 시 해당 폴더의 북마크 기사 ID들을 fetch해서 대체
-    const bookmarkedIdsForFolder = ["1", "3", "5"];
+    // 초기 북마크 ID 설정 (임시로 모든 articleId를 string으로 변환)
+    const bookmarkedIdsForFolder = articles.map((a) => String(a.articleId));
     setInitialBookmarks(bookmarkedIdsForFolder);
     setSummary(defaultSummary);
     setIsSummarized(false);
-  }, [folder.id]);
+  }, [folder.id, articles, setInitialBookmarks]);
 
-  const handleSummarize = () => {
-    const result = "요약된 기사 내용이 여기에 표시됩니다...";
-    setSummary(result);
-    setIsSummarized(true);
+  const handleSummarize = async () => {
+    try {
+      const res = await GetBookmarkSummary(folder.id);
+      setSummary(res.summary);
+      setIsSummarized(true);
+    } catch (error) {
+      console.error(error);
+      setSummary("요약에 실패했습니다.");
+      setIsSummarized(false);
+    }
+  };
+
+  const queryClient = useQueryClient();
+
+  const handleToggleBookmark = async (id: string, isBookmarked: boolean) => {
+    toggleBookmark(id);
+    if (isBookmarked) {
+      try {
+        const res = await RemoveBookmarkArticle(folder.id, Number(id));
+        toast.success(res.message);
+        queryClient.invalidateQueries({
+          queryKey: ["bookmark-articles", folder.id],
+        });
+      } catch (error) {
+        toast.error("북마크 제거에 실패했습니다.");
+      }
+    }
   };
 
   return (
@@ -65,14 +101,16 @@ export default function BookmarkFolderContent({
 
       <div className="mt-10">
         {articles.map((article) => {
-          const isBookmarked = bookmarkedArticles.has(article.id);
+          const idStr = String(article.articleId);
+          const isBookmarked = bookmarkedArticles.has(idStr);
+
           return (
             <div
-              key={article.id}
+              key={article.articleId}
               className="relative flex h-33 items-center border-t border-gray-100"
             >
               <button
-                onClick={() => toggleBookmark(article.id)}
+                onClick={() => handleToggleBookmark(idStr, isBookmarked)}
                 className="absolute -top-1.5 right-5"
               >
                 <BookmarkIcon
@@ -83,7 +121,14 @@ export default function BookmarkFolderContent({
                   }}
                 />
               </button>
-              <ArticleCard article={article} />
+              <ArticleCard
+                article={{
+                  id: article.articleId,
+                  title: article.title,
+                  summary: article.content,
+                  imageUrl: article.imageUrl,
+                }}
+              />
             </div>
           );
         })}
