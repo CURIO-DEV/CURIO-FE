@@ -2,7 +2,7 @@ import { useQuery } from "@tanstack/react-query";
 import { searchNews, SearchResponse } from "@/apis/search";
 
 export interface NewsItem {
-  newsId: number;
+  articleId: number;
   title: string;
   content: string;
   imageUrl: string;
