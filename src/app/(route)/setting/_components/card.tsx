@@ -113,8 +113,9 @@ export default function Card() {
           <Image
             src={profile.profile_image_url}
             alt="profile"
-            fill
-            className="object-cover"
+            width={115}
+            height={96}
+            className="h-42 w-42 object-cover"
           />
         )}
       </div>
