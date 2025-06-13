@@ -1,14 +1,27 @@
 "use client";
 
+import React, { useState } from "react";
+
 import Image from "next/image";
 import { useParams, useSearchParams } from "next/navigation";
 import ActionBar from "../_components/action-bar";
-import { DislikeOutlineIcon, LikeOutlineIcon, LogoHeadIcon } from "assets";
+import {
+  LikeOutlineIcon,
+  LikeFilledIcon,
+  DislikeOutlineIcon,
+  DislikeFilledIcon,
+  LogoHeadIcon,
+} from "assets";
 import { useArticleHeadline } from "@/hooks/use-article-headlines";
 import { useArticleSummary } from "@/hooks/use-article-summary";
 import { SummaryType } from "types/summary-type";
 import { useGetUserMe } from "@/hooks/use-user";
 import { useUserSettings } from "@/hooks/use-setting";
+import { toast } from "sonner";
+import {
+  useToggleRecommend,
+  useToggleNotRecommend,
+} from "@/hooks/use-article-recommand";
 
 const fontApiToQuery = (v: "small" | "medium" | "large") =>
   v === "small" ? "small" : v === "medium" ? "default" : "big";
@@ -46,6 +59,42 @@ export default function DetailPage() {
     computedSummaryType,
   );
 
+  /* 추천 / 비추천 state & mutation */
+  const [recommended, setRecommended] = useState(false);
+  const [notRec, setNotRec] = useState(false);
+  const toggleRec = useToggleRecommend();
+  const toggleNotRec = useToggleNotRecommend();
+
+  const guard = () => {
+    if (!userMe?.isLogin) {
+      toast.warning("로그인 후 이용 가능합니다.");
+      return false;
+    }
+    return true;
+  };
+
+  const handleRecommend = () => {
+    if (!guard()) return;
+    toggleRec.mutate(articleId, {
+      onSuccess: (res) => {
+        setRecommended(res.data === "추천");
+        toast.success(res.message);
+      },
+      onError: () => toast.error("다시 시도해 주세요."),
+    });
+  };
+
+  const handleNotRecommend = () => {
+    if (!guard()) return;
+    toggleNotRec.mutate(articleId, {
+      onSuccess: (res) => {
+        setNotRec(res.data === "비추천");
+        toast.success(res.message);
+      },
+      onError: () => toast.error("다시 시도해 주세요."),
+    });
+  };
+
   if (hlLoading || smLoading || settingsLoading) return <div>로딩 중…</div>;
   if (!headline) return <div>기사 정보가 없습니다.</div>;
 
@@ -56,6 +105,7 @@ export default function DetailPage() {
     const dd = String(d.getDate()).padStart(2, "0");
     return `${yyyy}.${mm}.${dd}`;
   };
+
   return (
     <div className="mt-12 mb-10">
       <ActionBar newsId={articleId} />
@@ -87,14 +137,23 @@ export default function DetailPage() {
             <p className="caption1 mr-6 font-medium">
               이 내용이 마음에 드시나요?
             </p>
+            {recommended ? (
+              <LikeFilledIcon onClick={handleRecommend} />
+            ) : (
+              <LikeOutlineIcon onClick={handleRecommend} />
+            )}
+
+            <div className="bg-primary-200 mx-2 h-5 w-[0.5px]" />
+
+            {notRec ? (
+              <DislikeFilledIcon onClick={handleNotRecommend} />
+            ) : (
+              <DislikeOutlineIcon onClick={handleNotRecommend} />
+            )}
             <LikeOutlineIcon />
             <div className="bg-primary-200 mx-2 h-5 w-[0.5px]" />
             <DislikeOutlineIcon />
           </div>
-          <p className="body1 font-medium">
-            SK㈜ 사내이사 재선임⋯올해도 리밸런싱 김건희 상설특검’ 후보자 마은혁
-            헌법재판관 도널드 트럼프 미국 행정부
-          </p>
         </div>
       </div>
     </div>
