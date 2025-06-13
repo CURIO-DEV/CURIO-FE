@@ -10,4 +10,7 @@ export const END_POINTS = {
   USER_INTEREST: "/users/interests",
   GET_USER_INTEREST_NEWS: (interestNews: string) =>
     `/users/interests/${interestNews}/news`,
+  GET_BOOKMARK_FOLDER_LIST: "/bookmarks/list",
+  GET_BOOKMARK_ARTICLES: (folderId: number) => `/bookmarks/${folderId}/news`,
+  CREATE_BOOKMARK_FOLDER: "/bookmarks/create",
 };

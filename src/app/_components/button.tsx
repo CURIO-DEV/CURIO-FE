@@ -7,7 +7,7 @@ interface ButtonProps {
   children: ReactNode;
   className?: string;
   variant?: "primary" | "secondary";
-  onClick: () => void;
+  onClick?: (e: React.MouseEvent<HTMLButtonElement>) => void;
 }
 
 export default function Button({

@@ -1,16 +1,29 @@
 import BookmarkFolderItem from "./bookmark-folder-item";
-import { mockFolders } from "@/mocks/book-mark-folders";
 
 interface Props {
-  folders: typeof mockFolders;
+  folders: {
+    id: number;
+    name: string;
+    collaborators: string[];
+    color: string;
+  }[];
   selectedFolderId: number | null;
   onFolderClick: (id: number) => void;
+  onFolderDelete: (id: number) => void;
+  onFolderEdit: (folder: {
+    id: number;
+    name: string;
+    color: string;
+    collaborators: string[];
+  }) => void;
 }
 
 export default function BookmarkFolderList({
   folders,
   selectedFolderId,
   onFolderClick,
+  onFolderDelete,
+  onFolderEdit,
 }: Props) {
   return (
     <div className="flex min-h-47.25 flex-col items-center rounded-lg border border-gray-200 px-3.75">
@@ -26,9 +39,14 @@ export default function BookmarkFolderList({
           {folders.map((folder) => (
             <BookmarkFolderItem
               key={folder.id}
-              {...folder}
+              bookmarkId={folder.id}
+              name={folder.name}
+              color={folder.color}
+              collaborators={folder.collaborators}
               isSelected={folder.id === selectedFolderId}
               onClick={() => onFolderClick(folder.id)}
+              onDelete={() => onFolderDelete(folder.id)}
+              onEdit={() => onFolderEdit(folder)} // ✅ edit 핸들러 전달
             />
           ))}
         </div>
