@@ -1,6 +1,7 @@
 import { apiGet, apiPatch } from "@/apis/api";
 
 export interface UserCustomSettings {
+  socialType: number;
   summaryType: "short" | "medium" | "long";
   receiveNewsletter: boolean;
   newsletterEmail: string | null;
@@ -11,5 +12,10 @@ export interface UserCustomSettings {
 export const getUserSettings = () =>
   apiGet<UserCustomSettings>("/users/settings");
 
-export const patchUserSettings = (payload: Partial<UserCustomSettings>) =>
-  apiPatch<void, Partial<UserCustomSettings>>("/users/settings", payload);
+export type UserCustomSettingsPatch = Omit<
+  Partial<UserCustomSettings>,
+  "socialType"
+>;
+
+export const patchUserSettings = (payload: UserCustomSettingsPatch) =>
+  apiPatch<void, UserCustomSettingsPatch>("/users/settings", payload);

@@ -94,7 +94,7 @@ export default function Card() {
 
   const providerNames = ["", "카카오", "구글"] as const;
   const providerIcons = [null, KakaoIcon, GoogleIcon] as const;
-  const socialIdx = data?.social === 2 ? 2 : 1; // 기본 1(카카오)
+  const socialIdx = data?.socialType === 2 ? 2 : 1; // 기본 1(카카오)
   const ProviderIcon = providerIcons[socialIdx]!;
   const providerLabel = providerNames[socialIdx];
 
