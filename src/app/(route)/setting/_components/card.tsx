@@ -10,9 +10,9 @@ import Input from "@/components/input";
 import Summary from "@/components/summary";
 import { CATEGORIES } from "@/constants/categories";
 import { ROUTES } from "@/constants/routes";
-import { Switch } from "@radix-ui/react-switch";
+import { Switch } from "@/styles/components/ui/switch";
 import Chip from "app/(route)/home/_components/chip";
-import { KakaoIcon } from "assets";
+import { KakaoIcon, GoogleIcon } from "assets";
 import { toast } from "sonner";
 import { useUserSettings, useUpdateUserSettings } from "@/hooks/use-setting";
 import { useGetUserMe, useGetUserProfile } from "@/hooks/use-user";
@@ -71,11 +71,6 @@ export default function Card() {
     );
 
   const handleConfirm = () => {
-    if (selectedCategories.length === 0) {
-      toast.warning("카테고리를 최소 1개 선택해 주세요.");
-      return;
-    }
-
     const q = new URLSearchParams(searchParams.toString());
     updateSettings.mutate(
       {
@@ -96,6 +91,12 @@ export default function Card() {
       },
     );
   };
+
+  const providerNames = ["", "카카오", "구글"] as const;
+  const providerIcons = [null, KakaoIcon, GoogleIcon] as const;
+  const socialIdx = data?.social === 2 ? 2 : 1; // 기본 1(카카오)
+  const ProviderIcon = providerIcons[socialIdx]!;
+  const providerLabel = providerNames[socialIdx];
 
   if (isLoading) {
     return (
@@ -128,10 +129,10 @@ export default function Card() {
               disabled
               defaultValue={profile?.email ?? ""}
             />
-            <KakaoIcon />
+            <ProviderIcon />
           </div>
           <span className="caption1 font-regular">
-            *(카카오)로 가입한 계정이예요
+            *({providerLabel})로 가입한 계정이예요
           </span>
         </label>
         <label className="body2 flex w-full flex-col font-medium">
