@@ -5,6 +5,8 @@ import { ROUTES } from "@/constants/routes";
 import Button from "@/components/button";
 import { Exit_Reasons } from "@/constants/exit-reasons";
 import { useEffect, useRef, useState } from "react";
+import { useDeleteAccount } from "@/hooks/use-delete-accout";
+import { toast } from "sonner";
 
 export default function DeleteAccount() {
   const [selectedReason, setSelectedReason] = useState("");
@@ -12,25 +14,32 @@ export default function DeleteAccount() {
 
   const textareaRef = useRef<HTMLTextAreaElement>(null);
   const router = useRouter();
+  const deleteAccount = useDeleteAccount();
 
-  const handleCancel = () => {
-    router.push(ROUTES.HOME);
-  };
+  const handleCancel = () => router.push(ROUTES.HOME);
 
   const handleUnsubscribe = () => {
+    if (!selectedReason) {
+      toast.warning("탈퇴 사유를 선택해 주세요.");
+      return;
+    }
     if (selectedReason === "other" && !customReason.trim()) {
-      //TODO : 토스트로 처리
+      toast.warning("사유를 입력해 주세요.");
+      return;
     }
 
-    // TODO : 여기에 탈퇴 처리 로직 추가
-    console.log("탈퇴 처리", selectedReason, customReason);
-    // TODO : 토스트 - 탈퇴완료메시지 -> 홈으로 이동?
+    deleteAccount.mutate(undefined, {
+      onSuccess: (res) => {
+        toast.success(res.message);
+        router.push(ROUTES.HOME);
+      },
+      onError: () =>
+        toast.error("탈퇴 요청에 실패했습니다. 다시 시도해 주세요."),
+    });
   };
 
   useEffect(() => {
-    if (selectedReason === "other") {
-      textareaRef.current?.focus();
-    }
+    if (selectedReason === "other") textareaRef.current?.focus();
   }, [selectedReason]);
 
   return (
