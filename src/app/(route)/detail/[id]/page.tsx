@@ -150,9 +150,6 @@ export default function DetailPage() {
             ) : (
               <DislikeOutlineIcon onClick={handleNotRecommend} />
             )}
-            <LikeOutlineIcon />
-            <div className="bg-primary-200 mx-2 h-5 w-[0.5px]" />
-            <DislikeOutlineIcon />
           </div>
         </div>
       </div>
