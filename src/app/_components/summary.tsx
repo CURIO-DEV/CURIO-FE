@@ -5,6 +5,8 @@ import OptionSelector from "./option-selector";
 import { cn } from "@/utils/cn";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { SummaryType } from "types/summary-type";
+import { useGetUserMe } from "@/hooks/use-user";
+import { useUserSettings } from "@/hooks/use-setting";
 
 export default function Summary({ rootClassName }: { rootClassName?: string }) {
   const iconList = [SimpleIcon, DefaultIcon, DetailedIcon];
@@ -14,10 +16,13 @@ export default function Summary({ rootClassName }: { rootClassName?: string }) {
   const pathname = usePathname();
   const searchParams = useSearchParams();
 
-  const currentType = (searchParams.get("type") ?? "medium") as
-    | "short"
-    | "medium"
-    | "long";
+  const { data: userMe } = useGetUserMe();
+  const { data: settings } = useUserSettings();
+
+  const currentType = (searchParams.get("type") ??
+    settings?.summaryType ??
+    "medium") as SummaryType;
+
   const selectedIndex = typeMap.indexOf(currentType);
 
   const handleSummaryClick = (index: number) => {
