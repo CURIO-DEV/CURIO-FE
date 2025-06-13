@@ -109,7 +109,7 @@ export default function Home() {
               </Chip>
             ))}
           </div>
-          <Button onClick={handleApply}>신청하기</Button>
+          <Button onClick={handleApply}>수정하기</Button>
         </Modal>
       )}
     </div>
