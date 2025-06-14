@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { toast } from "sonner";
 import { BookmarkIcon, HeartIcon, ShareIcon } from "assets";
 import FolderModal from "./folder-modal";
@@ -15,7 +15,11 @@ interface ActionBarProps {
 export default function ActionBar({ newsId }: ActionBarProps) {
   const isLogin = useUserStore((s) => s.isLogin);
   const { data: likeStatus } = useLikeStatus(newsId, !!isLogin);
-  const [liked, setLiked] = useState<boolean>(!!likeStatus?.status);
+  const [liked, setLiked] = useState(false);
+
+  useEffect(() => {
+    setLiked(!!likeStatus?.status);
+  }, [likeStatus, newsId]);
 
   const [bookmarked, setBookmarked] = useState(false);
   const [isFolderModalOpen, setIsFolderModalOpen] = useState(false);
@@ -31,10 +35,9 @@ export default function ActionBar({ newsId }: ActionBarProps) {
   };
   const handleLiked = () => {
     if (!guard()) return;
-
-    const nextStatus = !liked;
+    const next = !liked;
     toggleLike.mutate(
-      { articleId: newsId, status: nextStatus },
+      { articleId: newsId, status: next },
       {
         onSuccess: (res) => {
           setLiked(res.status);
@@ -47,7 +50,6 @@ export default function ActionBar({ newsId }: ActionBarProps) {
 
   const handleBookmarked = () => {
     if (!guard()) return;
-
     if (!bookmarked) {
       setBookmarked(true);
       setIsFolderModalOpen(true);
