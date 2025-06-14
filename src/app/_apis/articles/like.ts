@@ -1,6 +1,5 @@
 import { apiGet, apiPatch } from "@/apis/api";
 
-/* GET /articles/{id}/like ------------------------------------ */
 export interface LikeStatus {
   articleId: number;
   status: boolean; // true: 좋아요 상태
@@ -8,7 +7,6 @@ export interface LikeStatus {
 export const getArticleLikeStatus = (articleId: number) =>
   apiGet<LikeStatus>(`/articles/${articleId}/like`);
 
-/* PATCH /articles/{id}/like ---------------------------------- */
 export interface ToggleLikeResponse {
   message: string;
   status: boolean; // 토글 후 최종 상태

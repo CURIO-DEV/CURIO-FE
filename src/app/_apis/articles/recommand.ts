@@ -9,7 +9,7 @@ export const getRecommendStatus = (articleId: number) =>
 
 export interface ToggleRecommendResponse {
   message: string;
-  status: boolean; // 토글 후 최종 상태
+  status: boolean;
 }
 export const toggleRecommend = (params: {
   articleId: number;
