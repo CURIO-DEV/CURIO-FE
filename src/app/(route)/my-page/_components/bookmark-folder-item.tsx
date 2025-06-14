@@ -1,3 +1,5 @@
+"use client";
+
 import { FolderIcon } from "assets";
 import { KebabIcon } from "assets";
 import { cn } from "@/utils/cn";
