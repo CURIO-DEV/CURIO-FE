@@ -3,8 +3,10 @@
 import { useState, useEffect } from "react";
 import { toast } from "sonner";
 import { BookmarkIcon, HeartIcon, ShareIcon } from "assets";
+
 import FolderModal from "./folder-modal";
 import FolderUpsertModal from "app/(route)/my-page/_components/folder-upsert-modal";
+
 import { useUserStore } from "@/stores/use-user-store";
 import { useLikeStatus, useToggleArticleLike } from "@/hooks/use-article-like";
 
@@ -14,6 +16,7 @@ interface ActionBarProps {
 
 export default function ActionBar({ newsId }: ActionBarProps) {
   const isLogin = useUserStore((s) => s.isLogin);
+
   const { data: likeStatus } = useLikeStatus(newsId, !!isLogin);
   const [liked, setLiked] = useState(false);
 
@@ -26,6 +29,7 @@ export default function ActionBar({ newsId }: ActionBarProps) {
   const [isUpsertModalOpen, setIsUpsertModalOpen] = useState(false);
 
   const toggleLike = useToggleArticleLike();
+
   const guard = () => {
     if (!isLogin) {
       toast.warning("로그인 후 이용 가능합니다.");
@@ -33,6 +37,7 @@ export default function ActionBar({ newsId }: ActionBarProps) {
     }
     return true;
   };
+
   const handleLiked = () => {
     if (!guard()) return;
     const next = !liked;

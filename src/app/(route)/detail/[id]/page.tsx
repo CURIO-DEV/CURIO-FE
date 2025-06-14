@@ -1,107 +1,182 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import React, { useState } from "react";
+import Image from "next/image";
+import { useParams, useSearchParams } from "next/navigation";
+import {
+  LikeOutlineIcon,
+  LikeFilledIcon,
+  DislikeOutlineIcon,
+  DislikeFilledIcon,
+  LogoHeadIcon,
+} from "assets";
+import ActionBar from "../_components/action-bar";
+
+import { useArticleHeadline } from "@/hooks/use-article-headlines";
+import { useArticleSummary } from "@/hooks/use-article-summary";
+import { useGetUserMe } from "@/hooks/use-user";
+import { useUserSettings } from "@/hooks/use-setting";
+import {
+  useRecommendStatus,
+  useNotRecommendStatus,
+  useToggleRecommend,
+  useToggleNotRecommend,
+} from "@/hooks/use-article-recommand";
+import { SummaryType } from "types/summary-type";
 import { toast } from "sonner";
-import { BookmarkIcon, HeartIcon, ShareIcon } from "assets";
-import { useUserStore } from "@/stores/use-user-store";
-import { useLikeStatus, useToggleArticleLike } from "@/hooks/use-article-like";
-import FolderModal from "../_components/folder-modal";
-import FolderUpsertModal from "app/(route)/my-page/_components/folder-upsert-modal";
 
-interface ActionBarProps {
-  newsId: number;
-}
+const fontApiToQuery = (v: "small" | "medium" | "large") =>
+  v === "small" ? "small" : v === "medium" ? "default" : "big";
 
-export default function ActionBar({ newsId }: ActionBarProps) {
-  const isLogin = useUserStore((s) => s.isLogin);
-  const { data: likeStatus } = useLikeStatus(newsId, !!isLogin);
+export default function DetailPage() {
+  const { id } = useParams();
+  const searchParams = useSearchParams();
+  const articleId = Number(id);
 
-  const [liked, setLiked] = useState(false);
-  const [bookmarked, setBookmarked] = useState(false);
-  const [isFolderModalOpen, setIsFolderModalOpen] = useState(false);
-  const [isUpsertModalOpen, setIsUpsertModalOpen] = useState(false);
+  const { data: userMe } = useGetUserMe();
+  const { data: settings, isLoading: settingsLoading } = useUserSettings();
 
-  useEffect(() => {
-    setLiked(!!likeStatus?.status);
-  }, [likeStatus]);
+  const computedSummaryType = (searchParams.get("type") ??
+    settings?.summaryType ??
+    "medium") as SummaryType;
 
-  const toggleLike = useToggleArticleLike();
+  const fontKey = (searchParams.get("font") ??
+    (settings ? fontApiToQuery(settings.fontSize) : "default")) as
+    | "small"
+    | "default"
+    | "big";
+
+  const fontClass = {
+    small: "body1",
+    default: "subtitle1",
+    big: "title",
+  }[fontKey];
+
+  const { data: headline, isLoading: hlLoading } =
+    useArticleHeadline(articleId);
+  const { data: summary, isLoading: smLoading } = useArticleSummary(
+    articleId,
+    computedSummaryType,
+  );
+
+  const { data: recStatus } = useRecommendStatus(articleId, !!userMe?.isLogin);
+  const { data: nrecStatus } = useNotRecommendStatus(
+    articleId,
+    !!userMe?.isLogin,
+  );
+  const [recommended, setRecommended] = useState(!!recStatus?.status);
+  const [notRec, setNotRec] = useState(!!nrecStatus?.status);
+
+  const toggleRec = useToggleRecommend();
+  const toggleNotRec = useToggleNotRecommend();
 
   const guard = () => {
-    if (!isLogin) {
+    if (!userMe?.isLogin) {
       toast.warning("로그인 후 이용 가능합니다.");
       return false;
     }
     return true;
   };
 
-  const handleLiked = () => {
+  const handleRecommend = () => {
     if (!guard()) return;
-
-    const next = !liked;
-    toggleLike.mutate(
-      { articleId: newsId, status: next },
+    const nextStatus = !recommended;
+    toggleRec.mutate(
+      { articleId, status: nextStatus },
       {
         onSuccess: (res) => {
-          setLiked(res.status);
+          setRecommended(res.status);
           toast.success(res.message);
         },
-        onError: () => toast.error("잠시 후 다시 시도해 주세요."),
+        onError: () => toast.error("다시 시도해 주세요."),
       },
     );
   };
 
-  const handleBookmarked = () => {
+  const handleNotRecommend = () => {
     if (!guard()) return;
+    const nextStatus = !notRec;
+    toggleNotRec.mutate(
+      { articleId, status: nextStatus },
+      {
+        onSuccess: (res) => {
+          setNotRec(res.status);
+          toast.success(res.message);
+        },
+        onError: () => toast.error("다시 시도해 주세요."),
+      },
+    );
+  };
 
-    if (!bookmarked) {
-      setBookmarked(true);
-      setIsFolderModalOpen(true);
-    } else {
-      setBookmarked(false);
-    }
+  if (hlLoading || smLoading || settingsLoading) return <div>로딩 중…</div>;
+  if (!headline) return <div>기사 정보가 없습니다.</div>;
+
+  const formatDate = (iso: string) => {
+    const d = new Date(iso);
+    return `${d.getFullYear()}.${String(d.getMonth() + 1).padStart(2, "0")}.${String(
+      d.getDate(),
+    ).padStart(2, "0")}`;
   };
 
   return (
-    <>
-      <div className="fixed top-1/2 flex w-17.5 -translate-y-1/2 flex-col gap-4.5 rounded-3xl bg-gray-50 px-4.25 py-8.25">
-        <HeartIcon
-          onClick={handleLiked}
-          className={`cursor-pointer ${
-            liked ? "text-primary-600" : "text-transparent"
-          }`}
-        />
+    <div className="mt-12 mb-10">
+      <ActionBar newsId={articleId} />
+      <div className="mr-14 ml-35.5">
+        <h1 className="heading2 font-semibold">{headline.title}</h1>
+        <p className="caption1 flex gap-3 font-medium text-gray-500">
+          <span>게시 {formatDate(headline.createdAt)}</span>
+          <span>업데이트 {formatDate(headline.updatedAt)}</span>
+        </p>
+        <div className="flex flex-col gap-2.5">
+          <div className="mt-4 flex gap-2">
+            <LogoHeadIcon />
+            <p className="body1 font-semibold">
+              Curi가 N개의 기사를 요약했습니다.
+            </p>
+          </div>
+          <Image
+            src={headline.imageUrl}
+            alt="기사 이미지"
+            width={1200}
+            height={800}
+            quality={80}
+            sizes="100vw"
+            className="h-auto w-full"
+          />
+          <p className={`font-medium ${fontClass}`}>{summary?.summary}</p>
 
-        <BookmarkIcon
-          onClick={handleBookmarked}
-          className={`cursor-pointer ${
-            bookmarked ? "text-primary-600" : "text-transparent"
-          }`}
-        />
+          <div className="my-0.5 mt-4 flex items-center">
+            <p className="caption1 mr-6 font-medium">
+              이 내용이 마음에 드시나요?
+            </p>
+            {recommended ? (
+              <LikeFilledIcon
+                onClick={handleRecommend}
+                className="text-primary-600 cursor-pointer"
+              />
+            ) : (
+              <LikeOutlineIcon
+                onClick={handleRecommend}
+                className="text-primary-600 cursor-pointer"
+              />
+            )}
 
-        <ShareIcon />
+            <div className="bg-primary-200 mx-2 h-5 w-[0.5px]" />
+
+            {notRec ? (
+              <DislikeFilledIcon
+                onClick={handleNotRecommend}
+                className="text-primary-600 cursor-pointer"
+              />
+            ) : (
+              <DislikeOutlineIcon
+                onClick={handleNotRecommend}
+                className="text-primary-600 cursor-pointer"
+              />
+            )}
+          </div>
+        </div>
       </div>
-
-      {isFolderModalOpen && (
-        <FolderModal
-          newsId={newsId}
-          onClick={() => setIsFolderModalOpen(false)}
-          onCreateNewFolder={() => {
-            setIsFolderModalOpen(false);
-            setIsUpsertModalOpen(true);
-          }}
-        />
-      )}
-
-      {isUpsertModalOpen && (
-        <FolderUpsertModal
-          onClick={() => {
-            setIsUpsertModalOpen(false);
-            setIsFolderModalOpen(true);
-          }}
-          mode="create"
-        />
-      )}
-    </>
+    </div>
   );
 }
