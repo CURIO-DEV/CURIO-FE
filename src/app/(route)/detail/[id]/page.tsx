@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Image from "next/image";
 import { useParams, useSearchParams } from "next/navigation";
 import {
@@ -77,15 +77,23 @@ export default function DetailPage() {
     }
     return true;
   };
+  useEffect(() => {
+    if (recStatus) setRecommended(recStatus.status);
+  }, [recStatus]);
+
+  useEffect(() => {
+    if (nrecStatus) setNotRec(nrecStatus.status);
+  }, [nrecStatus]);
 
   const handleRecommend = () => {
     if (!guard()) return;
-    const nextStatus = !recommended;
+    const next = !recommended;
     toggleRec.mutate(
-      { articleId, status: nextStatus },
+      { articleId, status: next },
       {
         onSuccess: (res) => {
           setRecommended(res.status);
+          if (res.status) setNotRec(false);
           toast.success(res.message);
         },
         onError: () => toast.error("다시 시도해 주세요."),
@@ -95,12 +103,13 @@ export default function DetailPage() {
 
   const handleNotRecommend = () => {
     if (!guard()) return;
-    const nextStatus = !notRec;
+    const next = !notRec;
     toggleNotRec.mutate(
-      { articleId, status: nextStatus },
+      { articleId, status: next },
       {
         onSuccess: (res) => {
           setNotRec(res.status);
+          if (res.status) setRecommended(false);
           toast.success(res.message);
         },
         onError: () => toast.error("다시 시도해 주세요."),
