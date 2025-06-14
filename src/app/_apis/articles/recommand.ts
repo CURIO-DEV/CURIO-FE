@@ -1,10 +1,21 @@
-import { apiPatch } from "@/apis/api";
+import { apiGet, apiPatch } from "@/apis/api";
+
+export interface RecommendStatus {
+  articleId: number;
+  status: boolean; // true: 추천중, false: 추천 아님
+}
+export const getRecommendStatus = (articleId: number) =>
+  apiGet<RecommendStatus>(`/articles/${articleId}/recommend`);
 
 export interface ToggleRecommendResponse {
-  success: boolean;
   message: string;
-  data: "추천" | "추천 없음";
+  status: boolean; // 토글 후 최종 상태
 }
-
-export const toggleRecommend = (articleId: number) =>
-  apiPatch<ToggleRecommendResponse>(`/articles/${articleId}/recommend`);
+export const toggleRecommend = (params: {
+  articleId: number;
+  status: boolean;
+}) =>
+  apiPatch<ToggleRecommendResponse, { status: boolean }>(
+    `/articles/${params.articleId}/recommend`,
+    { status: params.status },
+  );

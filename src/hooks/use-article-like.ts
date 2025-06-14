@@ -1,14 +1,15 @@
-import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { toggleArticleLike } from "@/apis/articles/like";
+import { useQuery, useMutation } from "@tanstack/react-query";
+import { getArticleLikeStatus, toggleArticleLike } from "@/apis/articles/like";
 
-export const useToggleArticleLike = () => {
-  const qc = useQueryClient();
-
-  return useMutation({
-    mutationFn: toggleArticleLike,
-    // 필요한 경우 invalidateQueries(["article", articleId]) 등 캐시 갱신
-    onSuccess: (_, articleId) => {
-      qc.invalidateQueries({ queryKey: ["article", articleId, "headline"] });
-    },
+/* 현재 좋아요 여부 조회 */
+export const useLikeStatus = (articleId: number, enabled: boolean) =>
+  useQuery({
+    queryKey: ["article", articleId, "like", "status"],
+    queryFn: () => getArticleLikeStatus(articleId),
+    enabled,
+    select: (res) => res, // { articleId, status }
   });
-};
+
+/* 좋아요 토글 */
+export const useToggleArticleLike = () =>
+  useMutation({ mutationFn: toggleArticleLike });

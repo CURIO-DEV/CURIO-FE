@@ -1,10 +1,8 @@
 "use client";
 
 import React, { useState } from "react";
-
 import Image from "next/image";
 import { useParams, useSearchParams } from "next/navigation";
-import ActionBar from "../_components/action-bar";
 import {
   LikeOutlineIcon,
   LikeFilledIcon,
@@ -12,16 +10,20 @@ import {
   DislikeFilledIcon,
   LogoHeadIcon,
 } from "assets";
+import ActionBar from "../_components/action-bar";
+
 import { useArticleHeadline } from "@/hooks/use-article-headlines";
 import { useArticleSummary } from "@/hooks/use-article-summary";
-import { SummaryType } from "types/summary-type";
 import { useGetUserMe } from "@/hooks/use-user";
 import { useUserSettings } from "@/hooks/use-setting";
-import { toast } from "sonner";
 import {
+  useRecommendStatus,
+  useNotRecommendStatus,
   useToggleRecommend,
   useToggleNotRecommend,
 } from "@/hooks/use-article-recommand";
+import { SummaryType } from "types/summary-type";
+import { toast } from "sonner";
 
 const fontApiToQuery = (v: "small" | "medium" | "large") =>
   v === "small" ? "small" : v === "medium" ? "default" : "big";
@@ -44,24 +46,27 @@ export default function DetailPage() {
     | "default"
     | "big";
 
-  const fontClass =
-    {
-      small: "body1",
-      default: "subtitle1",
-      big: "title",
-    }[fontKey] || "subtitle1";
+  const fontClass = {
+    small: "body1",
+    default: "subtitle1",
+    big: "title",
+  }[fontKey];
 
   const { data: headline, isLoading: hlLoading } =
     useArticleHeadline(articleId);
-
   const { data: summary, isLoading: smLoading } = useArticleSummary(
     articleId,
     computedSummaryType,
   );
 
-  /* 추천 / 비추천 state & mutation */
-  const [recommended, setRecommended] = useState(false);
-  const [notRec, setNotRec] = useState(false);
+  const { data: recStatus } = useRecommendStatus(articleId, !!userMe?.isLogin);
+  const { data: nrecStatus } = useNotRecommendStatus(
+    articleId,
+    !!userMe?.isLogin,
+  );
+  const [recommended, setRecommended] = useState(!!recStatus?.status);
+  const [notRec, setNotRec] = useState(!!nrecStatus?.status);
+
   const toggleRec = useToggleRecommend();
   const toggleNotRec = useToggleNotRecommend();
 
@@ -75,24 +80,32 @@ export default function DetailPage() {
 
   const handleRecommend = () => {
     if (!guard()) return;
-    toggleRec.mutate(articleId, {
-      onSuccess: (res) => {
-        setRecommended(res.data === "추천");
-        toast.success(res.message);
+    const nextStatus = !recommended;
+    toggleRec.mutate(
+      { articleId, status: nextStatus },
+      {
+        onSuccess: (res) => {
+          setRecommended(res.status);
+          toast.success(res.message);
+        },
+        onError: () => toast.error("다시 시도해 주세요."),
       },
-      onError: () => toast.error("다시 시도해 주세요."),
-    });
+    );
   };
 
   const handleNotRecommend = () => {
     if (!guard()) return;
-    toggleNotRec.mutate(articleId, {
-      onSuccess: (res) => {
-        setNotRec(res.data === "비추천");
-        toast.success(res.message);
+    const nextStatus = !notRec;
+    toggleNotRec.mutate(
+      { articleId, status: nextStatus },
+      {
+        onSuccess: (res) => {
+          setNotRec(res.status);
+          toast.success(res.message);
+        },
+        onError: () => toast.error("다시 시도해 주세요."),
       },
-      onError: () => toast.error("다시 시도해 주세요."),
-    });
+    );
   };
 
   if (hlLoading || smLoading || settingsLoading) return <div>로딩 중…</div>;
@@ -100,10 +113,9 @@ export default function DetailPage() {
 
   const formatDate = (iso: string) => {
     const d = new Date(iso);
-    const yyyy = d.getFullYear();
-    const mm = String(d.getMonth() + 1).padStart(2, "0");
-    const dd = String(d.getDate()).padStart(2, "0");
-    return `${yyyy}.${mm}.${dd}`;
+    return `${d.getFullYear()}.${String(d.getMonth() + 1).padStart(2, "0")}.${String(
+      d.getDate(),
+    ).padStart(2, "0")}`;
   };
 
   return (
@@ -133,22 +145,34 @@ export default function DetailPage() {
           />
           <p className={`font-medium ${fontClass}`}>{summary?.summary}</p>
 
-          <div className="my-0.5 flex items-center">
+          <div className="my-0.5 mt-4 flex items-center">
             <p className="caption1 mr-6 font-medium">
               이 내용이 마음에 드시나요?
             </p>
             {recommended ? (
-              <LikeFilledIcon onClick={handleRecommend} />
+              <LikeFilledIcon
+                onClick={handleRecommend}
+                className="text-primary-600 cursor-pointer"
+              />
             ) : (
-              <LikeOutlineIcon onClick={handleRecommend} />
+              <LikeOutlineIcon
+                onClick={handleRecommend}
+                className="cursor-pointer text-gray-900"
+              />
             )}
 
-            <div className="bg-primary-200 mx-2 h-5 w-[0.5px]" />
+            <div className="bg-px bg-primary-200 mx-2 h-5" />
 
             {notRec ? (
-              <DislikeFilledIcon onClick={handleNotRecommend} />
+              <DislikeFilledIcon
+                onClick={handleNotRecommend}
+                className="text-primary-600 cursor-pointer"
+              />
             ) : (
-              <DislikeOutlineIcon onClick={handleNotRecommend} />
+              <DislikeOutlineIcon
+                onClick={handleNotRecommend}
+                className="cursor-pointer text-gray-900"
+              />
             )}
           </div>
         </div>
