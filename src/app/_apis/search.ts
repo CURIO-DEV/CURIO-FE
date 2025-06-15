@@ -2,7 +2,7 @@ import { apiGet } from "@/apis/api";
 
 export interface SearchResponse {
   content: {
-    newsId: number;
+    articleId: number;
     title: string;
     content: string;
     imageUrl: string;

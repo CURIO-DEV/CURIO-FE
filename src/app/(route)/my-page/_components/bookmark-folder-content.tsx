@@ -123,9 +123,9 @@ export default function BookmarkFolderContent({
               </button>
               <ArticleCard
                 article={{
-                  id: article.articleId,
+                  articleId: article.articleId,
                   title: article.title,
-                  summary: article.content,
+                  content: article.content,
                   imageUrl: article.imageUrl,
                 }}
               />

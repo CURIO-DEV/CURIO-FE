@@ -1,5 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
-import { getArticleHeadline } from "@/apis/article";
+import { getArticleHeadline } from "@/apis/articles/article";
 
 export function useArticleHeadline(articleId: number) {
   return useQuery({

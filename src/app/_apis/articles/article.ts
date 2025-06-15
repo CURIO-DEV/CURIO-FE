@@ -1,4 +1,4 @@
-import { apiGet } from "../_apis/api";
+import { apiGet } from "@/apis/api";
 import { SummaryType } from "types/summary-type";
 
 export interface ArticleHeadlineResponse {

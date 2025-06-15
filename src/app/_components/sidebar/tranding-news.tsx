@@ -1,3 +1,5 @@
+"use client";
+
 import Image from "next/image";
 import { dummyNews } from "@/mocks/dummyNews";
 import { usePathname, useRouter } from "next/navigation";

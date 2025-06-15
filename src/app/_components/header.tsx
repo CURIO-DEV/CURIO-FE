@@ -1,3 +1,5 @@
+"use client";
+
 import { SearchIcon } from "assets";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
