@@ -6,6 +6,7 @@ import "./globals.css";
 import Layout from "./_components/layout";
 import Providers from "./providers";
 import { Toaster } from "sonner";
+import { Suspense } from "react";
 
 const pretendard = localFont({
   src: "_styles/fonts/PretendardVariable.woff2",
@@ -45,7 +46,9 @@ export default function RootLayout({
         className={`${pretendard.variable} ${carterOne.variable} ${roboto.variable} font-pretendard`}
       >
         <Providers>
-          <Layout>{children}</Layout>
+          <Suspense>
+            <Layout>{children}</Layout>
+          </Suspense>
           <Toaster></Toaster>
         </Providers>
       </body>

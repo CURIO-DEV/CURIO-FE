@@ -1,5 +1,8 @@
 import { useQuery } from "@tanstack/react-query";
-import { getArticleSummary, ArticleSummaryResponse } from "@/apis/article";
+import {
+  getArticleSummary,
+  ArticleSummaryResponse,
+} from "@/apis/articles/article";
 import { SummaryType } from "types/summary-type";
 
 export function useArticleSummary(articleId: number, type: SummaryType) {

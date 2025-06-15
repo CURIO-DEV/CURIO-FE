@@ -63,9 +63,6 @@ export default function SearchPage() {
       {isLoading && <div className="mb-4">로딩 중…</div>}
       {error && <div>error:{error.message}</div>}
 
-      {isLoading && <div>로딩 중…</div>}
-      {error && <div>error: {error.message}</div>}
-
       {!isLoading && items.length === 0 && (
         <div className="mt-8 text-center text-gray-500">
           검색 결과가 없습니다.
@@ -77,11 +74,11 @@ export default function SearchPage() {
           <div className="mt-6 flex flex-col gap-4">
             {items.map((item) => (
               <ArticleCard
-                key={item.newsId}
+                key={item.articleId}
                 article={{
-                  id: item.newsId,
+                  articleId: item.articleId,
                   title: item.title,
-                  summary: item.content,
+                  content: item.content,
                   imageUrl: item.imageUrl,
                 }}
               />
