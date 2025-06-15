@@ -1,31 +1,19 @@
 "use client";
 
 import { useState, useRef, useEffect } from "react";
-import { useRouter } from "next/navigation";
 import { toast } from "sonner";
-import { useQueryClient } from "@tanstack/react-query";
 
 import Button from "@/components/button";
-import { ROUTES } from "@/constants/routes";
 import { Exit_Reasons } from "@/constants/exit-reasons";
 import { useDeleteAccount } from "@/hooks/use-delete-accout";
-import { useLoginStore } from "@/stores/use-login";
-import { useUserStore } from "@/stores/use-user-store";
 
 export default function DeleteAccount() {
   const [selectedReason, setSelectedReason] = useState("");
   const [customReason, setCustomReason] = useState("");
   const textareaRef = useRef<HTMLTextAreaElement>(null);
-
-  const router = useRouter();
   const deleteAccount = useDeleteAccount();
-  const qc = useQueryClient();
-  const setIsLogin = useLoginStore((s) => s.setIsLogin);
-  const resetProfile = useUserStore((s) => s.clearProfile);
 
-  const handleCancel = () => router.push(ROUTES.HOME);
-
-  const handleUnsubscribe = () => {
+  const handleSubmit = () => {
     if (!selectedReason) {
       toast.warning("탈퇴 사유를 선택해 주세요.");
       return;
@@ -34,21 +22,7 @@ export default function DeleteAccount() {
       toast.warning("사유를 입력해 주세요.");
       return;
     }
-
-    deleteAccount.mutate(undefined, {
-      onSuccess: (res) => {
-        localStorage.removeItem("accessToken");
-        sessionStorage.removeItem("refreshToken");
-        setIsLogin(false);
-        resetProfile();
-        qc.clear();
-
-        toast.success(res.message);
-        router.replace(ROUTES.HOME);
-      },
-      onError: () =>
-        toast.error("탈퇴 요청에 실패했습니다. 다시 시도해 주세요."),
-    });
+    deleteAccount.mutate();
   };
 
   useEffect(() => {
@@ -75,29 +49,25 @@ export default function DeleteAccount() {
           탈퇴하시는 이유를 알려주세요.
         </p>
         <div>
-          {Exit_Reasons.map((reason) => (
+          {Exit_Reasons.map(({ value, label }) => (
             <div
-              key={reason.value}
-              className={`w-150 py-3 ${
-                reason.value !== "other" && "border-b border-gray-200"
-              }`}
+              key={value}
+              className={`w-150 py-3 ${value !== "other" && "border-b border-gray-200"}`}
             >
               <label
                 className={`flex items-center gap-2.75 font-semibold ${
-                  selectedReason === reason.value
-                    ? "text-black"
-                    : "text-gray-500"
+                  selectedReason === value ? "text-black" : "text-gray-500"
                 }`}
               >
                 <input
                   type="radio"
                   name="reason"
-                  value={reason.value}
-                  checked={selectedReason === reason.value}
-                  onChange={() => setSelectedReason(reason.value)}
+                  value={value}
+                  checked={selectedReason === value}
+                  onChange={() => setSelectedReason(value)}
                   className="accent-primary-600 ml-4.75"
                 />
-                {reason.label}
+                {label}
               </label>
             </div>
           ))}
@@ -128,12 +98,12 @@ export default function DeleteAccount() {
           <span className="subtitle2">탈퇴하시겠습니까?</span>
           <div className="flex gap-3">
             <Button
-              onClick={handleUnsubscribe}
+              onClick={handleSubmit}
               className="hover:bg-primary-50 body1 border border-gray-400 bg-white text-gray-400"
             >
               탈퇴하기
             </Button>
-            <Button onClick={handleCancel} className="body1">
+            <Button onClick={() => history.back()} className="body1">
               취소하고 서비스 이용하기
             </Button>
           </div>
