@@ -9,6 +9,7 @@ import FolderUpsertModal from "app/(route)/my-page/_components/folder-upsert-mod
 
 import { useUserStore } from "@/stores/use-user-store";
 import { useLikeStatus, useToggleArticleLike } from "@/hooks/use-article-like";
+import { usePathname } from "next/navigation";
 
 interface ActionBarProps {
   newsId: number;
@@ -63,6 +64,19 @@ export default function ActionBar({ newsId }: ActionBarProps) {
     }
   };
 
+  const pathname = usePathname();
+  const currentUrl =
+    typeof window !== "undefined" ? `${window.location.href}` : "";
+
+  const handleShare = async () => {
+    try {
+      await navigator.clipboard.writeText(currentUrl);
+      toast.success("링크가 클립보드에 복사되었습니다 📋");
+    } catch {
+      toast.error("복사에 실패했습니다. 다시 시도해 주세요.");
+    }
+  };
+
   return (
     <>
       <div className="fixed top-1/2 flex w-17.5 -translate-y-1/2 flex-col gap-4.5 rounded-3xl bg-gray-50 px-4.25 py-8.25">
@@ -78,7 +92,7 @@ export default function ActionBar({ newsId }: ActionBarProps) {
             bookmarked ? "text-primary-600" : "text-transparent"
           }`}
         />
-        <ShareIcon />
+        <ShareIcon onClick={handleShare} />
       </div>
 
       {isFolderModalOpen && (
