@@ -1,20 +1,27 @@
 "use client";
 
+import { useState, useRef, useEffect } from "react";
 import { useRouter } from "next/navigation";
-import { ROUTES } from "@/constants/routes";
-import Button from "@/components/button";
-import { Exit_Reasons } from "@/constants/exit-reasons";
-import { useEffect, useRef, useState } from "react";
-import { useDeleteAccount } from "@/hooks/use-delete-accout";
 import { toast } from "sonner";
+import { useQueryClient } from "@tanstack/react-query";
+
+import Button from "@/components/button";
+import { ROUTES } from "@/constants/routes";
+import { Exit_Reasons } from "@/constants/exit-reasons";
+import { useDeleteAccount } from "@/hooks/use-delete-accout";
+import { useLoginStore } from "@/stores/use-login";
+import { useUserStore } from "@/stores/use-user-store";
 
 export default function DeleteAccount() {
   const [selectedReason, setSelectedReason] = useState("");
   const [customReason, setCustomReason] = useState("");
-
   const textareaRef = useRef<HTMLTextAreaElement>(null);
+
   const router = useRouter();
   const deleteAccount = useDeleteAccount();
+  const qc = useQueryClient();
+  const setIsLogin = useLoginStore((s) => s.setIsLogin);
+  const resetProfile = useUserStore((s) => s.clearProfile);
 
   const handleCancel = () => router.push(ROUTES.HOME);
 
@@ -30,8 +37,14 @@ export default function DeleteAccount() {
 
     deleteAccount.mutate(undefined, {
       onSuccess: (res) => {
+        localStorage.removeItem("accessToken");
+        sessionStorage.removeItem("refreshToken");
+        setIsLogin(false);
+        resetProfile();
+        qc.clear();
+
         toast.success(res.message);
-        router.push(ROUTES.HOME);
+        router.replace(ROUTES.HOME);
       },
       onError: () =>
         toast.error("탈퇴 요청에 실패했습니다. 다시 시도해 주세요."),
@@ -62,33 +75,32 @@ export default function DeleteAccount() {
           탈퇴하시는 이유를 알려주세요.
         </p>
         <div>
-          {Exit_Reasons.map((reason) => {
-            const isSelected = selectedReason === reason.value;
-            return (
-              <div
-                key={reason.value}
-                className={`w-150 py-3 ${
-                  reason.value !== "other" ? "border-b border-gray-200" : ""
+          {Exit_Reasons.map((reason) => (
+            <div
+              key={reason.value}
+              className={`w-150 py-3 ${
+                reason.value !== "other" && "border-b border-gray-200"
+              }`}
+            >
+              <label
+                className={`flex items-center gap-2.75 font-semibold ${
+                  selectedReason === reason.value
+                    ? "text-black"
+                    : "text-gray-500"
                 }`}
               >
-                <label
-                  className={`flex items-center gap-2.75 font-semibold ${
-                    isSelected ? "text-black" : "text-gray-500"
-                  }`}
-                >
-                  <input
-                    type="radio"
-                    name="reason"
-                    value={reason.value}
-                    checked={isSelected}
-                    onChange={() => setSelectedReason(reason.value)}
-                    className="accent-primary-600 ml-4.75"
-                  />
-                  {reason.label}
-                </label>
-              </div>
-            );
-          })}
+                <input
+                  type="radio"
+                  name="reason"
+                  value={reason.value}
+                  checked={selectedReason === reason.value}
+                  onChange={() => setSelectedReason(reason.value)}
+                  className="accent-primary-600 ml-4.75"
+                />
+                {reason.label}
+              </label>
+            </div>
+          ))}
         </div>
 
         <textarea

@@ -13,4 +13,7 @@ export const useUserStore = create<UserStore>((set) => ({
   isLogin: false,
   setProfile: (profile) => set({ profile, isLogin: true }),
   clearProfile: () => set({ profile: null, isLogin: false }),
+  reset() {
+    set({ profile: null, isLogin: false });
+  },
 }));
