@@ -1,36 +1,32 @@
 "use client";
 
-import { useRouter } from "next/navigation";
-import { ROUTES } from "@/constants/routes";
+import { useState, useRef, useEffect } from "react";
+import { toast } from "sonner";
+
 import Button from "@/components/button";
 import { Exit_Reasons } from "@/constants/exit-reasons";
-import { useEffect, useRef, useState } from "react";
+import { useDeleteAccount } from "@/hooks/use-delete-accout";
 
 export default function DeleteAccount() {
   const [selectedReason, setSelectedReason] = useState("");
   const [customReason, setCustomReason] = useState("");
-
   const textareaRef = useRef<HTMLTextAreaElement>(null);
-  const router = useRouter();
+  const deleteAccount = useDeleteAccount();
 
-  const handleCancel = () => {
-    router.push(ROUTES.HOME);
-  };
-
-  const handleUnsubscribe = () => {
-    if (selectedReason === "other" && !customReason.trim()) {
-      //TODO : 토스트로 처리
+  const handleSubmit = () => {
+    if (!selectedReason) {
+      toast.warning("탈퇴 사유를 선택해 주세요.");
+      return;
     }
-
-    // TODO : 여기에 탈퇴 처리 로직 추가
-    console.log("탈퇴 처리", selectedReason, customReason);
-    // TODO : 토스트 - 탈퇴완료메시지 -> 홈으로 이동?
+    if (selectedReason === "other" && !customReason.trim()) {
+      toast.warning("사유를 입력해 주세요.");
+      return;
+    }
+    deleteAccount.mutate();
   };
 
   useEffect(() => {
-    if (selectedReason === "other") {
-      textareaRef.current?.focus();
-    }
+    if (selectedReason === "other") textareaRef.current?.focus();
   }, [selectedReason]);
 
   return (
@@ -53,33 +49,28 @@ export default function DeleteAccount() {
           탈퇴하시는 이유를 알려주세요.
         </p>
         <div>
-          {Exit_Reasons.map((reason) => {
-            const isSelected = selectedReason === reason.value;
-            return (
-              <div
-                key={reason.value}
-                className={`w-150 py-3 ${
-                  reason.value !== "other" ? "border-b border-gray-200" : ""
+          {Exit_Reasons.map(({ value, label }) => (
+            <div
+              key={value}
+              className={`w-150 py-3 ${value !== "other" && "border-b border-gray-200"}`}
+            >
+              <label
+                className={`flex items-center gap-2.75 font-semibold ${
+                  selectedReason === value ? "text-black" : "text-gray-500"
                 }`}
               >
-                <label
-                  className={`flex items-center gap-2.75 font-semibold ${
-                    isSelected ? "text-black" : "text-gray-500"
-                  }`}
-                >
-                  <input
-                    type="radio"
-                    name="reason"
-                    value={reason.value}
-                    checked={isSelected}
-                    onChange={() => setSelectedReason(reason.value)}
-                    className="accent-primary-600 ml-4.75"
-                  />
-                  {reason.label}
-                </label>
-              </div>
-            );
-          })}
+                <input
+                  type="radio"
+                  name="reason"
+                  value={value}
+                  checked={selectedReason === value}
+                  onChange={() => setSelectedReason(value)}
+                  className="accent-primary-600 ml-4.75"
+                />
+                {label}
+              </label>
+            </div>
+          ))}
         </div>
 
         <textarea
@@ -107,12 +98,12 @@ export default function DeleteAccount() {
           <span className="subtitle2">탈퇴하시겠습니까?</span>
           <div className="flex gap-3">
             <Button
-              onClick={handleUnsubscribe}
+              onClick={handleSubmit}
               className="hover:bg-primary-50 body1 border border-gray-400 bg-white text-gray-400"
             >
               탈퇴하기
             </Button>
-            <Button onClick={handleCancel} className="body1">
+            <Button onClick={() => history.back()} className="body1">
               취소하고 서비스 이용하기
             </Button>
           </div>
