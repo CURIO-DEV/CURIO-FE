@@ -17,8 +17,6 @@ export const useDeleteAccount = () => {
   return useMutation({
     mutationFn: deleteAccount,
     onSuccess: (res) => {
-      localStorage.removeItem("accessToken");
-      sessionStorage.removeItem("refreshToken");
       setIsLogin(false);
       clearProfile();
       qc.clear();
