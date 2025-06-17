@@ -13,6 +13,7 @@ import {
   useGetUserInterestsNews,
   usePatchUserInterests,
 } from "@/hooks/use-user";
+import { toast } from "sonner";
 
 export default function Home() {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -63,8 +64,8 @@ export default function Home() {
         if (prev.length < 4) {
           return [...prev, item];
         } else {
+          toast.warning("카테고리는 4개까지만 선택할 수 있습니다.");
           return prev;
-          //TODO: 토스트 이벤트
         }
       }
     });

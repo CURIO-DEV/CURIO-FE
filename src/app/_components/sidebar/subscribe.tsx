@@ -9,6 +9,7 @@ import Button from "../button";
 import { ShortcutIcon } from "assets";
 import { usePatchSubscribe } from "@/hooks/use-user";
 import { useUserStore } from "@/stores/use-user-store";
+import { toast } from "sonner";
 
 export default function Subscribe() {
   const [isModalOpen, SetIsModalOpen] = useState(false);
@@ -37,7 +38,7 @@ export default function Subscribe() {
       {
         onSuccess: () => {
           console.log("subscribe success");
-          // TODO: 토스트
+          toast.success("신청이 완료되었습니다.");
         },
       },
     );
@@ -76,7 +77,6 @@ export default function Subscribe() {
             </p>
             <label className="caption1 flex flex-col font-medium">
               이메일
-              {/* // TODO:API 연결 시 value 넣어주기 */}
               <Input
                 placeholder="sample@naver.com"
                 value={inputEmail}
