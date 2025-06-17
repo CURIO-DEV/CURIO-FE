@@ -2,6 +2,7 @@ import { PatchNewsletterSubscribe, PatchUserInterests } from "@/apis/user/user";
 import { USER_KEY, USER_OPTION } from "@/apis/user/user-queries";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { NewsletterSubscribeData, UserInterestsData } from "app/_types/user";
+import { toast } from "sonner";
 
 export const usePatchSubscribe = () => {
   return useMutation({
@@ -29,7 +30,7 @@ export const usePatchUserInterests = () => {
     mutationFn: (body: UserInterestsData) => PatchUserInterests(body),
     onSuccess: (data) => {
       queryClient.invalidateQueries({ queryKey: USER_KEY.USER_INTERESTS() });
-      // TODO: 토스트
+      toast.success("카테고리가 저장되었습니다.");
     },
   });
 };
