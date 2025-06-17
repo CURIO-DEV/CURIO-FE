@@ -1,14 +1,20 @@
 import { TRENDS_OPTION } from "@/apis/trends/trends-queries";
-import { useQuery } from "@tanstack/react-query";
+import { useSuspenseQuery } from "@tanstack/react-query";
 
 export const useGetTrendKeyword = () => {
-  return useQuery(TRENDS_OPTION.TREND_KEYWORD());
+  return useSuspenseQuery({
+    ...TRENDS_OPTION.TREND_KEYWORD(),
+  });
 };
 
 export const useGetPopularArtiles = () => {
-  return useQuery(TRENDS_OPTION.POPULAR_ARTICLES());
+  return useSuspenseQuery({
+    ...TRENDS_OPTION.POPULAR_ARTICLES(),
+  });
 };
 
 export const useGetIntertestKeywords = () => {
-  return useQuery(TRENDS_OPTION.INTEREST_KEYWORDS());
+  return useSuspenseQuery({
+    ...TRENDS_OPTION.INTEREST_KEYWORDS(),
+  });
 };

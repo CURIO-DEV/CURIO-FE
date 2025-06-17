@@ -29,7 +29,7 @@ export default function WordCloudClient() {
   const wordMap = new Map(words.map((w) => [w.text, w.value]));
 
   return (
-    <svg width={648} height={400}>
+    <svg width={648} height={380}>
       <Wordcloud
         words={words}
         width={648}
