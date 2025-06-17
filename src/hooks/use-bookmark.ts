@@ -20,8 +20,15 @@ export const useGetBookmarkArticles = (folderId: number | null) => {
 };
 
 export const usePostBookmarkFolder = () => {
+  const queryClient = useQueryClient();
+
   return useMutation({
     mutationFn: (body: CreateBookmarkBody) => CreateBookmarkFolder(body),
+    onSuccess: () => {
+      queryClient.invalidateQueries({
+        queryKey: BOOKMARK_KEY.FOLDER_LIST(),
+      });
+    },
   });
 };
 
