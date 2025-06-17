@@ -29,7 +29,7 @@ export default function Header() {
     router.push("/");
   };
   return (
-    <header className="flex h-20 items-center justify-between border-b border-gray-200 px-20">
+    <header className="flex h-20 min-w-360 items-center justify-between border-b border-gray-200 px-20">
       <h1
         className="logo-s font-carter text-primary-600 cursor-pointer"
         onClick={handleLogoClick}
