@@ -24,6 +24,7 @@ import {
 } from "@/hooks/use-article-recommand";
 import { SummaryType } from "types/summary-type";
 import { toast } from "sonner";
+import LoadingSpinner from "@/components/loading-spinner";
 
 const fontApiToQuery = (v: "small" | "medium" | "large") =>
   v === "small" ? "small" : v === "medium" ? "default" : "big";
@@ -117,7 +118,7 @@ export default function DetailPage() {
     );
   };
 
-  if (hlLoading || smLoading || settingsLoading) return <div>로딩 중…</div>;
+  if (hlLoading || smLoading || settingsLoading) return <LoadingSpinner />;
   if (!headline) return <div>기사 정보가 없습니다.</div>;
 
   const formatDate = (iso: string) => {
