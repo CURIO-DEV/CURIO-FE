@@ -17,8 +17,8 @@ export default function Layout({ children }: { children: React.ReactNode }) {
   return (
     <div className="flex min-h-screen flex-col justify-center">
       <Header />
-      <div className="flex h-full min-w-360 px-20">
-        <main className="h-full min-h-screen w-full">{children}</main>
+      <div className="mx-auto flex h-full w-360 justify-center px-20">
+        <main className="h-full w-full">{children}</main>
         {showSidebar && <Sidebar />}
       </div>
     </div>

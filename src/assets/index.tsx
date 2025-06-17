@@ -44,3 +44,5 @@ export { default as CheckIcon } from "./check.svg";
 export { default as MemberDelIcon } from "./member-del.svg";
 
 export { default as IndexIcon } from "./index.svg";
+
+export { default as SpinnerIcon } from "./spinner.svg";

@@ -19,7 +19,7 @@ export default function Banner() {
   };
 
   return (
-    <div className="flex h-100 w-full">
+    <div className="flex h-100">
       <div className="bg-primary-100 w-63">
         <div className="mt-22 ml-7">
           <p className="subtitle font-semibold">
@@ -33,7 +33,7 @@ export default function Banner() {
           </Button>
         </div>
       </div>
-      <div className="bg-primary-50 flex-grow">
+      <div className="bg-primary-50 flex w-162 flex-grow items-center">
         <WordCloudtWrapper />
       </div>
     </div>
