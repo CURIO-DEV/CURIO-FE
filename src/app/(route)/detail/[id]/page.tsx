@@ -141,7 +141,7 @@ export default function DetailPage() {
           <div className="mt-4 flex gap-2">
             <LogoHeadIcon />
             <p className="body1 font-semibold">
-              Curi가 N개의 기사를 요약했습니다.
+              Curi가 해당기사를 요약했습니다.
             </p>
           </div>
           <Image
