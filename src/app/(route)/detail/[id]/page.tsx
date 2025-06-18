@@ -153,7 +153,9 @@ export default function DetailPage() {
             sizes="100vw"
             className="h-auto w-full"
           />
-          <p className={`font-medium ${fontClass}`}>{summary?.summary}</p>
+          <p className={`font-medium ${fontClass} w-[742px]`}>
+            {summary?.summary}
+          </p>
 
           <div className="my-0.5 mt-4 flex items-center">
             <p className="caption1 mr-6 font-medium">
