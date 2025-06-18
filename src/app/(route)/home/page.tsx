@@ -14,6 +14,7 @@ import {
   usePatchUserInterests,
 } from "@/hooks/use-user";
 import { toast } from "sonner";
+import { useUserStore } from "@/stores/use-user-store";
 
 export default function Home() {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -35,7 +36,11 @@ export default function Home() {
   const { data: userInterestsNews } = useGetUserInterestsNews(selectedCategory);
 
   const handleEdit = () => {
-    setIsModalOpen(true);
+    if (isLogin) {
+      setIsModalOpen(true);
+    } else {
+      toast.warning("로그인 후 이용가능합니다");
+    }
   };
 
   const handleClose = () => {
@@ -74,6 +79,8 @@ export default function Home() {
   const handleCategoryButtonClick = (item: string) => {
     setSelectedCategory(item);
   };
+
+  const isLogin = useUserStore((s) => s.isLogin);
 
   return (
     <div className="mt-6 flex flex-col gap-6 pr-10">
