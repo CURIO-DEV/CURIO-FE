@@ -5,6 +5,7 @@ import { ROUTES } from "@/constants/routes";
 import { useRouter } from "next/navigation";
 import WordCloudtWrapper from "./word-cloud-wrapper";
 import { useUserStore } from "@/stores/use-user-store";
+import { toast } from "sonner";
 
 export default function Banner() {
   const route = useRouter();
@@ -14,7 +15,7 @@ export default function Banner() {
     if (isLogin) {
       route.push(ROUTES.SNACK_NEWS);
     } else {
-      console.log("로그인이 필요합니다.");
+      toast.warning("로그인 후 이용가능합니다");
     }
   };
 
