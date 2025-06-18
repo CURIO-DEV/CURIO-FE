@@ -54,7 +54,7 @@ export default function Sidebar() {
         <>
           <FontSize />
           <Summary />
-          <TrandingNews />
+          <TrandingNews isDetailPage />
         </>
       ) : userMe?.isLogin ? (
         <div className="flex flex-col gap-6">
